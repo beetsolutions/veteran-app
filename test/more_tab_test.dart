@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:veteranapp/screens/tab_screens/more_tab.dart';
 import 'package:veteranapp/screens/activity_statistics_screen.dart';
+import 'package:veteranapp/screens/profile_screen.dart';
 
 void main() {
   testWidgets('More tab displays Activity Statistics menu item', (WidgetTester tester) async {
@@ -54,5 +55,23 @@ void main() {
     for (final item in menuItems) {
       expect(find.text(item), findsOneWidget);
     }
+  });
+
+  testWidgets('Profile item navigates to Profile screen', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: MoreTab(),
+      ),
+    );
+
+    // Tap on Profile menu item
+    await tester.tap(find.text('Profile'));
+    await tester.pumpAndSettle();
+
+    // Verify that we navigated to the Profile screen
+    expect(find.text('John Doe'), findsOneWidget);
+    expect(find.text('Contact Information'), findsOneWidget);
+    expect(find.text('Military Service'), findsOneWidget);
+    expect(find.text('Membership'), findsOneWidget);
   });
 }
