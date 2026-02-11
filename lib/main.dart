@@ -17,6 +17,13 @@ class VeteranApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         useMaterial3: true,
       ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: const Color(0xFF1DB954),
+        scaffoldBackgroundColor: Colors.black,
+        useMaterial3: true,
+      ),
+      themeMode: ThemeMode.dark,
       home: const LoginScreen(),
     );
   }
