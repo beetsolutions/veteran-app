@@ -24,7 +24,7 @@ class _VeteranAppState extends State<VeteranApp> {
         return ThemeProviderWidget(
           themeProvider: _themeProvider,
           child: MaterialApp(
-            title: 'Veteran App',
+            title: 'VeteranApp',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               primarySwatch: Colors.blue,

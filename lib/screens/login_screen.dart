@@ -126,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 24),
                     Text(
-                      'Veteran App',
+                      'VeteranApp',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 36,
