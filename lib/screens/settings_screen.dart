@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../main.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -9,13 +10,15 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _notificationsEnabled = true;
-  bool _darkModeEnabled = true; // Matches app's current dark theme
   bool _emailNotifications = false;
   bool _pushNotifications = true;
   String _selectedLanguage = 'English';
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = ThemeProviderWidget.of(context);
+    final isDarkMode = themeProvider?.isDarkMode ?? true;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
@@ -28,11 +31,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             icon: Icons.dark_mode,
             title: 'Dark Mode',
             subtitle: 'Enable dark theme',
-            value: _darkModeEnabled,
+            value: isDarkMode,
             onChanged: (value) {
-              setState(() {
-                _darkModeEnabled = value;
-              });
+              themeProvider?.setDarkMode(value);
             },
           ),
           _buildListTile(
