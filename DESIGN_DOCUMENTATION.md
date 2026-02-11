@@ -53,13 +53,13 @@ When user taps "Log in with email", the screen transitions to show:
 #### Form Elements
 - **Back Button**: Arrow icon in top-left to return to main login view
 - **Email Field**: 
-  - Dark gray background (#212121)
+  - Dark gray background (Colors.grey[900])
   - White border
   - White text input
   - Label: "Email address"
   
 - **Password Field**:
-  - Dark gray background (#212121)
+  - Dark gray background (Colors.grey[900])
   - White border
   - White text input
   - Label: "Password"
@@ -71,7 +71,7 @@ When user taps "Log in with email", the screen transitions to show:
   - Text: "Forgot your password?"
 
 - **Log In Button**:
-  - Spotify green background (#1DB954)
+  - Spotify green background (Color(0xFF1DB954))
   - Black text
   - Full width
   - 48px height

@@ -77,8 +77,8 @@ void main() {
     await tester.pump();
     expect(find.text('Facebook login not implemented'), findsOneWidget);
     
-    // Dismiss snackbar
-    await tester.pumpAndSettle(const Duration(seconds: 4));
+    // Wait for snackbar animations to complete
+    await tester.pumpAndSettle();
 
     // Test Apple button
     await tester.tap(find.text('Continue with Apple'));

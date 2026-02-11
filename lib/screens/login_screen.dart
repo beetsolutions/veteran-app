@@ -135,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 12),
                   _buildSocialButton(
                     text: 'Continue with Google',
-                    icon: Icons.g_mobiledata,
+                    icon: Icons.email,
                     onPressed: () => _handleSocialLogin('Google'),
                   ),
                   const SizedBox(height: 32),
