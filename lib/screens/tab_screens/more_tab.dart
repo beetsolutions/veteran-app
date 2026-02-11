@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../login_screen.dart';
 import '../members_hosting_screen.dart';
 import '../activity_statistics_screen.dart';
+import '../soccer_statistics_screen.dart';
 
 class MoreTab extends StatelessWidget {
   const MoreTab({super.key});
@@ -51,6 +52,18 @@ class MoreTab extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const ActivityStatisticsScreen(),
+                ),
+              );
+            },
+          ),
+          _buildMenuItem(
+            icon: Icons.sports_soccer,
+            title: 'Soccer Statistics',
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SoccerStatisticsScreen(),
                 ),
               );
             },
