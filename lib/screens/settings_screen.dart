@@ -9,7 +9,7 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _notificationsEnabled = true;
-  bool _darkModeEnabled = true;
+  bool _darkModeEnabled = true; // Matches app's current dark theme
   bool _emailNotifications = false;
   bool _pushNotifications = true;
   String _selectedLanguage = 'English';
@@ -85,7 +85,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: 'Privacy Policy',
             subtitle: 'View our privacy policy',
             onTap: () {
-              // Navigate to privacy policy
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Privacy policy feature coming soon'),
+                ),
+              );
             },
           ),
           _buildListTile(
@@ -93,7 +97,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: 'Terms of Service',
             subtitle: 'View terms of service',
             onTap: () {
-              // Navigate to terms of service
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Terms of service feature coming soon'),
+                ),
+              );
             },
           ),
           const Divider(height: 30),
@@ -194,10 +202,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
       value: language,
       groupValue: _selectedLanguage,
       onChanged: (value) {
-        setState(() {
-          _selectedLanguage = value!;
-        });
-        Navigator.of(context).pop();
+        if (value != null) {
+          setState(() {
+            _selectedLanguage = value;
+          });
+          Navigator.of(context).pop();
+        }
       },
     );
   }
