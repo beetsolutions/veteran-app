@@ -3,34 +3,36 @@ import 'package:flutter/material.dart';
 class MembersHostingScreen extends StatelessWidget {
   const MembersHostingScreen({super.key});
 
+  // Mock data for hosting members
+  static const List<Map<String, dynamic>> _hostingMembers = [
+    {
+      'name': 'John Doe',
+      'location': 'New York, NY',
+      'capacity': 2,
+      'available': true,
+    },
+    {
+      'name': 'Jane Smith',
+      'location': 'Los Angeles, CA',
+      'capacity': 3,
+      'available': true,
+    },
+    {
+      'name': 'Robert Johnson',
+      'location': 'Chicago, IL',
+      'capacity': 1,
+      'available': false,
+    },
+    {
+      'name': 'Mary Williams',
+      'location': 'Houston, TX',
+      'capacity': 2,
+      'available': true,
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> hostingMembers = [
-      {
-        'name': 'John Doe',
-        'location': 'New York, NY',
-        'capacity': 2,
-        'available': true,
-      },
-      {
-        'name': 'Jane Smith',
-        'location': 'Los Angeles, CA',
-        'capacity': 3,
-        'available': true,
-      },
-      {
-        'name': 'Robert Johnson',
-        'location': 'Chicago, IL',
-        'capacity': 1,
-        'available': false,
-      },
-      {
-        'name': 'Mary Williams',
-        'location': 'Houston, TX',
-        'capacity': 2,
-        'available': true,
-      },
-    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -57,7 +59,7 @@ class MembersHostingScreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '${hostingMembers.where((m) => m['available'] == true).length} available hosts',
+                        '${_hostingMembers.where((m) => m['available'] == true).length} available hosts',
                         style: const TextStyle(
                           fontSize: 14,
                           color: Colors.grey,
@@ -71,9 +73,9 @@ class MembersHostingScreen extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: hostingMembers.length,
+              itemCount: _hostingMembers.length,
               itemBuilder: (context, index) {
-                final member = hostingMembers[index];
+                final member = _hostingMembers[index];
                 final isAvailable = member['available'] as bool;
                 
                 return Card(
@@ -82,7 +84,7 @@ class MembersHostingScreen extends StatelessWidget {
                   child: ListTile(
                     leading: CircleAvatar(
                       backgroundColor: isAvailable ? Colors.green : Colors.grey,
-                      child: Icon(
+                      child: const Icon(
                         Icons.home,
                         color: Colors.white,
                       ),
