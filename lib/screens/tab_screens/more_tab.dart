@@ -8,6 +8,7 @@ import '../notifications_screen.dart';
 import '../settings_screen.dart';
 import '../help_support_screen.dart';
 import '../about_screen.dart';
+import '../../widgets/responsive_container.dart';
 
 class MoreTab extends StatelessWidget {
   const MoreTab({super.key});
@@ -19,8 +20,12 @@ class MoreTab extends StatelessWidget {
         title: const Text('More'),
         automaticallyImplyLeading: false,
       ),
-      body: ListView(
-        children: [
+      body: ResponsiveContainer(
+        mobilePadding: EdgeInsets.zero,
+        tabletPadding: EdgeInsets.zero,
+        desktopPadding: EdgeInsets.zero,
+        child: ListView(
+          children: [
           const SizedBox(height: 20),
           _buildMenuItem(
             icon: Icons.person,
@@ -128,6 +133,7 @@ class MoreTab extends StatelessWidget {
             },
           ),
         ],
+        ),
       ),
     );
   }

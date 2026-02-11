@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../main.dart';
 import '../providers/theme_provider.dart';
+import '../widgets/responsive_container.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -28,8 +29,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
           appBar: AppBar(
             title: const Text('Settings'),
           ),
-          body: ListView(
-            children: [
+          body: ResponsiveContainer(
+            mobilePadding: EdgeInsets.zero,
+            tabletPadding: EdgeInsets.zero,
+            desktopPadding: EdgeInsets.zero,
+            child: ListView(
+              children: [
               const SizedBox(height: 10),
               _buildSectionHeader('General'),
               _buildSwitchTile(
@@ -123,6 +128,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               const SizedBox(height: 20),
             ],
+            ),
           ),
         );
       },

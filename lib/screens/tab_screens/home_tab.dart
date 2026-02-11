@@ -5,6 +5,7 @@ import '../../widgets/stat_card.dart';
 import '../../widgets/official_card.dart';
 import '../../widgets/news_card.dart';
 import '../../widgets/section_header.dart';
+import '../../widgets/responsive_container.dart';
 import '../details/all_officials_screen.dart';
 import '../details/all_news_screen.dart';
 import '../../data/repositories/officials_repository.dart';
@@ -96,15 +97,14 @@ class _HomeTabState extends State<HomeTab> {
                   ),
                 )
               : SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                  child: ResponsiveContainer(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                       const SizedBox(height: 16),
                       // Statistics Section
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Row(
-                          children: [
+                      Row(
+                        children: [
                             Expanded(
                               child: StatCard(
                                 title: 'Total Members',
@@ -124,7 +124,6 @@ class _HomeTabState extends State<HomeTab> {
                             ),
                           ],
                         ),
-                      ),
                       const SizedBox(height: 24),
                       
                       // Officials Section
@@ -185,6 +184,7 @@ class _HomeTabState extends State<HomeTab> {
                       ),
                       const SizedBox(height: 24),
                     ],
+                  ),
                   ),
                 ),
     );

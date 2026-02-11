@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/stat_card.dart';
+import '../widgets/responsive_container.dart';
 
 class ActivityStatisticsScreen extends StatelessWidget {
   const ActivityStatisticsScreen({super.key});
@@ -11,8 +12,7 @@ class ActivityStatisticsScreen extends StatelessWidget {
         title: const Text('Activity Statistics'),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
+        child: ResponsiveContainer(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

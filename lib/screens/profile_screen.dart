@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/responsive_container.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -24,8 +25,12 @@ class ProfileScreen extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
+        child: ResponsiveContainer(
+          mobilePadding: EdgeInsets.zero,
+          tabletPadding: EdgeInsets.zero,
+          desktopPadding: EdgeInsets.zero,
+          child: Column(
+            children: [
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(32.0),
@@ -63,8 +68,7 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(24.0),
+            ResponsiveContainer(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -131,6 +135,7 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
           ],
+        ),
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'forgot_password_screen.dart';
 import 'home_screen.dart';
+import '../widgets/responsive_container.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -113,11 +114,15 @@ class _LoginScreenState extends State<LoginScreen> {
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
+                child: ResponsiveContainer(
+                  maxWidth: 500,
+                  mobilePadding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
+                  tabletPadding: const EdgeInsets.symmetric(horizontal: 48.0, vertical: 40.0),
+                  desktopPadding: const EdgeInsets.symmetric(horizontal: 48.0, vertical: 40.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
                     // App Logo/Title
                     Icon(
                       Icons.shield,
@@ -300,6 +305,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ],
+                ),
                 ),
               ),
             ),

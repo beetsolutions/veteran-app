@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../member_detail_screen.dart';
 import '../../models/member.dart';
 import '../../data/repositories/members_repository.dart';
+import '../../widgets/responsive_container.dart';
 
 class MembersTab extends StatefulWidget {
   final MembersRepository? membersRepository;
@@ -92,8 +93,12 @@ class _MembersTabState extends State<MembersTab> {
         title: const Text('Members'),
         automaticallyImplyLeading: false,
       ),
-      body: ListView(
-        children: [
+      body: ResponsiveContainer(
+        mobilePadding: EdgeInsets.zero,
+        tabletPadding: EdgeInsets.zero,
+        desktopPadding: EdgeInsets.zero,
+        child: ListView(
+          children: [
           if (activeMembers.isNotEmpty) ...[
             _buildSectionHeader('Active Members', activeMembers.length, Colors.green),
             ...activeMembers.map((member) => _buildMemberCard(context, member, Colors.green)),
@@ -107,6 +112,7 @@ class _MembersTabState extends State<MembersTab> {
             ...dismissedMembers.map((member) => _buildMemberCard(context, member, Colors.red)),
           ],
         ],
+        ),
       ),
     );
   }
