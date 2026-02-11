@@ -31,7 +31,7 @@ class MemberDetailScreen extends StatelessWidget {
                     radius: 60,
                     backgroundColor: Colors.blue,
                     child: Text(
-                      name.isNotEmpty ? name[0] : '?',
+                      name.trim().isNotEmpty ? name.trim()[0].toUpperCase() : '?',
                       style: const TextStyle(
                         fontSize: 48,
                         color: Colors.white,
