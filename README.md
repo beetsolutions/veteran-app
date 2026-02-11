@@ -1,6 +1,24 @@
 # veteranapp
 
-Veteran App
+Veteran App - A Flutter application with Spotify-style login screen
+
+## Recent Updates
+
+🎨 **NEW: Spotify-Style Login Screen**
+
+The login screen has been completely redesigned with a modern, dark theme inspired by Spotify's interface. See the documentation below for details:
+
+- [📐 Design Documentation](DESIGN_DOCUMENTATION.md) - Complete design specifications
+- [🎨 Visual Mockup](VISUAL_MOCKUP.md) - ASCII art mockups and layout guides
+- [📊 Implementation Summary](IMPLEMENTATION_SUMMARY.md) - Full project summary
+- [🔄 Before/After Comparison](BEFORE_AFTER_COMPARISON.md) - Visual comparison
+
+### Key Features
+- ✨ Dark theme with Spotify green accent
+- 🔐 Social login options (Facebook, Apple, Google)
+- 📧 Email/password authentication
+- 🎯 Two-step login flow
+- 📱 Modern, mobile-first design
 
 ## Getting Started
 
