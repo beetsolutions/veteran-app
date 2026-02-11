@@ -3,6 +3,7 @@ import '../login_screen.dart';
 import '../members_hosting_screen.dart';
 import '../activity_statistics_screen.dart';
 import '../help_support_screen.dart';
+import '../about_screen.dart';
 
 class MoreTab extends StatelessWidget {
   const MoreTab({super.key});
@@ -98,7 +99,12 @@ class MoreTab extends StatelessWidget {
             icon: Icons.info,
             title: 'About',
             onTap: () {
-              // Navigate to about
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AboutScreen(),
+                ),
+              );
             },
           ),
           const Divider(height: 40),
