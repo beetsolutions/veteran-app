@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../login_screen.dart';
 import '../members_hosting_screen.dart';
 import '../activity_statistics_screen.dart';
+import '../notifications_screen.dart';
 
 class MoreTab extends StatelessWidget {
   const MoreTab({super.key});
@@ -66,7 +67,12 @@ class MoreTab extends StatelessWidget {
             icon: Icons.notifications,
             title: 'Notifications',
             onTap: () {
-              // Navigate to notifications
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NotificationsScreen(),
+                ),
+              );
             },
           ),
           _buildMenuItem(

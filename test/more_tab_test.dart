@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:veteranapp/screens/tab_screens/more_tab.dart';
 import 'package:veteranapp/screens/activity_statistics_screen.dart';
+import 'package:veteranapp/screens/notifications_screen.dart';
 
 void main() {
   testWidgets('More tab displays Activity Statistics menu item', (WidgetTester tester) async {
@@ -54,5 +55,21 @@ void main() {
     for (final item in menuItems) {
       expect(find.text(item), findsOneWidget);
     }
+  });
+
+  testWidgets('Notifications item navigates to Notifications screen', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: MoreTab(),
+      ),
+    );
+
+    // Tap on Notifications menu item
+    await tester.tap(find.text('Notifications'));
+    await tester.pumpAndSettle();
+
+    // Verify that we navigated to the Notifications screen
+    expect(find.text('Recent Notifications'), findsOneWidget);
+    expect(find.text('Upcoming Event'), findsOneWidget);
   });
 }
