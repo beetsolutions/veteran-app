@@ -49,3 +49,8 @@ FLUTTER_TEST_RESULTS.txt
 TEST_EXECUTION_REPORT.md
 TEST_SUMMARY.txt
 README_TEST_ANALYSIS.md
+
+# Backup and temporary test files
+*.bak
+*_test.yaml
+pubspec_test.yaml
