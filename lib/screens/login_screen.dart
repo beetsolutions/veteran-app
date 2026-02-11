@@ -29,12 +29,12 @@ class _LoginScreenState extends State<LoginScreen> {
       _videoController = VideoPlayerController.asset('assets/videos/background.mp4')
         ..initialize().then((_) {
           if (mounted) {
-            setState(() {
-              _videoInitialized = true;
-            });
             _videoController?.setLooping(true);
             _videoController?.setVolume(0.0); // Mute the video
             _videoController?.play();
+            setState(() {
+              _videoInitialized = true;
+            });
           }
         }).catchError((error) {
           // If video fails to load, just continue without it
@@ -89,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Stack(
         children: [
           // Video Background
-          if (_videoInitialized && _videoController != null)
+          if (_videoInitialized)
             Positioned.fill(
               child: FittedBox(
                 fit: BoxFit.cover,

@@ -158,6 +158,9 @@ void main() {
           home: LoginScreen(),
         ),
       );
+      
+      // Wait for async video initialization to complete
+      await tester.pumpAndSettle();
 
       // The screen should still load and display all UI elements
       expect(find.byType(LoginScreen), findsOneWidget);
