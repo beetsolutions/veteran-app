@@ -54,3 +54,8 @@ README_TEST_ANALYSIS.md
 *.bak
 *_test.yaml
 pubspec_test.yaml
+
+# Node.js / Backend
+backend/node_modules/
+backend/package-lock.json
+backend/.env
