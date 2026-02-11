@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:veteranapp/screens/tab_screens/more_tab.dart';
 import 'package:veteranapp/screens/activity_statistics_screen.dart';
+import 'package:veteranapp/screens/about_screen.dart';
 
 void main() {
   testWidgets('More tab displays Activity Statistics menu item', (WidgetTester tester) async {
@@ -54,5 +55,22 @@ void main() {
     for (final item in menuItems) {
       expect(find.text(item), findsOneWidget);
     }
+  });
+
+  testWidgets('About item navigates to About screen', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: MoreTab(),
+      ),
+    );
+
+    // Tap on About menu item
+    await tester.tap(find.text('About'));
+    await tester.pumpAndSettle();
+
+    // Verify that we navigated to the About screen
+    expect(find.text('VeteranApp'), findsOneWidget);
+    expect(find.text('Version 1.0.0'), findsOneWidget);
+    expect(find.text('About VeteranApp'), findsOneWidget);
   });
 }
