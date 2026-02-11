@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:veteranapp/screens/tab_screens/more_tab.dart';
 import 'package:veteranapp/screens/activity_statistics_screen.dart';
+import 'package:veteranapp/screens/soccer_statistics_screen.dart';
 import 'package:veteranapp/screens/profile_screen.dart';
 import 'package:veteranapp/screens/notifications_screen.dart';
 import 'package:veteranapp/screens/settings_screen.dart';
@@ -48,8 +49,10 @@ void main() {
     final menuItems = [
       'Profile',
       'Activity Statistics',
+      'Soccer Statistics',
       'Settings',
       'Notifications',
+      'Members Hosting',
       'Help & Support',
       'About',
       'Logout',
@@ -61,6 +64,7 @@ void main() {
     }
   });
 
+  testWidgets('More tab displays Soccer Statistics menu item', (WidgetTester tester) async {
   testWidgets('Profile item navigates to Profile screen', (WidgetTester tester) async {
   testWidgets('Notifications item navigates to Notifications screen', (WidgetTester tester) async {
   testWidgets('Settings item navigates to Settings screen', (WidgetTester tester) async {
@@ -72,6 +76,25 @@ void main() {
       ),
     );
 
+    // Verify the Soccer Statistics menu item is displayed
+    expect(find.text('Soccer Statistics'), findsOneWidget);
+    expect(find.byIcon(Icons.sports_soccer), findsOneWidget);
+  });
+
+  testWidgets('Soccer Statistics item navigates to Soccer Statistics screen', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: MoreTab(),
+      ),
+    );
+
+    // Tap on Soccer Statistics menu item
+    await tester.tap(find.text('Soccer Statistics'));
+    await tester.pumpAndSettle();
+
+    // Verify that we navigated to the Soccer Statistics screen
+    expect(find.text('Match Information'), findsOneWidget);
+    expect(find.text('Match Officials'), findsOneWidget);
     // Tap on Profile menu item
     await tester.tap(find.text('Profile'));
     await tester.pumpAndSettle();
