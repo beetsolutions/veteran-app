@@ -30,37 +30,6 @@ class MembersTab extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            color: Colors.blue.shade50,
-            child: Row(
-              children: [
-                const Icon(Icons.people, size: 40, color: Colors.blue),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Organization Members',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        '${members.length} total • ${activeMembers.length} active • ${suspendedMembers.length} suspended • ${dismissedMembers.length} dismissed',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
           if (activeMembers.isNotEmpty) ...[
             _buildSectionHeader('Active Members', activeMembers.length, Colors.green),
             ...activeMembers.map((member) => _buildMemberCard(context, member, Colors.green)),

@@ -22,26 +22,6 @@ class MoreTab extends StatelessWidget {
       body: ListView(
         children: [
           const SizedBox(height: 20),
-          const Center(
-            child: Icon(
-              Icons.more_horiz,
-              size: 80,
-              color: Colors.blue,
-            ),
-          ),
-          const SizedBox(height: 20),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text(
-              'Settings & More',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          const SizedBox(height: 30),
           _buildMenuItem(
             icon: Icons.person,
             title: 'Profile',
