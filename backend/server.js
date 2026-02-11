@@ -23,35 +23,35 @@ const news = [
   {
     title: 'Annual Veterans Day Ceremony',
     description: 'Join us for our annual Veterans Day ceremony honoring all who have served. The event will feature guest speakers, a memorial service, and community gathering.',
-    date: 'Nov 11, 2024',
+    date: 'Nov 11, 2026',
     category: 'Events',
     imageUrl: null
   },
   {
     title: 'New Healthcare Benefits Available',
     description: 'We are pleased to announce new healthcare benefits for all members. Visit our office to learn more about the expanded coverage options.',
-    date: 'Nov 5, 2024',
+    date: 'Nov 5, 2026',
     category: 'Benefits',
     imageUrl: null
   },
   {
     title: 'Community Outreach Program Success',
     description: 'Our recent community outreach program was a great success! Over 200 veterans received assistance with job placement and career counseling.',
-    date: 'Oct 28, 2024',
+    date: 'Oct 28, 2026',
     category: 'News',
     imageUrl: null
   },
   {
     title: 'Monthly Member Meeting Scheduled',
     description: 'Our monthly member meeting is scheduled for the first Friday of next month. All members are encouraged to attend and participate.',
-    date: 'Oct 15, 2024',
+    date: 'Oct 15, 2026',
     category: 'Events',
     imageUrl: null
   },
   {
     title: 'Scholarship Opportunities',
     description: 'Multiple scholarship opportunities are now available for veterans and their families. Applications are being accepted through the end of the year.',
-    date: 'Oct 10, 2024',
+    date: 'Oct 10, 2026',
     category: 'Education',
     imageUrl: null
   }
@@ -102,11 +102,11 @@ const currentSoccerMatch = {
 };
 
 // Helper function to calculate hosting schedule
-function getHostingSchedule(isPrevious = false) {
+function getHostingSchedule(isNext = false) {
   const now = new Date();
   const referenceDate = new Date('2024-01-01');
   const daysSinceReference = Math.floor((now - referenceDate) / (1000 * 60 * 60 * 24));
-  const periodNumber = Math.floor(daysSinceReference / 14) + (isPrevious ? 1 : 0);
+  const periodNumber = Math.floor(daysSinceReference / 14) + (isNext ? 1 : 0);
   
   const startDate = new Date(referenceDate);
   startDate.setDate(startDate.getDate() + periodNumber * 14);
