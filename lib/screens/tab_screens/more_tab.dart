@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../login_screen.dart';
+import '../activity_statistics_screen.dart';
 
 class MoreTab extends StatelessWidget {
   const MoreTab({super.key});
@@ -39,6 +40,18 @@ class MoreTab extends StatelessWidget {
             title: 'Profile',
             onTap: () {
               // Navigate to profile
+            },
+          ),
+          _buildMenuItem(
+            icon: Icons.bar_chart,
+            title: 'Activity Statistics',
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ActivityStatisticsScreen(),
+                ),
+              );
             },
           ),
           _buildMenuItem(
