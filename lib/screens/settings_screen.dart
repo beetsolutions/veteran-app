@@ -41,92 +41,91 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   themeProvider?.setDarkMode(value);
                 },
               ),
-          _buildListTile(
-            icon: Icons.language,
-            title: 'Language',
-            subtitle: _selectedLanguage,
-            onTap: () {
-              _showLanguageDialog();
-            },
+              _buildListTile(
+                icon: Icons.language,
+                title: 'Language',
+                subtitle: _selectedLanguage,
+                onTap: () {
+                  _showLanguageDialog();
+                },
+              ),
+              const Divider(height: 30),
+              _buildSectionHeader('Notifications'),
+              _buildSwitchTile(
+                icon: Icons.notifications,
+                title: 'Enable Notifications',
+                subtitle: 'Receive app notifications',
+                value: _notificationsEnabled,
+                onChanged: (value) {
+                  setState(() {
+                    _notificationsEnabled = value;
+                  });
+                },
+              ),
+              _buildSwitchTile(
+                icon: Icons.email,
+                title: 'Email Notifications',
+                subtitle: 'Receive notifications via email',
+                value: _emailNotifications,
+                onChanged: (value) {
+                  setState(() {
+                    _emailNotifications = value;
+                  });
+                },
+              ),
+              _buildSwitchTile(
+                icon: Icons.mobile_friendly,
+                title: 'Push Notifications',
+                subtitle: 'Receive push notifications',
+                value: _pushNotifications,
+                onChanged: (value) {
+                  setState(() {
+                    _pushNotifications = value;
+                  });
+                },
+              ),
+              const Divider(height: 30),
+              _buildSectionHeader('Privacy'),
+              _buildListTile(
+                icon: Icons.lock,
+                title: 'Privacy Policy',
+                subtitle: 'View our privacy policy',
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Privacy policy feature coming soon'),
+                    ),
+                  );
+                },
+              ),
+              _buildListTile(
+                icon: Icons.description,
+                title: 'Terms of Service',
+                subtitle: 'View terms of service',
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Terms of service feature coming soon'),
+                    ),
+                  );
+                },
+              ),
+              const Divider(height: 30),
+              _buildSectionHeader('Account'),
+              _buildListTile(
+                icon: Icons.delete_outline,
+                title: 'Delete Account',
+                subtitle: 'Permanently delete your account',
+                iconColor: Colors.red,
+                onTap: () {
+                  _showDeleteAccountDialog();
+                },
+              ),
+              const SizedBox(height: 20),
+            ],
           ),
-          const Divider(height: 30),
-          _buildSectionHeader('Notifications'),
-          _buildSwitchTile(
-            icon: Icons.notifications,
-            title: 'Enable Notifications',
-            subtitle: 'Receive app notifications',
-            value: _notificationsEnabled,
-            onChanged: (value) {
-              setState(() {
-                _notificationsEnabled = value;
-              });
-            },
-          ),
-          _buildSwitchTile(
-            icon: Icons.email,
-            title: 'Email Notifications',
-            subtitle: 'Receive notifications via email',
-            value: _emailNotifications,
-            onChanged: (value) {
-              setState(() {
-                _emailNotifications = value;
-              });
-            },
-          ),
-          _buildSwitchTile(
-            icon: Icons.mobile_friendly,
-            title: 'Push Notifications',
-            subtitle: 'Receive push notifications',
-            value: _pushNotifications,
-            onChanged: (value) {
-              setState(() {
-                _pushNotifications = value;
-              });
-            },
-          ),
-          const Divider(height: 30),
-          _buildSectionHeader('Privacy'),
-          _buildListTile(
-            icon: Icons.lock,
-            title: 'Privacy Policy',
-            subtitle: 'View our privacy policy',
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Privacy policy feature coming soon'),
-                ),
-              );
-            },
-          ),
-          _buildListTile(
-            icon: Icons.description,
-            title: 'Terms of Service',
-            subtitle: 'View terms of service',
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Terms of service feature coming soon'),
-                ),
-              );
-            },
-          ),
-          const Divider(height: 30),
-          _buildSectionHeader('Account'),
-          _buildListTile(
-            icon: Icons.delete_outline,
-            title: 'Delete Account',
-            subtitle: 'Permanently delete your account',
-            iconColor: Colors.red,
-            onTap: () {
-              _showDeleteAccountDialog();
-            },
-          ),
-          const SizedBox(height: 20),
-        ],
-      ),
-    );
+        );
       },
-    );
     );
   }
 
