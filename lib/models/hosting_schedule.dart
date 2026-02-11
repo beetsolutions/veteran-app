@@ -17,6 +17,32 @@ class HostingSchedule {
     this.contributionAmount = 30.0,
   });
 
+  factory HostingSchedule.fromJson(Map<String, dynamic> json) {
+    return HostingSchedule(
+      id: json['id'] as String,
+      startDate: DateTime.parse(json['startDate'] as String),
+      endDate: DateTime.parse(json['endDate'] as String),
+      hosts: (json['hosts'] as List<dynamic>)
+          .map((e) => Member.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      allMembers: (json['allMembers'] as List<dynamic>)
+          .map((e) => Member.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      contributionAmount: (json['contributionAmount'] as num?)?.toDouble() ?? 30.0,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'startDate': startDate.toIso8601String(),
+      'endDate': endDate.toIso8601String(),
+      'hosts': hosts.map((e) => e.toJson()).toList(),
+      'allMembers': allMembers.map((e) => e.toJson()).toList(),
+      'contributionAmount': contributionAmount,
+    };
+  }
+
   /// Check if this schedule is currently active
   bool get isActive {
     final now = DateTime.now();

@@ -1,172 +1,169 @@
 import 'package:flutter/material.dart';
 import '../models/member.dart';
 import '../models/hosting_schedule.dart';
+import '../data/repositories/hosting_repository.dart';
 
-class MembersHostingScreen extends StatelessWidget {
-  const MembersHostingScreen({super.key});
+class MembersHostingScreen extends StatefulWidget {
+  final HostingRepository? hostingRepository;
 
-  // Mock data for members
-  static final List<Member> _allMembers = [
-    const Member(id: '1', name: 'John Doe', location: 'New York, NY', isPaid: true),
-    const Member(id: '2', name: 'Jane Smith', location: 'Los Angeles, CA', isPaid: true),
-    const Member(id: '3', name: 'Robert Johnson', location: 'Chicago, IL', isPaid: false),
-    const Member(id: '4', name: 'Mary Williams', location: 'Houston, TX', isPaid: true),
-    const Member(id: '5', name: 'James Brown', location: 'Phoenix, AZ', isPaid: false),
-    const Member(id: '6', name: 'Patricia Garcia', location: 'Philadelphia, PA', isPaid: true),
-    const Member(id: '7', name: 'Michael Davis', location: 'San Antonio, TX', isPaid: false),
-    const Member(id: '8', name: 'Linda Martinez', location: 'San Diego, CA', isPaid: true),
-  ];
+  const MembersHostingScreen({
+    super.key,
+    this.hostingRepository,
+  });
 
-  // Calculate the current hosting schedule
-  static HostingSchedule _getCurrentSchedule() {
-    final now = DateTime.now();
-    // Calculate the start of the current 2-week period
-    // For simplicity, using a fixed reference date
-    final referenceDate = DateTime(2024, 1, 1);
-    final daysSinceReference = now.difference(referenceDate).inDays;
-    final periodNumber = (daysSinceReference / 14).floor();
-    final startDate = referenceDate.add(Duration(days: periodNumber * 14));
-    final endDate = startDate.add(const Duration(days: 14));
+  @override
+  State<MembersHostingScreen> createState() => _MembersHostingScreenState();
+}
 
-    // Select 3 hosts for this period (rotate based on period number)
-    final hostIndices = [
-      (periodNumber * 3) % _allMembers.length,
-      (periodNumber * 3 + 1) % _allMembers.length,
-      (periodNumber * 3 + 2) % _allMembers.length,
-    ];
-    final hosts = hostIndices.map((i) => _allMembers[i]).toList();
+class _MembersHostingScreenState extends State<MembersHostingScreen> {
+  late final HostingRepository _hostingRepository;
+  HostingSchedule? _currentSchedule;
+  HostingSchedule? _nextSchedule;
+  bool _isLoading = true;
+  String? _errorMessage;
 
-    return HostingSchedule(
-      id: 'schedule_$periodNumber',
-      startDate: startDate,
-      endDate: endDate,
-      hosts: hosts,
-      allMembers: _allMembers,
-    );
+  @override
+  void initState() {
+    super.initState();
+    _hostingRepository = widget.hostingRepository ?? HostingRepository();
+    _loadData();
   }
 
-  // Get the next hosting schedule
-  static HostingSchedule _getNextSchedule() {
-    final current = _getCurrentSchedule();
-    final nextStartDate = current.endDate;
-    final nextEndDate = nextStartDate.add(const Duration(days: 14));
+  Future<void> _loadData() async {
+    try {
+      setState(() {
+        _isLoading = true;
+        _errorMessage = null;
+      });
 
-    final referenceDate = DateTime(2024, 1, 1);
-    final daysSinceReference = nextStartDate.difference(referenceDate).inDays;
-    final periodNumber = (daysSinceReference / 14).floor();
+      final current = await _hostingRepository.getCurrentSchedule();
+      final next = await _hostingRepository.getNextSchedule();
 
-    final hostIndices = [
-      (periodNumber * 3) % _allMembers.length,
-      (periodNumber * 3 + 1) % _allMembers.length,
-      (periodNumber * 3 + 2) % _allMembers.length,
-    ];
-    final hosts = hostIndices.map((i) => _allMembers[i]).toList();
-
-    return HostingSchedule(
-      id: 'schedule_$periodNumber',
-      startDate: nextStartDate,
-      endDate: nextEndDate,
-      hosts: hosts,
-      allMembers: _allMembers,
-    );
+      setState(() {
+        _currentSchedule = current;
+        _nextSchedule = next;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Failed to load hosting schedule: $e';
+        _isLoading = false;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final currentSchedule = _getCurrentSchedule();
-    final nextSchedule = _getNextSchedule();
     final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Hosting Schedule'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Current Rotation Header
-            Container(
-              padding: const EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primaryContainer,
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _errorMessage != null
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.calendar_today,
-                        size: 32,
-                        color: theme.colorScheme.primary,
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Current Hosting Rotation',
-                              style: theme.textTheme.headlineSmall?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              '${_formatDate(currentSchedule.startDate)} - ${_formatDate(currentSchedule.endDate)}',
-                              style: theme.textTheme.bodyMedium,
-                            ),
-                          ],
-                        ),
+                      Text(_errorMessage!),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: _loadData,
+                        child: const Text('Retry'),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.secondary,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      '${currentSchedule.daysRemaining} days remaining',
-                      style: TextStyle(
-                        color: theme.colorScheme.onSecondary,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                )
+              : _currentSchedule == null || _nextSchedule == null
+                  ? const Center(child: Text('No schedule data available'))
+                  : SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Current Rotation Header
+                          Container(
+                            padding: const EdgeInsets.all(16.0),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.primaryContainer,
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.calendar_today,
+                                      size: 32,
+                                      color: theme.colorScheme.primary,
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Current Hosting Rotation',
+                                            style: theme.textTheme.headlineSmall?.copyWith(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            '${_formatDate(_currentSchedule!.startDate)} - ${_formatDate(_currentSchedule!.endDate)}',
+                                            style: theme.textTheme.bodyMedium,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 12),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                  decoration: BoxDecoration(
+                                    color: theme.colorScheme.secondary,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Text(
+                                    '${_currentSchedule!.daysRemaining} days remaining',
+                                    style: TextStyle(
+                                      color: theme.colorScheme.onSecondary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
 
-            // Current Hosts Section
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Current Hosts (3 Members)',
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'These members are hosting for this 2-week period',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  ...currentSchedule.hosts.map((host) => _buildHostCard(context, host, true)),
-                ],
+                          // Current Hosts Section
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Current Hosts (3 Members)',
+                                  style: theme.textTheme.titleLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'These members are hosting for this 2-week period',
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                ..._currentSchedule!.hosts.map((host) => _buildHostCard(context, host, true)),
+                              ],
               ),
             ),
 
@@ -192,7 +189,7 @@ class MembersHostingScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Each member contributes £${currentSchedule.contributionAmount.toStringAsFixed(0)} per rotation',
+                    'Each member contributes £${_currentSchedule!.contributionAmount.toStringAsFixed(0)} per rotation',
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: Colors.grey[600],
                     ),
@@ -206,7 +203,7 @@ class MembersHostingScreen extends StatelessWidget {
                         child: _buildPaymentSummaryCard(
                           context,
                           'Collected',
-                          '£${currentSchedule.totalCollected.toStringAsFixed(0)}',
+                          '£${_currentSchedule!.totalCollected.toStringAsFixed(0)}',
                           Colors.green,
                           Icons.check_circle,
                         ),
@@ -216,7 +213,7 @@ class MembersHostingScreen extends StatelessWidget {
                         child: _buildPaymentSummaryCard(
                           context,
                           'Pending',
-                          '£${currentSchedule.totalPending.toStringAsFixed(0)}',
+                          '£${_currentSchedule!.totalPending.toStringAsFixed(0)}',
                           Colors.orange,
                           Icons.pending,
                         ),
@@ -245,7 +242,7 @@ class MembersHostingScreen extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              '${currentSchedule.paidMembers.length}/${currentSchedule.allMembers.length}',
+                              '${_currentSchedule!.paidMembers.length}/${_currentSchedule!.allMembers.length}',
                               style: theme.textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: theme.colorScheme.primary,
@@ -257,7 +254,7 @@ class MembersHostingScreen extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child: LinearProgressIndicator(
-                            value: currentSchedule.paymentProgress / 100,
+                            value: _currentSchedule!.paymentProgress / 100,
                             minHeight: 10,
                             backgroundColor: Colors.grey[300],
                             valueColor: AlwaysStoppedAnimation<Color>(
@@ -267,7 +264,7 @@ class MembersHostingScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          '${currentSchedule.paymentProgress.toStringAsFixed(0)}% Complete',
+                          '${_currentSchedule!.paymentProgress.toStringAsFixed(0)}% Complete',
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: Colors.grey[600],
                           ),
@@ -282,17 +279,17 @@ class MembersHostingScreen extends StatelessWidget {
                     initiallyExpanded: false,
                     leading: Icon(Icons.check_circle, color: Colors.green),
                     title: Text(
-                      'Paid Members (${currentSchedule.paidMembers.length})',
+                      'Paid Members (${_currentSchedule!.paidMembers.length})',
                       style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
-                    children: currentSchedule.paidMembers.isEmpty
+                    children: _currentSchedule!.paidMembers.isEmpty
                         ? [
                             const Padding(
                               padding: EdgeInsets.all(16.0),
                               child: Text('No members have paid yet'),
                             )
                           ]
-                        : currentSchedule.paidMembers
+                        : _currentSchedule!.paidMembers
                             .map((member) => _buildPaymentListItem(context, member, true))
                             .toList(),
                   ),
@@ -304,17 +301,17 @@ class MembersHostingScreen extends StatelessWidget {
                     initiallyExpanded: true,
                     leading: Icon(Icons.pending, color: Colors.orange),
                     title: Text(
-                      'Pending Payments (${currentSchedule.unpaidMembers.length})',
+                      'Pending Payments (${_currentSchedule!.unpaidMembers.length})',
                       style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
-                    children: currentSchedule.unpaidMembers.isEmpty
+                    children: _currentSchedule!.unpaidMembers.isEmpty
                         ? [
                             const Padding(
                               padding: EdgeInsets.all(16.0),
                               child: Text('All members have paid!'),
                             )
                           ]
-                        : currentSchedule.unpaidMembers
+                        : _currentSchedule!.unpaidMembers
                             .map((member) => _buildPaymentListItem(context, member, false))
                             .toList(),
                   ),
@@ -344,13 +341,13 @@ class MembersHostingScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '${_formatDate(nextSchedule.startDate)} - ${_formatDate(nextSchedule.endDate)}',
+                    '${_formatDate(_nextSchedule!.startDate)} - ${_formatDate(_nextSchedule!.endDate)}',
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: Colors.grey[600],
                     ),
                   ),
                   const SizedBox(height: 16),
-                  ...nextSchedule.hosts.map((host) => _buildHostCard(context, host, false)),
+                  ..._nextSchedule!.hosts.map((host) => _buildHostCard(context, host, false)),
                 ],
               ),
             ),

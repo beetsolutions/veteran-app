@@ -1,27 +1,91 @@
 import 'package:flutter/material.dart';
 import '../member_detail_screen.dart';
 import '../../models/member.dart';
+import '../../data/repositories/members_repository.dart';
 
-class MembersTab extends StatelessWidget {
-  const MembersTab({super.key});
+class MembersTab extends StatefulWidget {
+  final MembersRepository? membersRepository;
+
+  const MembersTab({
+    super.key,
+    this.membersRepository,
+  });
+
+  @override
+  State<MembersTab> createState() => _MembersTabState();
+}
+
+class _MembersTabState extends State<MembersTab> {
+  late final MembersRepository _membersRepository;
+  List<Member> _members = [];
+  bool _isLoading = true;
+  String? _errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _membersRepository = widget.membersRepository ?? MembersRepository();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    try {
+      setState(() {
+        _isLoading = true;
+        _errorMessage = null;
+      });
+
+      final members = await _membersRepository.getMembers();
+
+      setState(() {
+        _members = members;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Failed to load members: $e';
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> members = [
-      {'name': 'John Doe', 'role': 'President', 'service': 'Army', 'status': MemberStatus.active},
-      {'name': 'Jane Smith', 'role': 'Vice President', 'service': 'Navy', 'status': MemberStatus.active},
-      {'name': 'Robert Johnson', 'role': 'Secretary', 'service': 'Air Force', 'status': MemberStatus.active},
-      {'name': 'Mary Williams', 'role': 'Treasurer', 'service': 'Marines', 'status': MemberStatus.active},
-      {'name': 'James Brown', 'role': 'Member', 'service': 'Coast Guard', 'status': MemberStatus.active},
-      {'name': 'Patricia Garcia', 'role': 'Member', 'service': 'Army', 'status': MemberStatus.suspended},
-      {'name': 'Michael Davis', 'role': 'Member', 'service': 'Navy', 'status': MemberStatus.suspended},
-      {'name': 'Thomas Wilson', 'role': 'Member', 'service': 'Air Force', 'status': MemberStatus.dismissed},
-      {'name': 'Jennifer Martinez', 'role': 'Member', 'service': 'Marines', 'status': MemberStatus.dismissed},
-    ];
+    if (_isLoading) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Members'),
+          automaticallyImplyLeading: false,
+        ),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
 
-    final activeMembers = members.where((m) => m['status'] == MemberStatus.active).toList();
-    final suspendedMembers = members.where((m) => m['status'] == MemberStatus.suspended).toList();
-    final dismissedMembers = members.where((m) => m['status'] == MemberStatus.dismissed).toList();
+    if (_errorMessage != null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Members'),
+          automaticallyImplyLeading: false,
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(_errorMessage!),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _loadData,
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    final activeMembers = _members.where((m) => m.status == MemberStatus.active).toList();
+    final suspendedMembers = _members.where((m) => m.status == MemberStatus.suspended).toList();
+    final dismissedMembers = _members.where((m) => m.status == MemberStatus.dismissed).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -84,7 +148,12 @@ class MembersTab extends StatelessWidget {
     );
   }
 
-  Widget _buildMemberCard(BuildContext context, Map<String, dynamic> member, Color statusColor) {
+  Widget _buildMemberCard(BuildContext context, Member member, Color statusColor) {
+    // Parse role and service from member data or use defaults
+    final parts = member.location.split(',');
+    final role = 'Member'; // Would come from member data in real app
+    final service = 'Army'; // Would come from member data in real app
+
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 2,
@@ -92,25 +161,25 @@ class MembersTab extends StatelessWidget {
         leading: CircleAvatar(
           backgroundColor: statusColor,
           child: Text(
-            member['name']![0],
+            member.name[0],
             style: const TextStyle(color: Colors.white),
           ),
         ),
         title: Text(
-          member['name']!,
+          member.name,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        subtitle: Text('${member['role']} • ${member['service']}'),
+        subtitle: Text('$role • $service'),
         trailing: const Icon(Icons.chevron_right),
         onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => MemberDetailScreen(
-                name: member['name']!,
-                role: member['role']!,
-                service: member['service']!,
-                status: member['status'] as MemberStatus,
+                name: member.name,
+                role: role,
+                service: service,
+                status: member.status,
               ),
             ),
           );
