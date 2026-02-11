@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:veteranapp/screens/tab_screens/more_tab.dart';
 import 'package:veteranapp/screens/activity_statistics_screen.dart';
+import 'package:veteranapp/screens/settings_screen.dart';
 import 'package:veteranapp/screens/help_support_screen.dart';
 import 'package:veteranapp/screens/about_screen.dart';
 
@@ -58,6 +59,7 @@ void main() {
     }
   });
 
+  testWidgets('Settings item navigates to Settings screen', (WidgetTester tester) async {
   testWidgets('Help & Support item navigates to Help Support screen', (WidgetTester tester) async {
   testWidgets('About item navigates to About screen', (WidgetTester tester) async {
     await tester.pumpWidget(
@@ -66,6 +68,15 @@ void main() {
       ),
     );
 
+    // Tap on Settings menu item
+    await tester.tap(find.text('Settings'));
+    await tester.pumpAndSettle();
+
+    // Verify that we navigated to the Settings screen
+    expect(find.text('General'), findsOneWidget);
+    expect(find.text('Notifications'), findsOneWidget);
+    expect(find.text('Privacy'), findsOneWidget);
+    expect(find.text('Dark Mode'), findsOneWidget);
     // Tap on Help & Support menu item
     await tester.tap(find.text('Help & Support'));
     await tester.pumpAndSettle();
