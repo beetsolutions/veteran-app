@@ -1,0 +1,19 @@
+{
+  "name": "veteran-app-backend",
+  "version": "1.0.0",
+  "description": "REST API backend for Veteran App",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["veteran", "api", "express", "rest"],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  }
+}
