@@ -1,5 +1,9 @@
 class SoccerMatch {
   final String matchDay;
+  final String homeTeam;
+  final String awayTeam;
+  final int homeScore;
+  final int awayScore;
   final String referee;
   final String assistantReferee1;
   final String assistantReferee2;
@@ -10,6 +14,10 @@ class SoccerMatch {
 
   const SoccerMatch({
     required this.matchDay,
+    required this.homeTeam,
+    required this.awayTeam,
+    required this.homeScore,
+    required this.awayScore,
     required this.referee,
     required this.assistantReferee1,
     required this.assistantReferee2,

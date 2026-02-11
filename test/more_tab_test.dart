@@ -65,11 +65,6 @@ void main() {
   });
 
   testWidgets('More tab displays Soccer Statistics menu item', (WidgetTester tester) async {
-  testWidgets('Profile item navigates to Profile screen', (WidgetTester tester) async {
-  testWidgets('Notifications item navigates to Notifications screen', (WidgetTester tester) async {
-  testWidgets('Settings item navigates to Settings screen', (WidgetTester tester) async {
-  testWidgets('Help & Support item navigates to Help Support screen', (WidgetTester tester) async {
-  testWidgets('About item navigates to About screen', (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
         home: MoreTab(),

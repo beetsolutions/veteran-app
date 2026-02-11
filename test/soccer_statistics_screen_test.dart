@@ -32,6 +32,13 @@ void main() {
     // Verify match day and officials are displayed
     expect(find.text('Match Day'), findsOneWidget);
     expect(find.text('Saturday, February 10, 2026'), findsOneWidget);
+    
+    // Verify team names and scores are displayed
+    expect(find.text('Veterans United FC'), findsOneWidget);
+    expect(find.text('City Rovers'), findsOneWidget);
+    expect(find.text('3'), findsOneWidget);
+    expect(find.text('1'), findsOneWidget);
+    
     expect(find.text('Referee'), findsOneWidget);
     expect(find.text('John Smith'), findsOneWidget);
     expect(find.text('Assistant Referee 1'), findsOneWidget);
@@ -119,5 +126,18 @@ void main() {
     expect(find.byIcon(Icons.calendar_today), findsOneWidget);
     expect(find.byIcon(Icons.sports), findsOneWidget);
     expect(find.byIcon(Icons.assistant_photo), findsNWidgets(2));
+  });
+
+  testWidgets('Soccer Statistics screen has floating action button for match history', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: SoccerStatisticsScreen(),
+      ),
+    );
+
+    // Verify floating action button is displayed
+    expect(find.byType(FloatingActionButton), findsOneWidget);
+    expect(find.byIcon(Icons.history), findsOneWidget);
+    expect(find.text('Match History'), findsOneWidget);
   });
 }
