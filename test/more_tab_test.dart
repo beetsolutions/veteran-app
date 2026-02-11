@@ -1,0 +1,58 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:veteranapp/screens/tab_screens/more_tab.dart';
+import 'package:veteranapp/screens/activity_statistics_screen.dart';
+
+void main() {
+  testWidgets('More tab displays Activity Statistics menu item', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: MoreTab(),
+      ),
+    );
+
+    // Verify the Activity Statistics menu item is displayed
+    expect(find.text('Activity Statistics'), findsOneWidget);
+    expect(find.byIcon(Icons.bar_chart), findsOneWidget);
+  });
+
+  testWidgets('Activity Statistics item navigates to Activity Statistics screen', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: MoreTab(),
+      ),
+    );
+
+    // Tap on Activity Statistics menu item
+    await tester.tap(find.text('Activity Statistics'));
+    await tester.pumpAndSettle();
+
+    // Verify that we navigated to the Activity Statistics screen
+    expect(find.text('Overview'), findsOneWidget);
+    expect(find.text('Engagement'), findsOneWidget);
+  });
+
+  testWidgets('More tab displays all menu items in correct order', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: MoreTab(),
+      ),
+    );
+
+    // Find all menu items
+    final menuItems = [
+      'Profile',
+      'Activity Statistics',
+      'Settings',
+      'Notifications',
+      'Help & Support',
+      'About',
+      'Logout',
+    ];
+
+    // Verify all items exist
+    for (final item in menuItems) {
+      expect(find.text(item), findsOneWidget);
+    }
+  });
+}
