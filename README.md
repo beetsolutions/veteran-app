@@ -4,7 +4,18 @@ Veteran App - A Flutter application for veteran organizations
 
 ## Recent Updates
 
-🌓 **NEW: Dark and Light Theme Support**
+🎥 **NEW: Video Background on Login Screen**
+
+The login screen now features a dynamic video background:
+- Auto-playing looped video behind the login form
+- Muted video with dark overlay for optimal text readability
+- Graceful degradation if video asset is missing
+- Maintains all existing functionality and UI elements
+- Optimized for performance with hardware acceleration
+
+See [Video Background Implementation](VIDEO_BACKGROUND_IMPLEMENTATION.md) for complete technical details.
+
+🌓 **Dark and Light Theme Support**
 
 The app now supports both dark and light themes that users can switch between:
 - Toggle theme in Settings screen
@@ -33,6 +44,7 @@ The login screen has been completely redesigned with a modern, dark theme inspir
 - [🔄 Before/After Comparison](BEFORE_AFTER_COMPARISON.md) - Visual comparison
 
 ## Key Features
+- 🎥 Dynamic video background on login screen
 - 🌓 Dark and light theme switching
 - 📊 Interactive dashboard with statistics and updates
 - 👥 Officials directory with detailed cards
