@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/responsive_container.dart';
 
 class HelpSupportScreen extends StatelessWidget {
   const HelpSupportScreen({super.key});
@@ -12,8 +13,7 @@ class HelpSupportScreen extends StatelessWidget {
         title: const Text('Help & Support'),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
+        child: ResponsiveContainer(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -143,6 +143,7 @@ class HelpSupportScreen extends StatelessWidget {
               const SizedBox(height: 20),
             ],
           ),
+        ),
         ),
       ),
     );

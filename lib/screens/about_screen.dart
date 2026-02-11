@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/responsive_container.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -10,8 +11,7 @@ class AboutScreen extends StatelessWidget {
         title: const Text('About'),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
+        child: ResponsiveContainer(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -150,6 +150,7 @@ class AboutScreen extends StatelessWidget {
               const SizedBox(height: 16),
             ],
           ),
+        ),
         ),
       ),
     );

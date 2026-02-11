@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/responsive_container.dart';
 
 class NotificationsScreen extends StatelessWidget {
   const NotificationsScreen({super.key});
@@ -9,9 +10,13 @@ class NotificationsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Notifications'),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16.0),
-        children: [
+      body: ResponsiveContainer(
+        mobilePadding: EdgeInsets.zero,
+        tabletPadding: EdgeInsets.zero,
+        desktopPadding: EdgeInsets.zero,
+        child: ListView(
+          padding: const EdgeInsets.all(16.0),
+          children: [
           const Text(
             'Recent Notifications',
             style: TextStyle(
@@ -75,6 +80,7 @@ class NotificationsScreen extends StatelessWidget {
             isRead: true,
           ),
         ],
+        ),
       ),
     );
   }
