@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:veteranapp/models/member.dart';
 import 'package:veteranapp/screens/member_detail_screen.dart';
 import 'package:veteranapp/screens/tab_screens/members_tab.dart';
 
@@ -13,6 +14,7 @@ void main() {
             name: 'John Doe',
             role: 'President',
             service: 'Army',
+            status: MemberStatus.active,
           ),
         ),
       );
@@ -24,6 +26,38 @@ void main() {
       expect(find.text('Service Branch'), findsOneWidget);
       expect(find.text('Role'), findsOneWidget);
       expect(find.text('Active Member'), findsOneWidget);
+    });
+
+    testWidgets('displays suspended status correctly', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: MemberDetailScreen(
+            name: 'Jane Smith',
+            role: 'Member',
+            service: 'Navy',
+            status: MemberStatus.suspended,
+          ),
+        ),
+      );
+
+      // Verify that suspended status is displayed
+      expect(find.text('Suspended'), findsOneWidget);
+    });
+
+    testWidgets('displays dismissed status correctly', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: MemberDetailScreen(
+            name: 'Bob Johnson',
+            role: 'Member',
+            service: 'Marines',
+            status: MemberStatus.dismissed,
+          ),
+        ),
+      );
+
+      // Verify that dismissed status is displayed
+      expect(find.text('Dismissed'), findsOneWidget);
     });
 
     testWidgets('displays member avatar with first letter', (WidgetTester tester) async {
@@ -103,7 +137,7 @@ void main() {
 
       // Verify we're back on members list
       expect(find.text('Organization Members'), findsOneWidget);
-      expect(find.text('5 active members'), findsOneWidget);
+      expect(find.textContaining('total'), findsOneWidget);
     });
 
     testWidgets('navigates to correct member detail', (WidgetTester tester) async {
@@ -121,6 +155,35 @@ void main() {
       expect(find.text('Robert Johnson'), findsOneWidget);
       expect(find.text('Secretary'), findsAtLeastNWidgets(1));
       expect(find.text('Air Force'), findsOneWidget);
+    });
+  });
+
+  group('MembersTab Sections', () {
+    testWidgets('displays all three member sections', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: MembersTab(),
+        ),
+      );
+
+      // Verify sections are displayed
+      expect(find.text('Active Members'), findsOneWidget);
+      expect(find.text('Suspended Members'), findsOneWidget);
+      expect(find.text('Dismissed Members'), findsOneWidget);
+    });
+
+    testWidgets('displays correct member counts', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: MembersTab(),
+        ),
+      );
+
+      // Verify summary counts
+      expect(find.textContaining('9 total'), findsOneWidget);
+      expect(find.textContaining('5 active'), findsOneWidget);
+      expect(find.textContaining('2 suspended'), findsOneWidget);
+      expect(find.textContaining('2 dismissed'), findsOneWidget);
     });
   });
 }
