@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../login_screen.dart';
 import '../members_hosting_screen.dart';
 import '../activity_statistics_screen.dart';
+import '../help_support_screen.dart';
 import '../about_screen.dart';
 
 class MoreTab extends StatelessWidget {
@@ -86,7 +87,12 @@ class MoreTab extends StatelessWidget {
             icon: Icons.help,
             title: 'Help & Support',
             onTap: () {
-              // Navigate to help
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HelpSupportScreen(),
+                ),
+              );
             },
           ),
           _buildMenuItem(

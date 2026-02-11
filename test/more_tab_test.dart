@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:veteranapp/screens/tab_screens/more_tab.dart';
 import 'package:veteranapp/screens/activity_statistics_screen.dart';
+import 'package:veteranapp/screens/help_support_screen.dart';
 import 'package:veteranapp/screens/about_screen.dart';
 
 void main() {
@@ -57,6 +58,7 @@ void main() {
     }
   });
 
+  testWidgets('Help & Support item navigates to Help Support screen', (WidgetTester tester) async {
   testWidgets('About item navigates to About screen', (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
@@ -64,6 +66,13 @@ void main() {
       ),
     );
 
+    // Tap on Help & Support menu item
+    await tester.tap(find.text('Help & Support'));
+    await tester.pumpAndSettle();
+
+    // Verify that we navigated to the Help Support screen
+    expect(find.text('We\'re Here to Help'), findsOneWidget);
+    expect(find.text('Frequently Asked Questions'), findsOneWidget);
     // Tap on About menu item
     await tester.tap(find.text('About'));
     await tester.pumpAndSettle();
