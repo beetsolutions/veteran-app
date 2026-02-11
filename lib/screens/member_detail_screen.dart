@@ -1,16 +1,41 @@
 import 'package:flutter/material.dart';
+import '../models/member.dart';
 
 class MemberDetailScreen extends StatelessWidget {
   final String name;
   final String role;
   final String service;
+  final MemberStatus status;
 
   const MemberDetailScreen({
     super.key,
     required this.name,
     required this.role,
     required this.service,
+    this.status = MemberStatus.active,
   });
+
+  String _getStatusText() {
+    switch (status) {
+      case MemberStatus.active:
+        return 'Active Member';
+      case MemberStatus.suspended:
+        return 'Suspended';
+      case MemberStatus.dismissed:
+        return 'Dismissed';
+    }
+  }
+
+  Color _getStatusColor() {
+    switch (status) {
+      case MemberStatus.active:
+        return Colors.green;
+      case MemberStatus.suspended:
+        return Colors.orange;
+      case MemberStatus.dismissed:
+        return Colors.red;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +103,8 @@ class MemberDetailScreen extends StatelessWidget {
                   _buildInfoCard(
                     icon: Icons.info,
                     title: 'Status',
-                    value: 'Active Member',
+                    value: _getStatusText(),
+                    color: _getStatusColor(),
                   ),
                 ],
               ),
@@ -93,6 +119,7 @@ class MemberDetailScreen extends StatelessWidget {
     required IconData icon,
     required String title,
     required String value,
+    Color? color,
   }) {
     return Card(
       elevation: 2,
@@ -100,7 +127,7 @@ class MemberDetailScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Row(
           children: [
-            Icon(icon, size: 32, color: Colors.blue),
+            Icon(icon, size: 32, color: color ?? Colors.blue),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
@@ -116,9 +143,10 @@ class MemberDetailScreen extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     value,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
+                      color: color,
                     ),
                   ),
                 ],
