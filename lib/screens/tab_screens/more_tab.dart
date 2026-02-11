@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../login_screen.dart';
+import '../members_hosting_screen.dart';
 import '../activity_statistics_screen.dart';
 
 class MoreTab extends StatelessWidget {
@@ -66,6 +67,18 @@ class MoreTab extends StatelessWidget {
             title: 'Notifications',
             onTap: () {
               // Navigate to notifications
+            },
+          ),
+          _buildMenuItem(
+            icon: Icons.home_work,
+            title: 'Members Hosting',
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MembersHostingScreen(),
+                ),
+              );
             },
           ),
           _buildMenuItem(
