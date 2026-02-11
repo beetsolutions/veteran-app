@@ -33,7 +33,6 @@ class MembersHostingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Members Hosting'),
