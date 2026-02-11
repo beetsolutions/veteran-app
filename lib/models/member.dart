@@ -23,6 +23,8 @@ class Member {
   final String location;
   final bool isPaid;
   final MemberStatus status;
+  final String? role;
+  final String? service;
 
   const Member({
     required this.id,
@@ -30,6 +32,8 @@ class Member {
     required this.location,
     this.isPaid = false,
     this.status = MemberStatus.active,
+    this.role,
+    this.service,
   });
 
   factory Member.fromJson(Map<String, dynamic> json) {
@@ -39,6 +43,8 @@ class Member {
       location: json['location'] as String,
       isPaid: json['isPaid'] as bool? ?? false,
       status: MemberStatusExtension.fromJson(json['status'] as String? ?? 'active'),
+      role: json['role'] as String?,
+      service: json['service'] as String?,
     );
   }
 
@@ -49,6 +55,8 @@ class Member {
       'location': location,
       'isPaid': isPaid,
       'status': status.toJson(),
+      'role': role,
+      'service': service,
     };
   }
 
@@ -58,6 +66,8 @@ class Member {
     String? location,
     bool? isPaid,
     MemberStatus? status,
+    String? role,
+    String? service,
   }) {
     return Member(
       id: id ?? this.id,
@@ -65,6 +75,8 @@ class Member {
       location: location ?? this.location,
       isPaid: isPaid ?? this.isPaid,
       status: status ?? this.status,
+      role: role ?? this.role,
+      service: service ?? this.service,
     );
   }
 }

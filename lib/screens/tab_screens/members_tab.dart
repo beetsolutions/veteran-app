@@ -149,10 +149,9 @@ class _MembersTabState extends State<MembersTab> {
   }
 
   Widget _buildMemberCard(BuildContext context, Member member, Color statusColor) {
-    // Parse role and service from member data or use defaults
-    final parts = member.location.split(',');
-    final role = 'Member'; // Would come from member data in real app
-    final service = 'Army'; // Would come from member data in real app
+    // Use role and service from member data
+    final role = member.role ?? 'Member';
+    final service = member.service ?? 'Unknown';
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

@@ -1,3 +1,89 @@
+import 'package:flutter/material.dart';
+import '../models/soccer_match.dart';
+import 'soccer_statistics_screen.dart';
+import '../data/repositories/soccer_repository.dart';
+
+class SoccerMatchHistoryScreen extends StatefulWidget {
+  final SoccerRepository? soccerRepository;
+
+  const SoccerMatchHistoryScreen({
+    super.key,
+    this.soccerRepository,
+  });
+
+  @override
+  State<SoccerMatchHistoryScreen> createState() => _SoccerMatchHistoryScreenState();
+}
+
+class _SoccerMatchHistoryScreenState extends State<SoccerMatchHistoryScreen> {
+  late final SoccerRepository _soccerRepository;
+  List<SoccerMatch> _matchHistory = [];
+  bool _isLoading = true;
+  String? _errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _soccerRepository = widget.soccerRepository ?? SoccerRepository();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    try {
+      setState(() {
+        _isLoading = true;
+        _errorMessage = null;
+      });
+
+      final history = await _soccerRepository.getMatchHistory();
+
+      setState(() {
+        _matchHistory = history;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Failed to load match history: $e';
+        _isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Match History'),
+      ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _errorMessage != null
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(_errorMessage!),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: _loadData,
+                        child: const Text('Retry'),
+                      ),
+                    ],
+                  ),
+                )
+              : _matchHistory.isEmpty
+                  ? const Center(child: Text('No match history available'))
+                  : ListView.builder(
+                      padding: const EdgeInsets.all(16.0),
+                      itemCount: _matchHistory.length,
+                      itemBuilder: (context, index) {
+                        final match = _matchHistory[index];
+                        return _buildMatchCard(context, match);
+                      },
+                    ),
+    );
+  }
+
   Widget _buildMatchCard(BuildContext context, SoccerMatch match) {
     final int totalGoals = match.goals.length;
     final int totalYellowCards = match.yellowCards.length;

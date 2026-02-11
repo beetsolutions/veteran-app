@@ -83,14 +83,14 @@ class HostingApi {
 
   List<Member> _getAllMembers() {
     return const [
-      Member(id: '1', name: 'John Doe', location: 'New York, NY', isPaid: true),
-      Member(id: '2', name: 'Jane Smith', location: 'Los Angeles, CA', isPaid: true),
-      Member(id: '3', name: 'Robert Johnson', location: 'Chicago, IL', isPaid: false),
-      Member(id: '4', name: 'Mary Williams', location: 'Houston, TX', isPaid: true),
-      Member(id: '5', name: 'James Brown', location: 'Phoenix, AZ', isPaid: false),
-      Member(id: '6', name: 'Patricia Garcia', location: 'Philadelphia, PA', isPaid: true),
-      Member(id: '7', name: 'Michael Davis', location: 'San Antonio, TX', isPaid: false),
-      Member(id: '8', name: 'Linda Martinez', location: 'San Diego, CA', isPaid: true),
+      Member(id: '1', name: 'John Doe', location: 'New York, NY', isPaid: true, role: 'President', service: 'Army'),
+      Member(id: '2', name: 'Jane Smith', location: 'Los Angeles, CA', isPaid: true, role: 'Vice President', service: 'Navy'),
+      Member(id: '3', name: 'Robert Johnson', location: 'Chicago, IL', isPaid: false, role: 'Secretary', service: 'Air Force'),
+      Member(id: '4', name: 'Mary Williams', location: 'Houston, TX', isPaid: true, role: 'Treasurer', service: 'Marines'),
+      Member(id: '5', name: 'James Brown', location: 'Phoenix, AZ', isPaid: false, role: 'Member', service: 'Coast Guard'),
+      Member(id: '6', name: 'Patricia Garcia', location: 'Philadelphia, PA', isPaid: true, role: 'Member', service: 'Army'),
+      Member(id: '7', name: 'Michael Davis', location: 'San Antonio, TX', isPaid: false, role: 'Member', service: 'Navy'),
+      Member(id: '8', name: 'Linda Martinez', location: 'San Diego, CA', isPaid: true, role: 'Member', service: 'Air Force'),
     ];
   }
 }
