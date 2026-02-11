@@ -43,3 +43,9 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Test documentation (generated)
+FLUTTER_TEST_RESULTS.txt
+TEST_EXECUTION_REPORT.md
+TEST_SUMMARY.txt
+README_TEST_ANALYSIS.md
