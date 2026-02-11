@@ -164,7 +164,7 @@ class ConstitutionTab extends StatelessWidget {
     );
   }
 
-  Widget _buildArticle(String title, List<String> sections) {
+  static Widget _buildArticle(String title, List<String> sections) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
