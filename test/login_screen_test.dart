@@ -150,5 +150,20 @@ void main() {
       expect(find.byIcon(Icons.shield), findsOneWidget);
       expect(find.text('Veteran App'), findsOneWidget);
     });
+
+    testWidgets('should handle video background gracefully when asset is missing', (WidgetTester tester) async {
+      // This test verifies that the app doesn't crash if the video asset is missing
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: LoginScreen(),
+        ),
+      );
+
+      // The screen should still load and display all UI elements
+      expect(find.byType(LoginScreen), findsOneWidget);
+      expect(find.widgetWithText(TextFormField, 'Username'), findsOneWidget);
+      expect(find.widgetWithText(TextFormField, 'Password'), findsOneWidget);
+      expect(find.widgetWithText(ElevatedButton, 'Log In'), findsOneWidget);
+    });
   });
 }
