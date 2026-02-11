@@ -6,6 +6,10 @@ void main() {
     test('SoccerMatch can be instantiated with all required fields', () {
       const match = SoccerMatch(
         matchDay: 'Saturday, February 10, 2026',
+        homeTeam: 'Veterans United FC',
+        awayTeam: 'City Rovers',
+        homeScore: 3,
+        awayScore: 1,
         referee: 'John Smith',
         assistantReferee1: 'Mike Johnson',
         assistantReferee2: 'Sarah Williams',
@@ -16,6 +20,10 @@ void main() {
       );
 
       expect(match.matchDay, 'Saturday, February 10, 2026');
+      expect(match.homeTeam, 'Veterans United FC');
+      expect(match.awayTeam, 'City Rovers');
+      expect(match.homeScore, 3);
+      expect(match.awayScore, 1);
       expect(match.referee, 'John Smith');
       expect(match.assistantReferee1, 'Mike Johnson');
       expect(match.assistantReferee2, 'Sarah Williams');
@@ -28,6 +36,10 @@ void main() {
     test('SoccerMatch can contain goals', () {
       const match = SoccerMatch(
         matchDay: 'Saturday, February 10, 2026',
+        homeTeam: 'Veterans United FC',
+        awayTeam: 'City Rovers',
+        homeScore: 2,
+        awayScore: 0,
         referee: 'John Smith',
         assistantReferee1: 'Mike Johnson',
         assistantReferee2: 'Sarah Williams',

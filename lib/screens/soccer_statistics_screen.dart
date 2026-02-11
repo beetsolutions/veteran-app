@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/soccer_match.dart';
+import 'soccer_match_history_screen.dart';
 
 class SoccerStatisticsScreen extends StatelessWidget {
   const SoccerStatisticsScreen({super.key});
@@ -7,6 +8,10 @@ class SoccerStatisticsScreen extends StatelessWidget {
   // Sample data for demonstration
   static const SoccerMatch _sampleMatch = SoccerMatch(
     matchDay: 'Saturday, February 10, 2026',
+    homeTeam: 'Veterans United FC',
+    awayTeam: 'City Rovers',
+    homeScore: 3,
+    awayScore: 1,
     referee: 'John Smith',
     assistantReferee1: 'Mike Johnson',
     assistantReferee2: 'Sarah Williams',
@@ -58,6 +63,18 @@ class SoccerStatisticsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Soccer Statistics'),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SoccerMatchHistoryScreen(),
+            ),
+          );
+        },
+        icon: const Icon(Icons.history),
+        label: const Text('Match History'),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -73,6 +90,8 @@ class SoccerStatisticsScreen extends StatelessWidget {
                 title: 'Match Day',
                 value: _sampleMatch.matchDay,
               ),
+              const SizedBox(height: 8),
+              _buildScoreCard(),
               const SizedBox(height: 16),
               _buildSectionHeader('Match Officials'),
               const SizedBox(height: 12),
@@ -302,6 +321,74 @@ class SoccerStatisticsScreen extends StatelessWidget {
                       fontSize: 13,
                       color: Colors.grey,
                       fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScoreCard() {
+    return Card(
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                  Text(
+                    _sampleMatch.homeTeam,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '${_sampleMatch.homeScore}',
+                    style: const TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Text(
+              '-',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
+              ),
+            ),
+            Expanded(
+              child: Column(
+                children: [
+                  Text(
+                    _sampleMatch.awayTeam,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '${_sampleMatch.awayScore}',
+                    style: const TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue,
                     ),
                   ),
                 ],
