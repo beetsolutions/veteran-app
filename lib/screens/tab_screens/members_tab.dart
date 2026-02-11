@@ -91,7 +91,7 @@ class MembersTab extends StatelessWidget {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: color.shade700,
+              color: color,
             ),
           ),
           const SizedBox(width: 8),
@@ -106,7 +106,7 @@ class MembersTab extends StatelessWidget {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
-                color: color.shade700,
+                color: color,
               ),
             ),
           ),

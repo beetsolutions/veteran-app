@@ -29,11 +29,11 @@ class MemberDetailScreen extends StatelessWidget {
   Color _getStatusColor() {
     switch (status) {
       case MemberStatus.active:
-        return Colors.green;
+        return Colors.green.shade700;
       case MemberStatus.suspended:
-        return Colors.orange;
+        return Colors.orange.shade800;
       case MemberStatus.dismissed:
-        return Colors.red;
+        return Colors.red.shade700;
     }
   }
 
