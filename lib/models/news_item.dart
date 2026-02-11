@@ -13,6 +13,26 @@ class NewsItem {
     required this.category,
   });
 
+  factory NewsItem.fromJson(Map<String, dynamic> json) {
+    return NewsItem(
+      title: json['title'] as String,
+      description: json['description'] as String,
+      date: json['date'] as String,
+      imageUrl: json['imageUrl'] as String?,
+      category: json['category'] as String,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'description': description,
+      'date': date,
+      'imageUrl': imageUrl,
+      'category': category,
+    };
+  }
+
   /// Parse the date string to DateTime for sorting purposes
   /// Expected format: "MMM dd, yyyy" (e.g., "Nov 11, 2024")
   DateTime? get parsedDate {

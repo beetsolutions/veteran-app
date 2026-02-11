@@ -1,212 +1,53 @@
 import 'package:flutter/material.dart';
 import '../models/soccer_match.dart';
 import 'soccer_statistics_screen.dart';
+import '../data/repositories/soccer_repository.dart';
 
-class SoccerMatchHistoryScreen extends StatelessWidget {
-  const SoccerMatchHistoryScreen({super.key});
+class SoccerMatchHistoryScreen extends StatefulWidget {
+  final SoccerRepository? soccerRepository;
 
-  // Sample data for previous matches
-  static const List<SoccerMatch> _previousMatches = [
-    SoccerMatch(
-      matchDay: 'Saturday, February 10, 2026',
-      homeTeam: 'Veterans United FC',
-      awayTeam: 'City Rovers',
-      homeScore: 3,
-      awayScore: 1,
-      referee: 'John Smith',
-      assistantReferee1: 'Mike Johnson',
-      assistantReferee2: 'Sarah Williams',
-      goals: [
-        MatchGoal(playerName: 'David Martinez', minute: '23\'', team: 'Home'),
-        MatchGoal(playerName: 'James Wilson', minute: '45\'', team: 'Away'),
-        MatchGoal(playerName: 'David Martinez', minute: '67\'', team: 'Home'),
-        MatchGoal(playerName: 'Robert Brown', minute: '82\'', team: 'Home'),
-      ],
-      assists: [
-        MatchAssist(playerName: 'Chris Anderson', minute: '23\'', team: 'Home'),
-        MatchAssist(playerName: 'Tom Davis', minute: '45\'', team: 'Away'),
-        MatchAssist(playerName: 'Chris Anderson', minute: '67\'', team: 'Home'),
-        MatchAssist(playerName: 'Kevin Moore', minute: '82\'', team: 'Home'),
-      ],
-      yellowCards: [
-        MatchCard(
-          playerName: 'Paul Taylor',
-          minute: '31\'',
-          team: 'Away',
-          reason: 'Unsporting behavior',
-        ),
-        MatchCard(
-          playerName: 'Mark Thompson',
-          minute: '58\'',
-          team: 'Home',
-          reason: 'Time wasting',
-        ),
-        MatchCard(
-          playerName: 'Steve Harris',
-          minute: '74\'',
-          team: 'Away',
-          reason: 'Tactical foul',
-        ),
-      ],
-      redCards: [
-        MatchCard(
-          playerName: 'Alex White',
-          minute: '89\'',
-          team: 'Away',
-          reason: 'Violent conduct',
-        ),
-      ],
-    ),
-    SoccerMatch(
-      matchDay: 'Saturday, February 3, 2026',
-      homeTeam: 'Veterans United FC',
-      awayTeam: 'Rangers FC',
-      homeScore: 2,
-      awayScore: 2,
-      referee: 'Emily Davis',
-      assistantReferee1: 'Tom Wilson',
-      assistantReferee2: 'Lisa Brown',
-      goals: [
-        MatchGoal(playerName: 'Chris Anderson', minute: '15\'', team: 'Home'),
-        MatchGoal(playerName: 'Peter Green', minute: '28\'', team: 'Away'),
-        MatchGoal(playerName: 'David Martinez', minute: '56\'', team: 'Home'),
-        MatchGoal(playerName: 'Luke Adams', minute: '73\'', team: 'Away'),
-      ],
-      assists: [
-        MatchAssist(playerName: 'Kevin Moore', minute: '15\'', team: 'Home'),
-        MatchAssist(playerName: 'Sam Clark', minute: '28\'', team: 'Away'),
-        MatchAssist(playerName: 'Robert Brown', minute: '56\'', team: 'Home'),
-        MatchAssist(playerName: 'Peter Green', minute: '73\'', team: 'Away'),
-      ],
-      yellowCards: [
-        MatchCard(
-          playerName: 'Mark Thompson',
-          minute: '42\'',
-          team: 'Home',
-          reason: 'Delaying restart',
-        ),
-        MatchCard(
-          playerName: 'Sam Clark',
-          minute: '65\'',
-          team: 'Away',
-          reason: 'Tactical foul',
-        ),
-      ],
-      redCards: [],
-    ),
-    SoccerMatch(
-      matchDay: 'Saturday, January 27, 2026',
-      homeTeam: 'Thunder United',
-      awayTeam: 'Veterans United FC',
-      homeScore: 1,
-      awayScore: 4,
-      referee: 'Michael Brown',
-      assistantReferee1: 'Sarah Williams',
-      assistantReferee2: 'John Anderson',
-      goals: [
-        MatchGoal(playerName: 'David Martinez', minute: '12\'', team: 'Away'),
-        MatchGoal(playerName: 'Brian White', minute: '34\'', team: 'Home'),
-        MatchGoal(playerName: 'Robert Brown', minute: '58\'', team: 'Away'),
-        MatchGoal(playerName: 'Chris Anderson', minute: '71\'', team: 'Away'),
-        MatchGoal(playerName: 'David Martinez', minute: '85\'', team: 'Away'),
-      ],
-      assists: [
-        MatchAssist(playerName: 'Chris Anderson', minute: '12\'', team: 'Away'),
-        MatchAssist(playerName: 'Jake Miller', minute: '34\'', team: 'Home'),
-        MatchAssist(playerName: 'Kevin Moore', minute: '58\'', team: 'Away'),
-        MatchAssist(playerName: 'Robert Brown', minute: '71\'', team: 'Away'),
-        MatchAssist(playerName: 'Chris Anderson', minute: '85\'', team: 'Away'),
-      ],
-      yellowCards: [
-        MatchCard(
-          playerName: 'Jake Miller',
-          minute: '44\'',
-          team: 'Home',
-          reason: 'Unsporting behavior',
-        ),
-      ],
-      redCards: [],
-    ),
-    SoccerMatch(
-      matchDay: 'Saturday, January 20, 2026',
-      homeTeam: 'Veterans United FC',
-      awayTeam: 'Eagles FC',
-      homeScore: 1,
-      awayScore: 0,
-      referee: 'James Taylor',
-      assistantReferee1: 'Mike Johnson',
-      assistantReferee2: 'Robert Clark',
-      goals: [
-        MatchGoal(playerName: 'Robert Brown', minute: '66\'', team: 'Home'),
-      ],
-      assists: [
-        MatchAssist(playerName: 'David Martinez', minute: '66\'', team: 'Home'),
-      ],
-      yellowCards: [
-        MatchCard(
-          playerName: 'Chris Anderson',
-          minute: '52\'',
-          team: 'Home',
-          reason: 'Time wasting',
-        ),
-        MatchCard(
-          playerName: 'Gary Lee',
-          minute: '78\'',
-          team: 'Away',
-          reason: 'Tactical foul',
-        ),
-      ],
-      redCards: [],
-    ),
-    SoccerMatch(
-      matchDay: 'Saturday, January 13, 2026',
-      homeTeam: 'Wildcats FC',
-      awayTeam: 'Veterans United FC',
-      homeScore: 3,
-      awayScore: 3,
-      referee: 'William Harris',
-      assistantReferee1: 'Emily Davis',
-      assistantReferee2: 'Tom Wilson',
-      goals: [
-        MatchGoal(playerName: 'Tony Black', minute: '8\'', team: 'Home'),
-        MatchGoal(playerName: 'Chris Anderson', minute: '22\'', team: 'Away'),
-        MatchGoal(playerName: 'Sean Gray', minute: '35\'', team: 'Home'),
-        MatchGoal(playerName: 'David Martinez', minute: '48\'', team: 'Away'),
-        MatchGoal(playerName: 'Robert Brown', minute: '61\'', team: 'Away'),
-        MatchGoal(playerName: 'Tony Black', minute: '89\'', team: 'Home'),
-      ],
-      assists: [
-        MatchAssist(playerName: 'Sean Gray', minute: '8\'', team: 'Home'),
-        MatchAssist(playerName: 'Kevin Moore', minute: '22\'', team: 'Away'),
-        MatchAssist(playerName: 'Tony Black', minute: '35\'', team: 'Home'),
-        MatchAssist(playerName: 'Chris Anderson', minute: '48\'', team: 'Away'),
-        MatchAssist(playerName: 'David Martinez', minute: '61\'', team: 'Away'),
-        MatchAssist(playerName: 'Jake Ross', minute: '89\'', team: 'Home'),
-      ],
-      yellowCards: [
-        MatchCard(
-          playerName: 'Mark Thompson',
-          minute: '29\'',
-          team: 'Away',
-          reason: 'Delaying restart',
-        ),
-        MatchCard(
-          playerName: 'Jake Ross',
-          minute: '67\'',
-          team: 'Home',
-          reason: 'Unsporting behavior',
-        ),
-      ],
-      redCards: [
-        MatchCard(
-          playerName: 'Kevin Moore',
-          minute: '75\'',
-          team: 'Away',
-          reason: 'Second yellow card',
-        ),
-      ],
-    ),
-  ];
+  const SoccerMatchHistoryScreen({
+    super.key,
+    this.soccerRepository,
+  });
+
+  @override
+  State<SoccerMatchHistoryScreen> createState() => _SoccerMatchHistoryScreenState();
+}
+
+class _SoccerMatchHistoryScreenState extends State<SoccerMatchHistoryScreen> {
+  late final SoccerRepository _soccerRepository;
+  List<SoccerMatch> _matchHistory = [];
+  bool _isLoading = true;
+  String? _errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _soccerRepository = widget.soccerRepository ?? SoccerRepository();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    try {
+      setState(() {
+        _isLoading = true;
+        _errorMessage = null;
+      });
+
+      final history = await _soccerRepository.getMatchHistory();
+
+      setState(() {
+        _matchHistory = history;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Failed to load match history: $e';
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -214,14 +55,32 @@ class SoccerMatchHistoryScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Match History'),
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16.0),
-        itemCount: _previousMatches.length,
-        itemBuilder: (context, index) {
-          final match = _previousMatches[index];
-          return _buildMatchCard(context, match);
-        },
-      ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _errorMessage != null
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(_errorMessage!),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: _loadData,
+                        child: const Text('Retry'),
+                      ),
+                    ],
+                  ),
+                )
+              : _matchHistory.isEmpty
+                  ? const Center(child: Text('No match history available'))
+                  : ListView.builder(
+                      padding: const EdgeInsets.all(16.0),
+                      itemCount: _matchHistory.length,
+                      itemBuilder: (context, index) {
+                        final match = _matchHistory[index];
+                        return _buildMatchCard(context, match);
+                      },
+                    ),
     );
   }
 
