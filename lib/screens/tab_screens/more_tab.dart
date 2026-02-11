@@ -3,6 +3,9 @@ import '../login_screen.dart';
 import '../members_hosting_screen.dart';
 import '../activity_statistics_screen.dart';
 import '../notifications_screen.dart';
+import '../settings_screen.dart';
+import '../help_support_screen.dart';
+import '../about_screen.dart';
 
 class MoreTab extends StatelessWidget {
   const MoreTab({super.key});
@@ -60,7 +63,12 @@ class MoreTab extends StatelessWidget {
             icon: Icons.settings,
             title: 'Settings',
             onTap: () {
-              // Navigate to settings
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SettingsScreen(),
+                ),
+              );
             },
           ),
           _buildMenuItem(
@@ -91,14 +99,24 @@ class MoreTab extends StatelessWidget {
             icon: Icons.help,
             title: 'Help & Support',
             onTap: () {
-              // Navigate to help
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HelpSupportScreen(),
+                ),
+              );
             },
           ),
           _buildMenuItem(
             icon: Icons.info,
             title: 'About',
             onTap: () {
-              // Navigate to about
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AboutScreen(),
+                ),
+              );
             },
           ),
           const Divider(height: 40),
