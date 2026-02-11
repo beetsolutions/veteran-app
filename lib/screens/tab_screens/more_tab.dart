@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../login_screen.dart';
 import '../members_hosting_screen.dart';
 import '../activity_statistics_screen.dart';
+import '../profile_screen.dart';
 import '../notifications_screen.dart';
 import '../settings_screen.dart';
 import '../help_support_screen.dart';
@@ -44,7 +45,12 @@ class MoreTab extends StatelessWidget {
             icon: Icons.person,
             title: 'Profile',
             onTap: () {
-              // Navigate to profile
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfileScreen(),
+                ),
+              );
             },
           ),
           _buildMenuItem(

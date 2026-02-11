@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:veteranapp/screens/tab_screens/more_tab.dart';
 import 'package:veteranapp/screens/activity_statistics_screen.dart';
+import 'package:veteranapp/screens/profile_screen.dart';
 import 'package:veteranapp/screens/notifications_screen.dart';
 import 'package:veteranapp/screens/settings_screen.dart';
 import 'package:veteranapp/screens/help_support_screen.dart';
@@ -60,6 +61,7 @@ void main() {
     }
   });
 
+  testWidgets('Profile item navigates to Profile screen', (WidgetTester tester) async {
   testWidgets('Notifications item navigates to Notifications screen', (WidgetTester tester) async {
   testWidgets('Settings item navigates to Settings screen', (WidgetTester tester) async {
   testWidgets('Help & Support item navigates to Help Support screen', (WidgetTester tester) async {
@@ -70,6 +72,15 @@ void main() {
       ),
     );
 
+    // Tap on Profile menu item
+    await tester.tap(find.text('Profile'));
+    await tester.pumpAndSettle();
+
+    // Verify that we navigated to the Profile screen
+    expect(find.text('John Doe'), findsOneWidget);
+    expect(find.text('Contact Information'), findsOneWidget);
+    expect(find.text('Military Service'), findsOneWidget);
+    expect(find.text('Membership'), findsOneWidget);
     // Tap on Notifications menu item
     await tester.tap(find.text('Notifications'));
     await tester.pumpAndSettle();
