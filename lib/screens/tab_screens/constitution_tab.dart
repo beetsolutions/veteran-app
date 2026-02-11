@@ -15,22 +15,6 @@ class ConstitutionTab extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Center(
-              child: Icon(
-                Icons.article,
-                size: 80,
-                color: Colors.blue,
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Constitution',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
             const Text(
               'Veterans Organization',
               style: TextStyle(
