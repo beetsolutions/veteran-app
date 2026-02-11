@@ -88,6 +88,6 @@ class ThemeProviderWidget extends InheritedWidget {
 
   @override
   bool updateShouldNotify(ThemeProviderWidget oldWidget) {
-    return themeProvider != oldWidget.themeProvider;
+    return themeProvider.themeMode != oldWidget.themeProvider.themeMode;
   }
 }
