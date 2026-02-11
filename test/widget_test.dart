@@ -11,20 +11,31 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:veteranapp/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Login screen displays correctly', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const VeteranApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Verify that the login screen is displayed
+    expect(find.text('Veteran App'), findsOneWidget);
+    expect(find.text('Continue with Facebook'), findsOneWidget);
+    expect(find.text('Continue with Apple'), findsOneWidget);
+    expect(find.text('Continue with Google'), findsOneWidget);
+    expect(find.text('Log in with email'), findsOneWidget);
+    expect(find.text("Don't have an account? "), findsOneWidget);
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  testWidgets('Email login form displays when button is tapped', (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(const VeteranApp());
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Find and tap the "Log in with email" button
+    await tester.tap(find.text('Log in with email'));
+    await tester.pumpAndSettle();
+
+    // Verify that the email login form is displayed
+    expect(find.text('Email address'), findsOneWidget);
+    expect(find.text('Password'), findsOneWidget);
+    expect(find.text('Forgot your password?'), findsOneWidget);
+    expect(find.text('Log In'), findsOneWidget);
   });
 }
