@@ -57,7 +57,34 @@ The login screen has been completely redesigned with a modern, dark theme inspir
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+### Backend API Integration
+
+The app is now integrated with a REST API backend. To run the full application:
+
+#### 1. Start the Backend Server
+
+```bash
+cd backend
+npm install
+npm start
+```
+
+The backend server will start on `http://localhost:3000`.
+
+#### 2. Run the Flutter App
+
+```bash
+flutter run
+```
+
+**Platform-Specific Configuration:**
+- **iOS Simulator**: Works with default `http://localhost:3000` configuration
+- **Android Emulator**: Update `lib/data/api/api_client.dart` baseUrl to `http://10.0.2.2:3000`
+- **Physical Device**: Update baseUrl to your computer's local IP address (e.g., `http://192.168.1.100:3000`)
+
+For detailed integration instructions, see [INTEGRATION_GUIDE.md](INTEGRATION_GUIDE.md).
+
+### Flutter Resources
 
 A few resources to get you started if this is your first Flutter project:
 
