@@ -20,7 +20,7 @@ class OfficialCard extends StatelessWidget {
         leading: CircleAvatar(
           backgroundColor: Colors.blue,
           child: Text(
-            official.name[0],
+            official.name.isNotEmpty ? official.name[0] : '?',
             style: const TextStyle(color: Colors.white),
           ),
         ),

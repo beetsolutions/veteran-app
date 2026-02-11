@@ -12,6 +12,8 @@ class HomeTab extends StatelessWidget {
   const HomeTab({super.key});
 
   // Sample data - in a real app, this would come from a backend/state management
+  static const int _totalMembers = 150; // Total organization members
+  
   static const List<Official> _allOfficials = [
     Official(name: 'John Doe', role: 'President', service: 'Army'),
     Official(name: 'Jane Smith', role: 'Vice President', service: 'Navy'),
@@ -80,7 +82,7 @@ class HomeTab extends StatelessWidget {
                   Expanded(
                     child: StatCard(
                       title: 'Total Members',
-                      value: '${_allOfficials.length}',
+                      value: '$_totalMembers',
                       icon: Icons.people,
                       iconColor: Colors.blue,
                     ),
