@@ -89,13 +89,14 @@ When user taps "Log in with email", the screen transitions to show:
 
 ## Color Palette
 
-- **Background**: #000000 (Black)
-- **Primary Accent**: #1DB954 (Spotify Green)
-- **Secondary Background**: #212121 (Dark Gray)
-- **Borders**: #424242 (Gray)
-- **Text Primary**: #FFFFFF (White)
-- **Text Secondary**: #B3B3B3 (Light Gray)
-- **Facebook Blue**: #1877F2
+- **Background**: Colors.black (Black)
+- **Primary Accent**: Color(0xFF1DB954) (Spotify Green)
+- **Secondary Background**: Colors.grey[900] (Dark Gray)
+- **Borders**: Colors.grey[700] (Gray)
+- **Divider**: Colors.grey[800] (Gray)
+- **Text Primary**: Colors.white (White)
+- **Text Secondary**: Colors.grey[400] (Light Gray)
+- **Facebook Blue**: Color(0xFF1877F2)
 - **Error/Validation**: Built-in Material Design error colors
 
 ## Typography

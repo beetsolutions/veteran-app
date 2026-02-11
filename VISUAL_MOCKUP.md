@@ -71,23 +71,24 @@ All buttons: Height 48px
 └─────────────────────────────────────┘
 
 Background: Black (#000000)
-Input fields: Dark gray background (#212121)
-Input borders: Gray (#424242)
+Input fields: Dark gray background (Colors.grey[900])
+Input borders: Gray (Colors.grey[700])
 When focused: White border (2px)
 ```
 
 ## Color Reference
 
-| Element | Color | Hex Code |
-|---------|-------|----------|
-| Background | Black | #000000 |
-| Primary Accent | Spotify Green | #1DB954 |
-| Input Background | Dark Gray | #212121 |
-| Borders | Gray | #424242 |
-| Primary Text | White | #FFFFFF |
-| Secondary Text | Light Gray | #B3B3B3 |
-| Facebook Button | Facebook Blue | #1877F2 |
-| Apple Button | White | #FFFFFF |
+| Element | Color | Flutter Constant |
+|---------|-------|-----------------|
+| Background | Black | Colors.black |
+| Primary Accent | Spotify Green | Color(0xFF1DB954) |
+| Input Background | Dark Gray | Colors.grey[900] |
+| Borders | Gray | Colors.grey[700] |
+| Divider | Gray | Colors.grey[800] |
+| Primary Text | White | Colors.white |
+| Secondary Text | Light Gray | Colors.grey[400] |
+| Facebook Button | Facebook Blue | Color(0xFF1877F2) |
+| Apple Button | White | Colors.white |
 
 ## Button States
 
