@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:veteran_app/screens/login_screen.dart';
-import 'package:veteran_app/screens/home_screen.dart';
+import 'package:veteranapp/screens/login_screen.dart';
+import 'package:veteranapp/screens/home_screen.dart';
 
 void main() {
   group('LoginScreen Widget Tests', () {
