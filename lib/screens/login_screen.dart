@@ -11,13 +11,13 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -25,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void _handleLogin() {
     if (_formKey.currentState!.validate()) {
       // Simple validation - in a real app, you would authenticate against a backend
-      if (_emailController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
+      if (_usernameController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const HomeScreen()),
@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       // Username Field
                       TextFormField(
-                        controller: _emailController,
+                        controller: _usernameController,
                         style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           labelText: 'Username',
