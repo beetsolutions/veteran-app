@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../member_detail_screen.dart';
 
 class MembersTab extends StatelessWidget {
   const MembersTab({super.key});
@@ -74,7 +75,16 @@ class MembersTab extends StatelessWidget {
                     subtitle: Text('${member['role']} • ${member['service']}'),
                     trailing: const Icon(Icons.chevron_right),
                     onTap: () {
-                      // Navigate to member details
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MemberDetailScreen(
+                            name: member['name']!,
+                            role: member['role']!,
+                            service: member['service']!,
+                          ),
+                        ),
+                      );
                     },
                   ),
                 );
