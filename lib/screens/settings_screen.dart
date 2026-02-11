@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../main.dart';
+import '../providers/theme_provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -9,32 +11,36 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _notificationsEnabled = true;
-  bool _darkModeEnabled = true; // Matches app's current dark theme
   bool _emailNotifications = false;
   bool _pushNotifications = true;
   String _selectedLanguage = 'English';
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-      ),
-      body: ListView(
-        children: [
-          const SizedBox(height: 10),
-          _buildSectionHeader('General'),
-          _buildSwitchTile(
-            icon: Icons.dark_mode,
-            title: 'Dark Mode',
-            subtitle: 'Enable dark theme',
-            value: _darkModeEnabled,
-            onChanged: (value) {
-              setState(() {
-                _darkModeEnabled = value;
-              });
-            },
+    final themeProvider = ThemeProviderWidget.of(context);
+    
+    return AnimatedBuilder(
+      animation: themeProvider ?? ThemeProvider(),
+      builder: (context, child) {
+        final isDarkMode = themeProvider?.isDarkMode ?? true;
+        
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Settings'),
           ),
+          body: ListView(
+            children: [
+              const SizedBox(height: 10),
+              _buildSectionHeader('General'),
+              _buildSwitchTile(
+                icon: Icons.dark_mode,
+                title: 'Dark Mode',
+                subtitle: 'Enable dark theme',
+                value: isDarkMode,
+                onChanged: (value) {
+                  themeProvider?.setDarkMode(value);
+                },
+              ),
           _buildListTile(
             icon: Icons.language,
             title: 'Language',
@@ -118,6 +124,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const SizedBox(height: 20),
         ],
       ),
+    );
+      },
+    );
     );
   }
 

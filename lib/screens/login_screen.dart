@@ -43,8 +43,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final backgroundColor = isDark ? Colors.black : Theme.of(context).scaffoldBackgroundColor;
+    final textColor = isDark ? Colors.white : Colors.black87;
+    final inputFillColor = isDark ? Colors.grey[900] : Colors.grey[100];
+    final inputBorderColor = isDark ? Colors.grey[700]! : Colors.grey[400]!;
+    final primaryAccent = Theme.of(context).brightness == Brightness.dark 
+        ? const Color(0xFF1DB954) 
+        : Theme.of(context).primaryColor;
+    
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -54,19 +63,19 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // App Logo/Title
-                const Icon(
+                Icon(
                   Icons.shield,
                   size: 80,
-                  color: Color(0xFF1DB954),
+                  color: primaryAccent,
                 ),
                 const SizedBox(height: 24),
-                const Text(
+                Text(
                   'Veteran App',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: textColor,
                   ),
                 ),
                 const SizedBox(height: 60),
@@ -80,23 +89,23 @@ class _LoginScreenState extends State<LoginScreen> {
                       // Username Field
                       TextFormField(
                         controller: _usernameController,
-                        style: const TextStyle(color: Colors.white),
+                        style: TextStyle(color: textColor),
                         decoration: InputDecoration(
                           labelText: 'Username',
-                          labelStyle: TextStyle(color: Colors.grey[400]),
+                          labelStyle: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600]),
                           filled: true,
-                          fillColor: Colors.grey[900],
+                          fillColor: inputFillColor,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(color: Colors.grey[700]!),
+                            borderSide: BorderSide(color: inputBorderColor),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(color: Colors.grey[700]!),
+                            borderSide: BorderSide(color: inputBorderColor),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
-                            borderSide: const BorderSide(color: Colors.white, width: 2),
+                            borderSide: BorderSide(color: primaryAccent, width: 2),
                           ),
                         ),
                         validator: (value) {
@@ -112,28 +121,28 @@ class _LoginScreenState extends State<LoginScreen> {
                       TextFormField(
                         controller: _passwordController,
                         obscureText: _obscurePassword,
-                        style: const TextStyle(color: Colors.white),
+                        style: TextStyle(color: textColor),
                         decoration: InputDecoration(
                           labelText: 'Password',
-                          labelStyle: TextStyle(color: Colors.grey[400]),
+                          labelStyle: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600]),
                           filled: true,
-                          fillColor: Colors.grey[900],
+                          fillColor: inputFillColor,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(color: Colors.grey[700]!),
+                            borderSide: BorderSide(color: inputBorderColor),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
-                            borderSide: BorderSide(color: Colors.grey[700]!),
+                            borderSide: BorderSide(color: inputBorderColor),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
-                            borderSide: const BorderSide(color: Colors.white, width: 2),
+                            borderSide: BorderSide(color: primaryAccent, width: 2),
                           ),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscurePassword ? Icons.visibility : Icons.visibility_off,
-                              color: Colors.grey[400],
+                              color: isDark ? Colors.grey[400] : Colors.grey[600],
                             ),
                             onPressed: () {
                               setState(() {
@@ -157,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: TextButton(
                           onPressed: _navigateToForgotPassword,
                           style: TextButton.styleFrom(
-                            foregroundColor: Colors.white,
+                            foregroundColor: textColor,
                             padding: EdgeInsets.zero,
                           ),
                           child: const Text(
@@ -178,8 +187,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: ElevatedButton(
                           onPressed: _handleLogin,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF1DB954),
-                            foregroundColor: Colors.black,
+                            backgroundColor: primaryAccent,
+                            foregroundColor: isDark ? Colors.black : Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(24),
                             ),
@@ -205,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Text(
                               "Don't have an account? ",
                               style: TextStyle(
-                                color: Colors.grey[400],
+                                color: isDark ? Colors.grey[400] : Colors.grey[600],
                                 fontSize: 14,
                               ),
                             ),
@@ -214,14 +223,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: const Text('Sign up not implemented'),
-                                    backgroundColor: Colors.grey[800],
+                                    backgroundColor: isDark ? Colors.grey[800] : Colors.grey[600],
                                   ),
                                 );
                               },
-                              child: const Text(
+                              child: Text(
                                 'Sign up',
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: textColor,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                   decoration: TextDecoration.underline,

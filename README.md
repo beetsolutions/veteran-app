@@ -4,7 +4,17 @@ Veteran App - A Flutter application for veteran organizations
 
 ## Recent Updates
 
-📊 **NEW: Dashboard Features**
+🌓 **NEW: Dark and Light Theme Support**
+
+The app now supports both dark and light themes that users can switch between:
+- Toggle theme in Settings screen
+- Smooth transitions between themes
+- Well-designed color schemes for both modes
+- Theme-aware components throughout the app
+
+See [Theme System Documentation](THEME_SYSTEM.md) for developer guide and [Implementation Summary](THEME_IMPLEMENTATION_SUMMARY.md) for complete details.
+
+📊 **Dashboard Features**
 
 The home screen now features a comprehensive dashboard with:
 - Statistics cards showing total members and account balance
@@ -23,10 +33,11 @@ The login screen has been completely redesigned with a modern, dark theme inspir
 - [🔄 Before/After Comparison](BEFORE_AFTER_COMPARISON.md) - Visual comparison
 
 ## Key Features
+- 🌓 Dark and light theme switching
 - 📊 Interactive dashboard with statistics and updates
 - 👥 Officials directory with detailed cards
 - 📰 News feed with categorized updates
-- ✨ Dark theme with Spotify green accent
+- ✨ Spotify green accent (dark mode) / Blue theme (light mode)
 - 🔐 Social login options (Facebook, Apple, Google)
 - 📧 Email/password authentication
 - 🎯 Two-step login flow
