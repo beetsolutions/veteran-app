@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:veteranapp/screens/tab_screens/more_tab.dart';
 import 'package:veteranapp/screens/activity_statistics_screen.dart';
+import 'package:veteranapp/screens/notifications_screen.dart';
 import 'package:veteranapp/screens/settings_screen.dart';
 import 'package:veteranapp/screens/help_support_screen.dart';
 import 'package:veteranapp/screens/about_screen.dart';
@@ -59,6 +60,7 @@ void main() {
     }
   });
 
+  testWidgets('Notifications item navigates to Notifications screen', (WidgetTester tester) async {
   testWidgets('Settings item navigates to Settings screen', (WidgetTester tester) async {
   testWidgets('Help & Support item navigates to Help Support screen', (WidgetTester tester) async {
   testWidgets('About item navigates to About screen', (WidgetTester tester) async {
@@ -68,6 +70,13 @@ void main() {
       ),
     );
 
+    // Tap on Notifications menu item
+    await tester.tap(find.text('Notifications'));
+    await tester.pumpAndSettle();
+
+    // Verify that we navigated to the Notifications screen
+    expect(find.text('Recent Notifications'), findsOneWidget);
+    expect(find.text('Upcoming Event'), findsOneWidget);
     // Tap on Settings menu item
     await tester.tap(find.text('Settings'));
     await tester.pumpAndSettle();
