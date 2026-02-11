@@ -51,7 +51,6 @@ class MembersHostingScreen extends StatelessWidget {
     final nextStartDate = current.endDate;
     final nextEndDate = nextStartDate.add(const Duration(days: 14));
 
-    final now = DateTime.now();
     final referenceDate = DateTime(2024, 1, 1);
     final daysSinceReference = nextStartDate.difference(referenceDate).inDays;
     final periodNumber = (daysSinceReference / 14).floor();
