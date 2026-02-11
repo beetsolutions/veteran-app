@@ -7,7 +7,7 @@ This document summarizes the implementation of the new dashboard features for th
 
 ### 1. Statistics Cards Section
 Two side-by-side stat cards displaying:
-- **Total Members**: Shows the count of members (7 in sample data)
+- **Total Members**: Shows the count of members (150 in sample data)
 - **Account Balance**: Shows the organization's account balance ($25,000 in sample data)
 
 Each StatCard includes:
@@ -85,6 +85,7 @@ Displays latest news items with:
 
 ## Sample Data
 The implementation includes sample data for demonstration:
+- Total members: 150
 - 7 Officials (President, Vice President, Secretary, Treasurer, and 3 Members)
 - 5 News Items (various categories: Events, Benefits, News, Education)
 - Account balance: $25,000

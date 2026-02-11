@@ -14,7 +14,7 @@ This document provides ASCII art mockups of the new dashboard implementation.
 │  │ Total      │   │ Account    │   │
 │  │ Members    │   │ Balance    │   │
 │  │            │   │            │   │
-│  │   7        │   │ $25,000    │   │
+│  │   150      │   │ $25,000    │   │
 │  └────────────┘   └────────────┘   │
 │                                     │
 │  Officials           [Show All >]   │
