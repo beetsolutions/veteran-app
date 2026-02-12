@@ -29,6 +29,29 @@ class HostingApi {
     }
   }
 
+  /// Mark payment for hosting
+  /// Only allowed for members who are in the hosting list
+  Future<Member> markPayment({
+    required String memberId,
+    required String scheduleId,
+    required bool isPaid,
+  }) async {
+    final data = await _client.post('/hosting/mark-payment', {
+      'memberId': memberId,
+      'scheduleId': scheduleId,
+      'isPaid': isPaid,
+    });
+
+    if (data['success']) {
+      return Member.fromJson(data['member'] as Map<String, dynamic>);
+    } else {
+      throw ApiException(
+        data['message'] ?? 'Failed to mark payment',
+        data['statusCode'] ?? 400,
+      );
+    }
+  }
+
   /// Mock data for development
   HostingSchedule _getMockCurrentSchedule() {
     final now = DateTime.now();
