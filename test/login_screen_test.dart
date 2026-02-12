@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:provider/provider.dart';
 import 'package:veteranapp/screens/login_screen.dart';
 import 'package:veteranapp/screens/home_screen.dart';
+import 'package:veteranapp/providers/user_provider.dart';
 
 void main() {
+  // Helper to wrap widget with Provider
+  Widget wrapWithProvider(Widget child) {
+    final userProvider = UserProvider();
+    return ChangeNotifierProvider<UserProvider>.value(
+      value: userProvider,
+      child: MaterialApp(
+        home: child,
+      ),
+    );
+  }
+
   group('LoginScreen Widget Tests', () {
     testWidgets('should display username and password fields', (WidgetTester tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: LoginScreen(),
-        ),
+        wrapWithProvider(const LoginScreen()),
       );
 
       // Verify username field is present
@@ -21,9 +32,7 @@ void main() {
 
     testWidgets('should display login button', (WidgetTester tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: LoginScreen(),
-        ),
+        wrapWithProvider(const LoginScreen()),
       );
 
       expect(find.widgetWithText(ElevatedButton, 'Log In'), findsOneWidget);
@@ -31,9 +40,7 @@ void main() {
 
     testWidgets('should display forgot password link', (WidgetTester tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: LoginScreen(),
-        ),
+        wrapWithProvider(const LoginScreen()),
       );
 
       expect(find.text('Forgot your password?'), findsOneWidget);
@@ -41,9 +48,7 @@ void main() {
 
     testWidgets('should display sign up link', (WidgetTester tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: LoginScreen(),
-        ),
+        wrapWithProvider(const LoginScreen()),
       );
 
       expect(find.text("Don't have an account? "), findsOneWidget);
@@ -52,9 +57,7 @@ void main() {
 
     testWidgets('should NOT display social login buttons', (WidgetTester tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: LoginScreen(),
-        ),
+        wrapWithProvider(const LoginScreen()),
       );
 
       // Verify social login buttons are NOT present
@@ -66,9 +69,7 @@ void main() {
 
     testWidgets('should show validation error when submitting empty username', (WidgetTester tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: LoginScreen(),
-        ),
+        wrapWithProvider(const LoginScreen()),
       );
 
       // Tap login button without entering credentials
@@ -80,9 +81,7 @@ void main() {
 
     testWidgets('should show validation error when submitting empty password', (WidgetTester tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: LoginScreen(),
-        ),
+        wrapWithProvider(const LoginScreen()),
       );
 
       // Enter username only
@@ -97,9 +96,7 @@ void main() {
 
     testWidgets('should navigate to home screen with valid credentials', (WidgetTester tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: LoginScreen(),
-        ),
+        wrapWithProvider(const LoginScreen()),
       );
 
       // Enter valid credentials
@@ -116,9 +113,7 @@ void main() {
 
     testWidgets('should toggle password visibility', (WidgetTester tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: LoginScreen(),
-        ),
+        wrapWithProvider(const LoginScreen()),
       );
 
       // Find password field
@@ -142,9 +137,7 @@ void main() {
 
     testWidgets('should display app logo and title', (WidgetTester tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: LoginScreen(),
-        ),
+        wrapWithProvider(const LoginScreen()),
       );
 
       expect(find.byIcon(Icons.shield), findsOneWidget);
@@ -154,9 +147,7 @@ void main() {
     testWidgets('should handle video background gracefully when asset is missing', (WidgetTester tester) async {
       // This test verifies that the app doesn't crash if the video asset is missing
       await tester.pumpWidget(
-        const MaterialApp(
-          home: LoginScreen(),
-        ),
+        wrapWithProvider(const LoginScreen()),
       );
       
       // Wait for async video initialization to complete

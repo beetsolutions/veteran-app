@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'forgot_password_screen.dart';
 import 'home_screen.dart';
 import '../data/api/api_client.dart';
 import '../data/api/auth_api.dart';
+import '../providers/user_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -70,6 +72,12 @@ class _LoginScreenState extends State<LoginScreen> {
           _usernameController.text.trim(),
           _passwordController.text,
         );
+
+        // Update UserProvider with logged in user
+        if (mounted) {
+          final userProvider = Provider.of<UserProvider>(context, listen: false);
+          userProvider.setUser(authResponse.user);
+        }
 
         // Login successful, navigate to home screen with user data
         if (mounted) {
