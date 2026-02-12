@@ -129,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final backgroundColor = isDark ? Colors.black : Theme.of(context).scaffoldBackgroundColor;
-    final textColor = isDark ? Colors.white : Colors.black87;
+    final textColor = isDark ? Colors.white : Colors.white;
     final inputFillColor = isDark ? Colors.grey[900] : Colors.grey[100];
     final inputBorderColor = isDark ? Colors.grey[700]! : Colors.grey[400]!;
     final primaryAccent = Theme.of(context).brightness == Brightness.dark 
