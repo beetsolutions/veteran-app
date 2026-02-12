@@ -40,7 +40,9 @@ public class AuthController {
 
         User user = userOpt.get();
         
-        // In production, use proper password hashing (BCrypt)
+        // NOTE: Plain text password comparison for development/mock data only
+        // For production: use passwordEncoder.matches(request.getPassword(), user.getPassword())
+        // and store passwords hashed with BCrypt
         if (!user.getPassword().equals(request.getPassword())) {
             LoginResponse response = new LoginResponse();
             response.setSuccess(false);
