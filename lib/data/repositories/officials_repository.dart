@@ -9,7 +9,7 @@ class OfficialsRepository {
       : _api = api ?? OfficialsApi(ApiClient());
 
   /// Get all officials
-  Future<List<Official>> getOfficials() async {
-    return await _api.getOfficials();
+  Future<List<Official>> getOfficials({String? organizationId}) async {
+    return await _api.getOfficials(organizationId: organizationId);
   }
 }

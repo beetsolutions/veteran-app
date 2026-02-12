@@ -7,9 +7,12 @@ class MeetingsApi {
   MeetingsApi(this._client);
 
   /// Get all meetings
-  Future<List<Meeting>> getMeetings() async {
+  Future<List<Meeting>> getMeetings({String? organizationId}) async {
     try {
-      final data = await _client.get('/meetings');
+      final endpoint = organizationId != null
+          ? '/meetings?organizationId=$organizationId'
+          : '/meetings';
+      final data = await _client.get(endpoint);
       return (data as List<dynamic>)
           .map((json) => Meeting.fromJson(json as Map<String, dynamic>))
           .toList();
@@ -20,9 +23,12 @@ class MeetingsApi {
   }
 
   /// Get meeting by ID
-  Future<Meeting> getMeetingById(String id) async {
+  Future<Meeting> getMeetingById(String id, {String? organizationId}) async {
     try {
-      final data = await _client.get('/meetings/$id');
+      final endpoint = organizationId != null
+          ? '/meetings/$id?organizationId=$organizationId'
+          : '/meetings/$id';
+      final data = await _client.get(endpoint);
       return Meeting.fromJson(data as Map<String, dynamic>);
     } catch (e) {
       // For now, return mock data if API fails (development mode)

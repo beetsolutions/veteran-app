@@ -8,9 +8,12 @@ class HostingApi {
   HostingApi(this._client);
 
   /// Get current hosting schedule
-  Future<HostingSchedule> getCurrentSchedule() async {
+  Future<HostingSchedule> getCurrentSchedule({String? organizationId}) async {
     try {
-      final data = await _client.get('/hosting/current');
+      final endpoint = organizationId != null
+          ? '/hosting/current?organizationId=$organizationId'
+          : '/hosting/current';
+      final data = await _client.get(endpoint);
       return HostingSchedule.fromJson(data as Map<String, dynamic>);
     } catch (e) {
       // For now, return mock data if API fails (development mode)
@@ -19,9 +22,12 @@ class HostingApi {
   }
 
   /// Get next hosting schedule
-  Future<HostingSchedule> getNextSchedule() async {
+  Future<HostingSchedule> getNextSchedule({String? organizationId}) async {
     try {
-      final data = await _client.get('/hosting/next');
+      final endpoint = organizationId != null
+          ? '/hosting/next?organizationId=$organizationId'
+          : '/hosting/next';
+      final data = await _client.get(endpoint);
       return HostingSchedule.fromJson(data as Map<String, dynamic>);
     } catch (e) {
       // For now, return mock data if API fails (development mode)

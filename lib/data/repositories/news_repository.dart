@@ -9,7 +9,7 @@ class NewsRepository {
       : _api = api ?? NewsApi(ApiClient());
 
   /// Get all news items
-  Future<List<NewsItem>> getNews() async {
-    return await _api.getNews();
+  Future<List<NewsItem>> getNews({String? organizationId}) async {
+    return await _api.getNews(organizationId: organizationId);
   }
 }

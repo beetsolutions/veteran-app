@@ -9,12 +9,12 @@ class HostingRepository {
       : _api = api ?? HostingApi(ApiClient());
 
   /// Get current hosting schedule
-  Future<HostingSchedule> getCurrentSchedule() async {
-    return await _api.getCurrentSchedule();
+  Future<HostingSchedule> getCurrentSchedule({String? organizationId}) async {
+    return await _api.getCurrentSchedule(organizationId: organizationId);
   }
 
   /// Get next hosting schedule
-  Future<HostingSchedule> getNextSchedule() async {
-    return await _api.getNextSchedule();
+  Future<HostingSchedule> getNextSchedule({String? organizationId}) async {
+    return await _api.getNextSchedule(organizationId: organizationId);
   }
 }

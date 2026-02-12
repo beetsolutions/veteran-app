@@ -7,9 +7,12 @@ class MembersApi {
   MembersApi(this._client);
 
   /// Get all members
-  Future<List<Member>> getMembers() async {
+  Future<List<Member>> getMembers({String? organizationId}) async {
     try {
-      final data = await _client.get('/members');
+      final endpoint = organizationId != null 
+          ? '/members?organizationId=$organizationId'
+          : '/members';
+      final data = await _client.get(endpoint);
       return (data as List<dynamic>)
           .map((json) => Member.fromJson(json as Map<String, dynamic>))
           .toList();
@@ -20,9 +23,12 @@ class MembersApi {
   }
 
   /// Get member by ID
-  Future<Member> getMemberById(String id) async {
+  Future<Member> getMemberById(String id, {String? organizationId}) async {
     try {
-      final data = await _client.get('/members/$id');
+      final endpoint = organizationId != null
+          ? '/members/$id?organizationId=$organizationId'
+          : '/members/$id';
+      final data = await _client.get(endpoint);
       return Member.fromJson(data as Map<String, dynamic>);
     } catch (e) {
       // Return first matching mock member
