@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:veteranapp/data/services/auth_service.dart';
@@ -122,29 +123,10 @@ String _createTestTokenWithoutExp() {
 
 /// Base64 URL encode helper
 String _base64UrlEncode(String input) {
-  final bytes = input.codeUnits;
-  return _base64UrlEncodeBytes(bytes);
-}
-
-String _base64UrlEncodeBytes(List<int> bytes) {
-  String base64 = '';
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-  
-  for (int i = 0; i < bytes.length; i += 3) {
-    int b1 = bytes[i];
-    int b2 = i + 1 < bytes.length ? bytes[i + 1] : 0;
-    int b3 = i + 2 < bytes.length ? bytes[i + 2] : 0;
-    
-    int n = (b1 << 16) | (b2 << 8) | b3;
-    
-    base64 += chars[(n >> 18) & 63];
-    base64 += chars[(n >> 12) & 63];
-    base64 += i + 1 < bytes.length ? chars[(n >> 6) & 63] : '=';
-    base64 += i + 2 < bytes.length ? chars[n & 63] : '=';
-  }
-  
-  // Convert to URL-safe base64 and remove padding
-  return base64.replaceAll('+', '-').replaceAll('/', '_').replaceAll('=', '');
+  // Use utf8.encode to properly convert string to bytes
+  final bytes = utf8.encode(input);
+  // Use standard base64Url encoding from dart:convert
+  return base64Url.encode(bytes).replaceAll('=', '');
 }
 
 /// Mock implementation of FlutterSecureStorage for testing
