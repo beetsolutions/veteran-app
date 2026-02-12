@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../models/member.dart';
 import '../models/hosting_schedule.dart';
 import '../data/repositories/hosting_repository.dart';
+import '../providers/user_provider.dart';
 import '../data/storage/auth_token_storage.dart';
 import '../data/api/api_client.dart';
 
@@ -41,6 +43,12 @@ class _MembersHostingScreenState extends State<MembersHostingScreen> {
         _errorMessage = null;
       });
 
+      // Get the current organization ID from UserProvider
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      final organizationId = userProvider.currentOrganization?.id;
+
+      final current = await _hostingRepository.getCurrentSchedule(organizationId: organizationId);
+      final next = await _hostingRepository.getNextSchedule(organizationId: organizationId);
       // Load current user ID
       final userId = await _authTokenStorage.getUserId();
       

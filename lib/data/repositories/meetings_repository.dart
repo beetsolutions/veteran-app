@@ -9,12 +9,12 @@ class MeetingsRepository {
       : _api = api ?? MeetingsApi(ApiClient());
 
   /// Get all meetings
-  Future<List<Meeting>> getMeetings() async {
-    return await _api.getMeetings();
+  Future<List<Meeting>> getMeetings({String? organizationId}) async {
+    return await _api.getMeetings(organizationId: organizationId);
   }
 
   /// Get meeting by ID
-  Future<Meeting> getMeetingById(String id) async {
-    return await _api.getMeetingById(id);
+  Future<Meeting> getMeetingById(String id, {String? organizationId}) async {
+    return await _api.getMeetingById(id, organizationId: organizationId);
   }
 }

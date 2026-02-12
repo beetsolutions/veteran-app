@@ -7,9 +7,12 @@ class NewsApi {
   NewsApi(this._client);
 
   /// Get all news items
-  Future<List<NewsItem>> getNews() async {
+  Future<List<NewsItem>> getNews({String? organizationId}) async {
     try {
-      final data = await _client.get('/news');
+      final endpoint = organizationId != null
+          ? '/news?organizationId=$organizationId'
+          : '/news';
+      final data = await _client.get(endpoint);
       return (data as List<dynamic>)
           .map((json) => NewsItem.fromJson(json as Map<String, dynamic>))
           .toList();

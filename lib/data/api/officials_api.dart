@@ -7,9 +7,12 @@ class OfficialsApi {
   OfficialsApi(this._client);
 
   /// Get all officials
-  Future<List<Official>> getOfficials() async {
+  Future<List<Official>> getOfficials({String? organizationId}) async {
     try {
-      final data = await _client.get('/officials');
+      final endpoint = organizationId != null
+          ? '/officials?organizationId=$organizationId'
+          : '/officials';
+      final data = await _client.get(endpoint);
       return (data as List<dynamic>)
           .map((json) => Official.fromJson(json as Map<String, dynamic>))
           .toList();
