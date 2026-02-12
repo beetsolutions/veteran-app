@@ -134,8 +134,12 @@ class MockSecureStorage implements FlutterSecureStorage {
   final Map<String, String> _data = {};
 
   @override
-  Future<void> write({required String key, required String value, IOSOptions? iOptions, AndroidOptions? aOptions, LinuxOptions? lOptions, WebOptions? webOptions, MacOsOptions? mOptions, WindowsOptions? wOptions}) async {
-    _data[key] = value;
+  Future<void> write({required String key, required String? value, IOSOptions? iOptions, AndroidOptions? aOptions, LinuxOptions? lOptions, WebOptions? webOptions, MacOsOptions? mOptions, WindowsOptions? wOptions}) async {
+    if (value == null) {
+      _data.remove(key);
+    } else {
+      _data[key] = value;
+    }
   }
 
   @override
