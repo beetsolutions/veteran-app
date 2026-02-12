@@ -166,4 +166,22 @@ class MockSecureStorage implements FlutterSecureStorage {
   Future<bool> containsKey({required String key, IOSOptions? iOptions, AndroidOptions? aOptions, LinuxOptions? lOptions, WebOptions? webOptions, MacOsOptions? mOptions, WindowsOptions? wOptions}) async {
     return _data.containsKey(key);
   }
+
+  @override
+  AndroidOptions get aOptions => throw UnimplementedError();
+
+  @override
+  IOSOptions get iOptions => throw UnimplementedError();
+
+  @override
+  LinuxOptions get lOptions => throw UnimplementedError();
+
+  @override
+  MacOsOptions get mOptions => throw UnimplementedError();
+
+  @override
+  WindowsOptions get wOptions => throw UnimplementedError();
+
+  @override
+  WebOptions get webOptions => throw UnimplementedError();
 }
