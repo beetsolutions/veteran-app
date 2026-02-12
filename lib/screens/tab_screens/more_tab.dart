@@ -8,12 +8,14 @@ import '../notifications_screen.dart';
 import '../settings_screen.dart';
 import '../help_support_screen.dart';
 import '../about_screen.dart';
+import '../../data/services/auth_service.dart';
 
 class MoreTab extends StatelessWidget {
   const MoreTab({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final authService = AuthService();
     return Scaffold(
       appBar: AppBar(
         title: const Text('More'),
@@ -124,7 +126,7 @@ class MoreTab extends StatelessWidget {
             title: 'Logout',
             iconColor: Colors.red,
             onTap: () {
-              _showLogoutDialog(context);
+              _showLogoutDialog(context, authService);
             },
           ),
         ],
@@ -150,7 +152,7 @@ class MoreTab extends StatelessWidget {
     );
   }
 
-  void _showLogoutDialog(BuildContext context) {
+  void _showLogoutDialog(BuildContext context, AuthService authService) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -165,12 +167,18 @@ class MoreTab extends StatelessWidget {
               child: const Text('Cancel'),
             ),
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => const LoginScreen()),
-                  (route) => false,
-                );
+              onPressed: () async {
+                // Clear tokens
+                await authService.logout();
+                
+                // Close dialog and navigate to login
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => const LoginScreen()),
+                    (route) => false,
+                  );
+                }
               },
               child: const Text('Logout', style: TextStyle(color: Colors.red)),
             ),
