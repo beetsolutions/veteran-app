@@ -39,9 +39,12 @@ class UserProvider extends ChangeNotifier {
       throw Exception('No user logged in');
     }
 
-    // Find the organization
+    // Find the organization - use orElse to handle missing organization
     final organization = _currentUser!.organizations
-        .firstWhere((org) => org.id == organizationId);
+        .firstWhere(
+          (org) => org.id == organizationId,
+          orElse: () => throw Exception('Organization not found in user\'s organizations'),
+        );
 
     // Call the API to switch organization
     await _authApi.switchOrganization(organizationId);

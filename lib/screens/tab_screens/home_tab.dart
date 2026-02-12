@@ -131,7 +131,10 @@ class _HomeTabState extends State<HomeTab> {
   }
 
   Future<void> _switchOrganization(Organization organization) async {
-    Navigator.of(context).pop(); // Close the dialog
+    // Close the dialog safely
+    if (mounted && Navigator.of(context).canPop()) {
+      Navigator.of(context).pop();
+    }
 
     // Show loading indicator
     showDialog(
@@ -156,11 +159,13 @@ class _HomeTabState extends State<HomeTab> {
       // Notify parent widget
       widget.onUserUpdated?.call(updatedUser);
 
-      // Close loading dialog
-      if (mounted) {
+      // Close loading dialog safely
+      if (mounted && Navigator.of(context).canPop()) {
         Navigator.of(context).pop();
+      }
         
-        // Show success message
+      // Show success message
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Switched to ${organization.name}'),
@@ -169,11 +174,13 @@ class _HomeTabState extends State<HomeTab> {
         );
       }
     } catch (e) {
-      // Close loading dialog
-      if (mounted) {
+      // Close loading dialog safely
+      if (mounted && Navigator.of(context).canPop()) {
         Navigator.of(context).pop();
+      }
         
-        // Show error message
+      // Show error message
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to switch organization: $e'),
