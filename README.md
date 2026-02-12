@@ -59,28 +59,47 @@ The login screen has been completely redesigned with a modern, dark theme inspir
 
 ### Backend API Integration
 
-The app is now integrated with a REST API backend. To run the full application:
+The app now has **two backend options** available:
 
-#### 1. Start the Backend Server
+#### Option 1: Node.js Backend (Express)
 
 ```bash
 cd backend
 npm install
 npm start
 ```
+Server runs on `http://localhost:3000`
 
-The backend server will start on `http://localhost:3000`.
+#### Option 2: Spring Boot Backend (Java)
 
-#### 2. Run the Flutter App
+```bash
+cd springboot-backend
+mvn spring-boot:run
+```
+Server runs on `http://localhost:8080`
+
+**Choose the backend that best fits your team's expertise!** Both provide identical functionality.
+See [BACKEND_COMPARISON.md](BACKEND_COMPARISON.md) for detailed comparison.
+
+#### Run the Flutter App
 
 ```bash
 flutter run
 ```
 
 **Platform-Specific Configuration:**
-- **iOS Simulator**: Works with default `http://localhost:3000` configuration
-- **Android Emulator**: Update `lib/data/api/api_client.dart` baseUrl to `http://10.0.2.2:3000`
-- **Physical Device**: Update baseUrl to your computer's local IP address (e.g., `http://192.168.1.100:3000`)
+
+For **Node.js Backend** (port 3000):
+- **iOS Simulator**: `http://localhost:3000`
+- **Android Emulator**: `http://10.0.2.2:3000`
+- **Physical Device**: `http://YOUR_LOCAL_IP:3000`
+
+For **Spring Boot Backend** (port 8080):
+- **iOS Simulator**: `http://localhost:8080`
+- **Android Emulator**: `http://10.0.2.2:8080`
+- **Physical Device**: `http://YOUR_LOCAL_IP:8080`
+
+Update `lib/data/api/api_client.dart` baseUrl as needed.
 
 For detailed integration instructions, see [INTEGRATION_GUIDE.md](INTEGRATION_GUIDE.md).
 
