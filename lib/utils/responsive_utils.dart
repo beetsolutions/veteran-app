@@ -54,8 +54,8 @@ class ResponsiveUtils {
   /// Get responsive font size based on screen size
   static double getFontSize(BuildContext context, {
     double mobile = 14.0,
-    double tablet = 16.0,
-    double desktop = 18.0,
+    double tablet = 17.0,
+    double desktop = 19.0,
   }) {
     final deviceType = getDeviceType(context);
     switch (deviceType) {
@@ -71,8 +71,8 @@ class ResponsiveUtils {
   /// Get responsive icon size based on screen size
   static double getIconSize(BuildContext context, {
     double mobile = 24.0,
-    double tablet = 28.0,
-    double desktop = 32.0,
+    double tablet = 30.0,
+    double desktop = 36.0,
   }) {
     final deviceType = getDeviceType(context);
     switch (deviceType) {
