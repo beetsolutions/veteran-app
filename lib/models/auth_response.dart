@@ -1,4 +1,4 @@
-import '../user.dart';
+import 'package:veteranapp/models/user.dart';
 
 /// Response model for authentication endpoints that return tokens
 class AuthResponse {
