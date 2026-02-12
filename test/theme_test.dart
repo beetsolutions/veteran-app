@@ -8,6 +8,8 @@ void main() {
     test('ThemeProvider initial state is system mode', () {
       final themeProvider = ThemeProvider();
       expect(themeProvider.themeMode, ThemeMode.system);
+      // When in system mode, isDarkMode will return false since it only checks for explicit dark mode
+      expect(themeProvider.isDarkMode, false);
     });
 
     test('ThemeProvider toggleTheme switches between light and dark', () {

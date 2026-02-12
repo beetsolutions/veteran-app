@@ -48,7 +48,7 @@ void main() {
     // The exact mode (light or dark) depends on the system brightness when toggled
     materialApp = tester.widget(find.byType(MaterialApp));
     final firstToggleMode = materialApp.themeMode;
-    expect(firstToggleMode != ThemeMode.system, true);
+    expect(firstToggleMode, isNot(ThemeMode.system));
     
     // Tap again to switch to the other mode
     await tester.tap(darkModeSwitch);
@@ -57,7 +57,7 @@ void main() {
     // Verify theme changed to the opposite mode
     materialApp = tester.widget(find.byType(MaterialApp));
     final secondToggleMode = materialApp.themeMode;
-    expect(secondToggleMode != ThemeMode.system, true);
-    expect(secondToggleMode != firstToggleMode, true);
+    expect(secondToggleMode, isNot(ThemeMode.system));
+    expect(secondToggleMode, isNot(firstToggleMode));
   });
 }
