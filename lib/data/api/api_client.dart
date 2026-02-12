@@ -6,7 +6,7 @@ class ApiClient {
   final http.Client? httpClient;
 
   ApiClient({
-    this.baseUrl = 'http://localhost:3000',
+    this.baseUrl = 'http://192.168.1.200:3000',
     http.Client? client,
   }) : httpClient = client ?? http.Client();
 

@@ -10,7 +10,7 @@ app.use(express.json());
 
 // Mock Data
 const officials = [
-  { name: 'John Doe', role: 'President', service: 'Army', imageUrl: null },
+  { name: 'Etukeni Ndecha', role: 'President', service: 'Army', imageUrl: null },
   { name: 'Jane Smith', role: 'Vice President', service: 'Navy', imageUrl: null },
   { name: 'Robert Johnson', role: 'Secretary', service: 'Air Force', imageUrl: null },
   { name: 'Mary Williams', role: 'Treasurer', service: 'Marines', imageUrl: null },
