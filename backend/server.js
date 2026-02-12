@@ -1275,10 +1275,57 @@ app.get('/hosting/next', extractOrganizationId, (req, res) => {
   res.json(getHostingSchedule(true, req.organizationId));
 });
 
+<<<<<<< copilot/add-meetings-constitution-and-members
 // Get all meetings (organization-specific)
 app.get('/meetings', extractOrganizationId, (req, res) => {
   const orgMeetings = meetings.filter(m => m.organizationId === req.organizationId);
   res.json(orgMeetings);
+=======
+// Mark payment for hosting
+app.post('/hosting/mark-payment', (req, res) => {
+  const { memberId, scheduleId, isPaid } = req.body;
+
+  if (!memberId || !scheduleId || typeof isPaid !== 'boolean') {
+    return res.status(400).json({ 
+      success: false,
+      message: 'memberId, scheduleId, and isPaid (boolean) are required' 
+    });
+  }
+
+  // Find the member
+  const member = members.find(m => m.id === memberId);
+  if (!member) {
+    return res.status(404).json({ 
+      success: false,
+      message: 'Member not found' 
+    });
+  }
+
+  // Get the current schedule to verify the member is a host
+  const currentSchedule = getHostingSchedule(false);
+  const isHost = currentSchedule.hosts.some(h => h.id === memberId);
+
+  if (!isHost) {
+    return res.status(403).json({ 
+      success: false,
+      message: 'Only hosting members can mark their payment status' 
+    });
+  }
+
+  // Update the member's payment status
+  member.isPaid = isPaid;
+
+  res.json({
+    success: true,
+    message: 'Payment status updated successfully',
+    member: member
+  });
+});
+
+// Get all meetings
+app.get('/meetings', (req, res) => {
+  res.json(meetings);
+>>>>>>> main
 });
 
 // Get meeting by ID (organization-specific)
