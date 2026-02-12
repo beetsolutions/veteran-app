@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ConstitutionTab extends StatelessWidget {
   const ConstitutionTab({super.key});
@@ -25,6 +26,7 @@ class ConstitutionTab extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             _buildArticle(
+              context,
               'Article I: Name and Purpose',
               [
                 'Section 1: The name of this organization shall be the Veterans Organization.',
@@ -33,6 +35,7 @@ class ConstitutionTab extends StatelessWidget {
               ],
             ),
             _buildArticle(
+              context,
               'Article II: Membership',
               [
                 'Section 1: Membership is open to all veterans who have served honorably in the armed forces of the United States.',
@@ -42,6 +45,7 @@ class ConstitutionTab extends StatelessWidget {
               ],
             ),
             _buildArticle(
+              context,
               'Article III: Rights and Responsibilities',
               [
                 'Section 1: All members have the right to participate in organizational activities, attend meetings, and vote on important matters.',
@@ -51,6 +55,7 @@ class ConstitutionTab extends StatelessWidget {
               ],
             ),
             _buildArticle(
+              context,
               'Article IV: Officers and Executive Board',
               [
                 'Section 1: The officers of this organization shall consist of a President, Vice President, Secretary, and Treasurer.',
@@ -61,6 +66,7 @@ class ConstitutionTab extends StatelessWidget {
               ],
             ),
             _buildArticle(
+              context,
               'Article V: Duties of Officers',
               [
                 'Section 1: The President shall preside at all meetings, appoint committee chairs, and represent the organization in official matters.',
@@ -70,6 +76,7 @@ class ConstitutionTab extends StatelessWidget {
               ],
             ),
             _buildArticle(
+              context,
               'Article VI: Meetings',
               [
                 'Section 1: Regular meetings shall be held monthly at a time and place determined by the Executive Board.',
@@ -79,6 +86,7 @@ class ConstitutionTab extends StatelessWidget {
               ],
             ),
             _buildArticle(
+              context,
               'Article VII: Committees',
               [
                 'Section 1: The following standing committees shall be maintained: Membership, Programs, Finance, Veterans Assistance, and Community Outreach.',
@@ -87,6 +95,7 @@ class ConstitutionTab extends StatelessWidget {
               ],
             ),
             _buildArticle(
+              context,
               'Article VIII: Finances',
               [
                 'Section 1: The fiscal year of the organization shall be from January 1 to December 31.',
@@ -97,6 +106,7 @@ class ConstitutionTab extends StatelessWidget {
               ],
             ),
             _buildArticle(
+              context,
               'Article IX: Amendments',
               [
                 'Section 1: This constitution may be amended by a two-thirds vote of the members present at any regular meeting.',
@@ -105,6 +115,7 @@ class ConstitutionTab extends StatelessWidget {
               ],
             ),
             _buildArticle(
+              context,
               'Article X: Dissolution',
               [
                 'Section 1: This organization may be dissolved by a three-fourths vote of the entire membership.',
@@ -113,6 +124,7 @@ class ConstitutionTab extends StatelessWidget {
               ],
             ),
             _buildArticle(
+              context,
               'Article XI: Parliamentary Authority',
               [
                 'Section 1: Robert\'s Rules of Order, latest edition, shall govern all meetings of this organization where they are not in conflict with this constitution.',
@@ -148,17 +160,38 @@ class ConstitutionTab extends StatelessWidget {
     );
   }
 
-  static Widget _buildArticle(String title, List<String> sections) {
+  static Widget _buildArticle(
+      BuildContext context, String title, List<String> sections) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.blue,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
+                ),
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.share, color: Colors.blue),
+              tooltip: 'Share Article',
+              onPressed: () {
+                // Prepare share content
+                final String shareContent = '$title\n\n${sections.join('\n\n')}';
+                Share.share(
+                  shareContent,
+                  subject: title,
+                );
+              },
+            ),
+          ],
         ),
         const SizedBox(height: 12),
         ...sections.map((section) => Padding(
