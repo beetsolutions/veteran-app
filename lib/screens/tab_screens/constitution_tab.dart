@@ -28,18 +28,20 @@ class _ConstitutionTabState extends State<ConstitutionTab> {
   void initState() {
     super.initState();
     _constitutionRepository = widget.constitutionRepository ?? ConstitutionRepository();
-    _loadData();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Reload data when organization changes
-    final userProvider = Provider.of<UserProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     final currentOrgId = userProvider.currentOrganization?.id;
     
-    // Only reload if organization has changed
-    if (currentOrgId != null && currentOrgId != _lastOrganizationId) {
+    // Initialize on first call, reload on subsequent org changes
+    if (_lastOrganizationId == null) {
+      _lastOrganizationId = currentOrgId;
+      _loadData();
+    } else if (currentOrgId != null && currentOrgId != _lastOrganizationId) {
       _lastOrganizationId = currentOrgId;
       _loadData();
     }
