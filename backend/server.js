@@ -1,8 +1,17 @@
 const express = require('express');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// JWT Secret (In production, use environment variable)
+const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET || 'your-secret-key-change-in-production';
+const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || 'your-refresh-secret-key-change-in-production';
+
+// Token expiration times
+const ACCESS_TOKEN_EXPIRY = '15m'; // 15 minutes
+const REFRESH_TOKEN_EXPIRY = '7d'; // 7 days
 
 // Middleware
 app.use(cors());
@@ -18,6 +27,9 @@ const users = [
   { id: '2', username: 'johndoe', email: 'john.doe@example.com', password: 'password123', name: 'John Doe' },
   { id: '3', username: 'janesmith', email: 'jane.smith@example.com', password: 'password123', name: 'Jane Smith' },
 ];
+
+// Store refresh tokens (In production, use a database)
+const refreshTokens = new Set();
 
 const officials = [
   { name: 'Etukeni Ndecha', role: 'President', service: 'Army', imageUrl: null },
@@ -144,6 +156,23 @@ function getHostingSchedule(isNext = false) {
 
 // Routes
 
+// Helper functions for JWT tokens
+function generateAccessToken(user) {
+  return jwt.sign(
+    { id: user.id, username: user.username, email: user.email },
+    JWT_ACCESS_SECRET,
+    { expiresIn: ACCESS_TOKEN_EXPIRY }
+  );
+}
+
+function generateRefreshToken(user) {
+  return jwt.sign(
+    { id: user.id, username: user.username },
+    JWT_REFRESH_SECRET,
+    { expiresIn: REFRESH_TOKEN_EXPIRY }
+  );
+}
+
 // Health check
 app.get('/', (req, res) => {
   res.json({ 
@@ -185,7 +214,14 @@ app.post('/auth/login', (req, res) => {
     });
   }
 
-  // Return user info (excluding password)
+  // Generate tokens
+  const accessToken = generateAccessToken(user);
+  const refreshToken = generateRefreshToken(user);
+  
+  // Store refresh token
+  refreshTokens.add(refreshToken);
+
+  // Return user info with tokens (excluding password)
   res.json({
     success: true,
     message: 'Login successful',
@@ -194,7 +230,9 @@ app.post('/auth/login', (req, res) => {
       username: user.username,
       email: user.email,
       name: user.name
-    }
+    },
+    accessToken: accessToken,
+    refreshToken: refreshToken
   });
 });
 
@@ -227,6 +265,55 @@ app.post('/auth/forgot-password', (req, res) => {
     success: true,
     message: 'If an account exists with this email, a password reset link has been sent'
   });
+});
+
+// Refresh token
+app.post('/auth/refresh', (req, res) => {
+  const { refreshToken } = req.body;
+
+  if (!refreshToken) {
+    return res.status(400).json({ 
+      success: false,
+      message: 'Refresh token is required' 
+    });
+  }
+
+  // Check if refresh token exists in our store
+  if (!refreshTokens.has(refreshToken)) {
+    return res.status(401).json({ 
+      success: false,
+      message: 'Invalid refresh token' 
+    });
+  }
+
+  try {
+    // Verify refresh token
+    const decoded = jwt.verify(refreshToken, JWT_REFRESH_SECRET);
+    
+    // Find user
+    const user = users.find(u => u.id === decoded.id);
+    
+    if (!user) {
+      return res.status(401).json({ 
+        success: false,
+        message: 'User not found' 
+      });
+    }
+
+    // Generate new access token
+    const accessToken = generateAccessToken(user);
+
+    res.json({
+      success: true,
+      message: 'Token refreshed successfully',
+      accessToken: accessToken
+    });
+  } catch (error) {
+    return res.status(401).json({ 
+      success: false,
+      message: 'Invalid or expired refresh token' 
+    });
+  }
 });
 
 // Get all officials
@@ -286,6 +373,7 @@ app.listen(PORT, () => {
   console.log(`\nAvailable endpoints:`);
   console.log(`  GET  /                     - API info`);
   console.log(`  POST /auth/login           - User login`);
+  console.log(`  POST /auth/refresh         - Refresh access token`);
   console.log(`  POST /auth/forgot-password - Request password reset`);
   console.log(`  GET  /officials            - Get all officials`);
   console.log(`  GET  /news                 - Get all news items`);

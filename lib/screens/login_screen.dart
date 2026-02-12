@@ -65,8 +65,8 @@ class _LoginScreenState extends State<LoginScreen> {
       });
 
       try {
-        // Call the login API
-        final user = await _authApi.login(
+        // Call the login API - tokens are automatically stored
+        final authResponse = await _authApi.login(
           _usernameController.text.trim(),
           _passwordController.text,
         );
