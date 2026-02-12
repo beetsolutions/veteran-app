@@ -3,9 +3,12 @@ import 'tab_screens/home_tab.dart';
 import 'tab_screens/constitution_tab.dart';
 import 'tab_screens/members_tab.dart';
 import 'tab_screens/more_tab.dart';
+import '../models/user.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final User? initialUser;
+
+  const HomeScreen({super.key, this.initialUser});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -13,16 +16,29 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
+  late User? _currentUser;
 
-  final List<Widget> _tabs = [
-    const HomeTab(),
-    const ConstitutionTab(),
-    const MembersTab(),
-    const MoreTab(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _currentUser = widget.initialUser;
+  }
+
+  void _updateUser(User user) {
+    setState(() {
+      _currentUser = user;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _tabs = [
+      HomeTab(currentUser: _currentUser, onUserUpdated: _updateUser),
+      const ConstitutionTab(),
+      const MembersTab(),
+      const MoreTab(),
+    ];
+
     return Scaffold(
       body: _tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
