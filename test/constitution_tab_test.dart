@@ -1,14 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:provider/provider.dart';
 import 'package:veteranapp/screens/tab_screens/constitution_tab.dart';
+import 'package:veteranapp/providers/user_provider.dart';
+import 'package:veteranapp/models/user.dart';
+import 'package:veteranapp/models/organization.dart';
 
 void main() {
-  testWidgets('Constitution tab displays correctly', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      const MaterialApp(
-        home: ConstitutionTab(),
+  // Helper to create test user with organization
+  User createTestUser() {
+    return User(
+      id: 'test-id',
+      username: 'testuser',
+      email: 'test@example.com',
+      name: 'Test User',
+      organizations: [
+        Organization(
+          id: 'org1',
+          name: 'Veterans Organization',
+          location: 'Test City',
+        ),
+      ],
+      currentOrganizationId: 'org1',
+    );
+  }
+
+  // Helper to wrap widget with Provider
+  Widget wrapWithProvider(Widget child, {User? user}) {
+    final userProvider = UserProvider();
+    if (user != null) {
+      userProvider.setUser(user);
+    }
+    return ChangeNotifierProvider<UserProvider>.value(
+      value: userProvider,
+      child: MaterialApp(
+        home: child,
       ),
     );
+  }
+
+  testWidgets('Constitution tab displays correctly', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      wrapWithProvider(const ConstitutionTab(), user: createTestUser()),
+    );
+
+    // Wait for async data loading
+    await tester.pumpAndSettle();
 
     // Verify the app bar title is displayed
     expect(find.text('Constitution'), findsOneWidget);
@@ -23,10 +60,11 @@ void main() {
 
   testWidgets('Constitution tab displays share buttons for articles', (WidgetTester tester) async {
     await tester.pumpWidget(
-      const MaterialApp(
-        home: ConstitutionTab(),
-      ),
+      wrapWithProvider(const ConstitutionTab(), user: createTestUser()),
     );
+
+    // Wait for async data loading
+    await tester.pumpAndSettle();
 
     // Verify share icons are present
     expect(find.byIcon(Icons.share), findsWidgets);
@@ -38,10 +76,11 @@ void main() {
 
   testWidgets('Constitution tab share buttons have correct tooltip', (WidgetTester tester) async {
     await tester.pumpWidget(
-      const MaterialApp(
-        home: ConstitutionTab(),
-      ),
+      wrapWithProvider(const ConstitutionTab(), user: createTestUser()),
     );
+
+    // Wait for async data loading
+    await tester.pumpAndSettle();
 
     // Find all share buttons
     final shareButtons = find.byIcon(Icons.share);
@@ -55,13 +94,11 @@ void main() {
 
   testWidgets('Constitution tab displays all 11 articles', (WidgetTester tester) async {
     await tester.pumpWidget(
-      const MaterialApp(
-        home: ConstitutionTab(),
-      ),
+      wrapWithProvider(const ConstitutionTab(), user: createTestUser()),
     );
 
-    // Scroll to make all content visible and pump
-    await tester.pump();
+    // Wait for async data loading
+    await tester.pumpAndSettle();
     
     // Verify all article titles are present
     final articles = [
@@ -90,10 +127,11 @@ void main() {
 
   testWidgets('Constitution tab displays ratification notice', (WidgetTester tester) async {
     await tester.pumpWidget(
-      const MaterialApp(
-        home: ConstitutionTab(),
-      ),
+      wrapWithProvider(const ConstitutionTab(), user: createTestUser()),
     );
+
+    // Wait for async data loading
+    await tester.pumpAndSettle();
 
     // Scroll to bottom to find the ratification notice
     await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -5000));
