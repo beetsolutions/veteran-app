@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'screens/login_screen.dart';
+import 'screens/home_screen.dart';
 import 'providers/theme_provider.dart';
+import 'data/services/auth_service.dart';
 
 void main() {
   runApp(const VeteranApp());
@@ -15,6 +17,23 @@ class VeteranApp extends StatefulWidget {
 
 class _VeteranAppState extends State<VeteranApp> {
   final ThemeProvider _themeProvider = ThemeProvider();
+  final AuthService _authService = AuthService();
+  bool _isCheckingAuth = true;
+  bool _isAuthenticated = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkAuthentication();
+  }
+
+  Future<void> _checkAuthentication() async {
+    final isAuthenticated = await _authService.isAuthenticated();
+    setState(() {
+      _isAuthenticated = isAuthenticated;
+      _isCheckingAuth = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +83,15 @@ class _VeteranAppState extends State<VeteranApp> {
               useMaterial3: true,
             ),
             themeMode: _themeProvider.themeMode,
-            home: const LoginScreen(),
+            home: _isCheckingAuth
+                ? const Scaffold(
+                    body: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                : _isAuthenticated
+                    ? const HomeScreen()
+                    : const LoginScreen(),
           ),
         );
       },

@@ -8,6 +8,7 @@ import '../notifications_screen.dart';
 import '../settings_screen.dart';
 import '../help_support_screen.dart';
 import '../about_screen.dart';
+import '../../data/services/auth_service.dart';
 
 class MoreTab extends StatelessWidget {
   const MoreTab({super.key});
@@ -165,12 +166,21 @@ class MoreTab extends StatelessWidget {
               child: const Text('Cancel'),
             ),
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => const LoginScreen()),
-                  (route) => false,
-                );
+              onPressed: () async {
+                // Create AuthService instance only when needed
+                final authService = AuthService();
+                
+                // Clear tokens
+                await authService.logout();
+                
+                // Close dialog and navigate to login
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => const LoginScreen()),
+                    (route) => false,
+                  );
+                }
               },
               child: const Text('Logout', style: TextStyle(color: Colors.red)),
             ),
