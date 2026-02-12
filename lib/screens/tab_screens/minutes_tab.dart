@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../models/meeting.dart';
 import '../../widgets/meeting_card.dart';
 import '../details/meeting_detail_screen.dart';
 import '../../data/repositories/meetings_repository.dart';
+import '../../providers/user_provider.dart';
 
 enum MeetingSortOrder { dateAscending, dateDescending, attendance }
 
@@ -39,7 +41,11 @@ class _MinutesTabState extends State<MinutesTab> {
         _errorMessage = null;
       });
 
-      final meetings = await _meetingsRepository.getMeetings();
+      // Get the current organization ID from UserProvider
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      final organizationId = userProvider.currentOrganization?.id;
+
+      final meetings = await _meetingsRepository.getMeetings(organizationId: organizationId);
 
       setState(() {
         _meetings = meetings;

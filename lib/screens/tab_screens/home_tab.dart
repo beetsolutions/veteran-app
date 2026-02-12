@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../models/official.dart';
 import '../../models/news_item.dart';
 import '../../models/user.dart';
@@ -13,6 +14,7 @@ import '../../data/repositories/officials_repository.dart';
 import '../../data/repositories/news_repository.dart';
 import '../../data/api/api_client.dart';
 import '../../data/api/auth_api.dart';
+import '../../providers/user_provider.dart';
 
 class HomeTab extends StatefulWidget {
   final OfficialsRepository? officialsRepository;
@@ -61,8 +63,12 @@ class _HomeTabState extends State<HomeTab> {
         _errorMessage = null;
       });
 
-      final officials = await _officialsRepository.getOfficials();
-      final news = await _newsRepository.getNews();
+      // Get the current organization ID from UserProvider
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      final organizationId = userProvider.currentOrganization?.id;
+
+      final officials = await _officialsRepository.getOfficials(organizationId: organizationId);
+      final news = await _newsRepository.getNews(organizationId: organizationId);
 
       setState(() {
         _allOfficials = officials;

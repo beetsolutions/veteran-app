@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../member_detail_screen.dart';
 import '../../models/member.dart';
 import '../../data/repositories/members_repository.dart';
+import '../../providers/user_provider.dart';
 
 class MembersTab extends StatefulWidget {
   final MembersRepository? membersRepository;
@@ -35,7 +37,11 @@ class _MembersTabState extends State<MembersTab> {
         _errorMessage = null;
       });
 
-      final members = await _membersRepository.getMembers();
+      // Get the current organization ID from UserProvider
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      final organizationId = userProvider.currentOrganization?.id;
+
+      final members = await _membersRepository.getMembers(organizationId: organizationId);
 
       setState(() {
         _members = members;
