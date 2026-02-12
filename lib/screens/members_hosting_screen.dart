@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../models/member.dart';
 import '../models/hosting_schedule.dart';
 import '../data/repositories/hosting_repository.dart';
+import '../data/storage/auth_token_storage.dart';
+import '../data/api/api_client.dart';
 
 class MembersHostingScreen extends StatefulWidget {
   final HostingRepository? hostingRepository;
@@ -17,15 +19,18 @@ class MembersHostingScreen extends StatefulWidget {
 
 class _MembersHostingScreenState extends State<MembersHostingScreen> {
   late final HostingRepository _hostingRepository;
+  late final AuthTokenStorage _authTokenStorage;
   HostingSchedule? _currentSchedule;
   HostingSchedule? _nextSchedule;
   bool _isLoading = true;
   String? _errorMessage;
+  String? _currentUserId;
 
   @override
   void initState() {
     super.initState();
     _hostingRepository = widget.hostingRepository ?? HostingRepository();
+    _authTokenStorage = AuthTokenStorage();
     _loadData();
   }
 
@@ -36,10 +41,14 @@ class _MembersHostingScreenState extends State<MembersHostingScreen> {
         _errorMessage = null;
       });
 
+      // Load current user ID
+      final userId = await _authTokenStorage.getUserId();
+      
       final current = await _hostingRepository.getCurrentSchedule();
       final next = await _hostingRepository.getNextSchedule();
 
       setState(() {
+        _currentUserId = userId;
         _currentSchedule = current;
         _nextSchedule = next;
         _isLoading = false;
@@ -447,6 +456,9 @@ class _MembersHostingScreenState extends State<MembersHostingScreen> {
   }
 
   Widget _buildPaymentListItem(BuildContext context, Member member, bool isPaid) {
+    final isCurrentUser = member.id == _currentUserId;
+    final canMarkPayment = isCurrentUser && _isCurrentUserHost;
+
     return ListTile(
       leading: CircleAvatar(
         backgroundColor: isPaid ? Colors.green.shade100 : Colors.orange.shade100,
@@ -456,19 +468,37 @@ class _MembersHostingScreenState extends State<MembersHostingScreen> {
           size: 20,
         ),
       ),
-      title: Text(member.name),
-      subtitle: Text(member.location),
-      trailing: Chip(
-        label: Text(
-          isPaid ? 'Paid' : 'Pending',
-          style: TextStyle(
-            fontSize: 12,
-            color: isPaid ? Colors.green : Colors.orange,
-            fontWeight: FontWeight.w600,
-          ),
+      title: Text(
+        member.name + (isCurrentUser ? ' (You)' : ''),
+        style: TextStyle(
+          fontWeight: isCurrentUser ? FontWeight.bold : FontWeight.normal,
         ),
-        backgroundColor: isPaid ? Colors.green.shade50 : Colors.orange.shade50,
       ),
+      subtitle: Text(member.location),
+      trailing: canMarkPayment
+          ? ElevatedButton(
+              onPressed: () => _markPayment(!isPaid),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: isPaid ? Colors.orange : Colors.green,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              ),
+              child: Text(
+                isPaid ? 'Mark Unpaid' : 'Mark Paid',
+                style: const TextStyle(fontSize: 12),
+              ),
+            )
+          : Chip(
+              label: Text(
+                isPaid ? 'Paid' : 'Pending',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: isPaid ? Colors.green : Colors.orange,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              backgroundColor: isPaid ? Colors.green.shade50 : Colors.orange.shade50,
+            ),
     );
   }
 
@@ -478,5 +508,66 @@ class _MembersHostingScreenState extends State<MembersHostingScreen> {
       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ];
     return '${months[date.month - 1]} ${date.day}, ${date.year}';
+  }
+
+  /// Check if the current user is a host in the current schedule
+  bool get _isCurrentUserHost {
+    if (_currentUserId == null || _currentSchedule == null) return false;
+    return _currentSchedule!.hosts.any((host) => host.id == _currentUserId);
+  }
+
+  /// Mark payment status for the current user
+  Future<void> _markPayment(bool isPaid) async {
+    if (_currentUserId == null || _currentSchedule == null) return;
+
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+
+      await _hostingRepository.markPayment(
+        memberId: _currentUserId!,
+        scheduleId: _currentSchedule!.id,
+        isPaid: isPaid,
+      );
+
+      // Reload data to show updated payment status
+      await _loadData();
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(isPaid ? 'Payment marked as paid' : 'Payment marked as unpaid'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } on ApiException catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.message),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to update payment status: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 }

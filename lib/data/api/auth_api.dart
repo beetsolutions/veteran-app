@@ -34,6 +34,9 @@ class AuthApi {
         refreshToken: authResponse.refreshToken,
       );
       
+      // Store user ID
+      await _tokenStorage.saveUserId(authResponse.user.id);
+      
       // Store current organization ID if available
       if (authResponse.user.currentOrganizationId != null) {
         await _tokenStorage.saveCurrentOrganizationId(

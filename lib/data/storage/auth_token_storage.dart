@@ -5,6 +5,7 @@ class AuthTokenStorage {
   static const String _accessTokenKey = 'access_token';
   static const String _refreshTokenKey = 'refresh_token';
   static const String _currentOrganizationIdKey = 'current_organization_id';
+  static const String _userIdKey = 'user_id';
   
   final FlutterSecureStorage _storage;
 
@@ -52,6 +53,16 @@ class AuthTokenStorage {
     return await _storage.read(key: _currentOrganizationIdKey);
   }
 
+  /// Save user ID
+  Future<void> saveUserId(String userId) async {
+    await _storage.write(key: _userIdKey, value: userId);
+  }
+
+  /// Get user ID
+  Future<String?> getUserId() async {
+    return await _storage.read(key: _userIdKey);
+  }
+
   /// Delete access token
   Future<void> deleteAccessToken() async {
     await _storage.delete(key: _accessTokenKey);
@@ -67,12 +78,18 @@ class AuthTokenStorage {
     await _storage.delete(key: _currentOrganizationIdKey);
   }
 
+  /// Delete user ID
+  Future<void> deleteUserId() async {
+    await _storage.delete(key: _userIdKey);
+  }
+
   /// Delete all tokens (logout)
   Future<void> deleteAllTokens() async {
     await Future.wait([
       deleteAccessToken(),
       deleteRefreshToken(),
       deleteCurrentOrganizationId(),
+      deleteUserId(),
     ]);
   }
 
