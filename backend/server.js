@@ -1275,12 +1275,12 @@ app.get('/hosting/next', extractOrganizationId, (req, res) => {
   res.json(getHostingSchedule(true, req.organizationId));
 });
 
-<<<<<<< copilot/add-meetings-constitution-and-members
 // Get all meetings (organization-specific)
 app.get('/meetings', extractOrganizationId, (req, res) => {
   const orgMeetings = meetings.filter(m => m.organizationId === req.organizationId);
   res.json(orgMeetings);
-=======
+});
+
 // Mark payment for hosting
 app.post('/hosting/mark-payment', (req, res) => {
   const { memberId, scheduleId, isPaid } = req.body;
@@ -1320,12 +1320,6 @@ app.post('/hosting/mark-payment', (req, res) => {
     message: 'Payment status updated successfully',
     member: member
   });
-});
-
-// Get all meetings
-app.get('/meetings', (req, res) => {
-  res.json(meetings);
->>>>>>> main
 });
 
 // Get meeting by ID (organization-specific)
