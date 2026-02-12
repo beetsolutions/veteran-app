@@ -23,7 +23,10 @@ void main() {
       expect(find.byIcon(Icons.people), findsOneWidget);
     });
 
-    testWidgets('StatCard applies correct styles', (WidgetTester tester) async {
+    testWidgets('StatCard applies correct styles for mobile', (WidgetTester tester) async {
+      // Set mobile screen size
+      await tester.binding.setSurfaceSize(const Size(400, 800));
+      
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
@@ -38,12 +41,69 @@ void main() {
       );
 
       final titleText = tester.widget<Text>(find.text('Account Balance'));
-      expect(titleText.style?.fontSize, 14);
+      expect(titleText.style?.fontSize, 14); // Mobile font size
       expect(titleText.style?.color, Colors.grey);
 
       final valueText = tester.widget<Text>(find.text('\$25,000'));
-      expect(valueText.style?.fontSize, 28);
+      expect(valueText.style?.fontSize, 28); // Mobile font size
       expect(valueText.style?.fontWeight, FontWeight.bold);
+      
+      // Reset to avoid affecting other tests
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+    });
+
+    testWidgets('StatCard applies responsive styles for tablet', (WidgetTester tester) async {
+      // Set tablet screen size
+      await tester.binding.setSurfaceSize(const Size(768, 1024));
+      
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: StatCard(
+              title: 'Total Members',
+              value: '150',
+              icon: Icons.people,
+              iconColor: Colors.blue,
+            ),
+          ),
+        ),
+      );
+
+      final titleText = tester.widget<Text>(find.text('Total Members'));
+      expect(titleText.style?.fontSize, 15); // Tablet font size
+
+      final valueText = tester.widget<Text>(find.text('150'));
+      expect(valueText.style?.fontSize, 32); // Tablet font size
+      
+      // Reset to avoid affecting other tests
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+    });
+
+    testWidgets('StatCard applies responsive styles for desktop', (WidgetTester tester) async {
+      // Set desktop screen size
+      await tester.binding.setSurfaceSize(const Size(1200, 800));
+      
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: StatCard(
+              title: 'Events This Month',
+              value: '12',
+              icon: Icons.event,
+              iconColor: Colors.orange,
+            ),
+          ),
+        ),
+      );
+
+      final titleText = tester.widget<Text>(find.text('Events This Month'));
+      expect(titleText.style?.fontSize, 16); // Desktop font size
+
+      final valueText = tester.widget<Text>(find.text('12'));
+      expect(valueText.style?.fontSize, 36); // Desktop font size
+      
+      // Reset to avoid affecting other tests
+      addTearDown(() => tester.binding.setSurfaceSize(null));
     });
   });
 }
