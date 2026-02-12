@@ -15,6 +15,7 @@ import '../../data/repositories/news_repository.dart';
 import '../../data/api/api_client.dart';
 import '../../data/api/auth_api.dart';
 import '../../providers/user_provider.dart';
+import '../../utils/responsive_utils.dart';
 
 class HomeTab extends StatefulWidget {
   final OfficialsRepository? officialsRepository;
@@ -249,10 +250,12 @@ class _HomeTabState extends State<HomeTab> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 16),
+                      SizedBox(height: ResponsiveUtils.getSpacing(context, mobile: 16.0, tablet: 20.0, desktop: 24.0)),
                       // Statistics Section
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: ResponsiveUtils.getPadding(context, mobile: 16.0, tablet: 24.0, desktop: 32.0)
+                        ),
                         child: Row(
                           children: [
                             Expanded(
@@ -263,7 +266,7 @@ class _HomeTabState extends State<HomeTab> {
                                 iconColor: Colors.blue,
                               ),
                             ),
-                            const SizedBox(width: 16),
+                            SizedBox(width: ResponsiveUtils.getSpacing(context, mobile: 16.0, tablet: 20.0, desktop: 24.0)),
                             Expanded(
                               child: StatCard(
                                 title: 'Account Balance',
@@ -275,7 +278,7 @@ class _HomeTabState extends State<HomeTab> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      SizedBox(height: ResponsiveUtils.getSpacing(context, mobile: 24.0, tablet: 28.0, desktop: 32.0)),
                       
                       // Officials Section
                       SectionHeader(
