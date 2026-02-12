@@ -162,6 +162,10 @@ class _HomeTabState extends State<HomeTab> {
         currentOrganizationId: organization.id,
       );
 
+      // Update UserProvider
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      userProvider.setUser(updatedUser);
+
       // Notify parent widget
       widget.onUserUpdated?.call(updatedUser);
 

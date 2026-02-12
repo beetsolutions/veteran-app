@@ -22,12 +22,27 @@ class _ConstitutionTabState extends State<ConstitutionTab> {
   Constitution? _constitution;
   bool _isLoading = true;
   String? _errorMessage;
+  String? _lastOrganizationId;
 
   @override
   void initState() {
     super.initState();
     _constitutionRepository = widget.constitutionRepository ?? ConstitutionRepository();
     _loadData();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Reload data when organization changes
+    final userProvider = Provider.of<UserProvider>(context);
+    final currentOrgId = userProvider.currentOrganization?.id;
+    
+    // Only reload if organization has changed
+    if (currentOrgId != null && currentOrgId != _lastOrganizationId) {
+      _lastOrganizationId = currentOrgId;
+      _loadData();
+    }
   }
 
   Future<void> _loadData() async {
