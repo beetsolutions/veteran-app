@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/meeting.dart';
+import '../utils/responsive_utils.dart';
 
 class MeetingCard extends StatelessWidget {
   final Meeting meeting;
@@ -15,15 +16,64 @@ class MeetingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    
+    final margin = ResponsiveUtils.getMargin(
+      context,
+      mobile: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      tablet: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+      desktop: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+    );
+    final padding = ResponsiveUtils.getPadding(
+      context,
+      mobile: 16.0,
+      tablet: 20.0,
+      desktop: 24.0,
+    );
+    final iconSize = ResponsiveUtils.getIconSize(
+      context,
+      mobile: 20.0,
+      tablet: 22.0,
+      desktop: 24.0,
+    );
+    final smallIconSize = ResponsiveUtils.getIconSize(
+      context,
+      mobile: 16.0,
+      tablet: 18.0,
+      desktop: 20.0,
+    );
+    final dateFontSize = ResponsiveUtils.getFontSize(
+      context,
+      mobile: 14.0,
+      tablet: 15.0,
+      desktop: 16.0,
+    );
+    final titleFontSize = ResponsiveUtils.getFontSize(
+      context,
+      mobile: 18.0,
+      tablet: 20.0,
+      desktop: 22.0,
+    );
+    final detailFontSize = ResponsiveUtils.getFontSize(
+      context,
+      mobile: 14.0,
+      tablet: 15.0,
+      desktop: 16.0,
+    );
+    final spacing = ResponsiveUtils.getSpacing(
+      context,
+      mobile: 8.0,
+      tablet: 10.0,
+      desktop: 12.0,
+    );
 
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: margin,
       elevation: 2,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(8),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(padding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -32,60 +82,60 @@ class MeetingCard extends StatelessWidget {
                   Icon(
                     Icons.event,
                     color: theme.primaryColor,
-                    size: 20,
+                    size: iconSize,
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: spacing),
                   Text(
                     meeting.date,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: dateFontSize,
                       color: theme.primaryColor,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: spacing),
               Text(
                 meeting.title,
-                style: const TextStyle(
-                  fontSize: 18,
+                style: TextStyle(
+                  fontSize: titleFontSize,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: spacing + 4),
               Row(
                 children: [
                   Icon(
                     Icons.location_on,
-                    size: 16,
+                    size: smallIconSize,
                     color: isDark ? Colors.grey[400] : Colors.grey[600],
                   ),
-                  const SizedBox(width: 4),
+                  SizedBox(width: 4),
                   Expanded(
                     child: Text(
                       meeting.venue,
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: detailFontSize,
                         color: isDark ? Colors.grey[400] : Colors.grey[600],
                       ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 6),
+              SizedBox(height: 6),
               Row(
                 children: [
                   Icon(
                     Icons.people,
-                    size: 16,
+                    size: smallIconSize,
                     color: isDark ? Colors.grey[400] : Colors.grey[600],
                   ),
-                  const SizedBox(width: 4),
+                  SizedBox(width: 4),
                   Text(
                     '${meeting.attendance} members present',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: detailFontSize,
                       color: isDark ? Colors.grey[400] : Colors.grey[600],
                     ),
                   ),
