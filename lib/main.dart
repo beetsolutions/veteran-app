@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'screens/login_screen.dart';
 import 'screens/home_screen.dart';
 import 'providers/theme_provider.dart';
+import 'providers/user_provider.dart';
 import 'data/services/auth_service.dart';
 
 void main() {
@@ -17,6 +19,7 @@ class VeteranApp extends StatefulWidget {
 
 class _VeteranAppState extends State<VeteranApp> {
   final ThemeProvider _themeProvider = ThemeProvider();
+  final UserProvider _userProvider = UserProvider();
   final AuthService _authService = AuthService();
   bool _isCheckingAuth = true;
   bool _isAuthenticated = false;
@@ -37,64 +40,70 @@ class _VeteranAppState extends State<VeteranApp> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _themeProvider,
-      builder: (context, child) {
-        return ThemeProviderWidget(
-          themeProvider: _themeProvider,
-          child: MaterialApp(
-            title: 'VeteranApp',
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
-              brightness: Brightness.light,
-              primaryColor: Colors.blue,
-              scaffoldBackgroundColor: Colors.grey[50],
-              appBarTheme: const AppBarTheme(
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
-                elevation: 0,
-              ),
-              cardTheme: CardThemeData(
-                color: Colors.white,
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: _themeProvider),
+        ChangeNotifierProvider.value(value: _userProvider),
+      ],
+      child: AnimatedBuilder(
+        animation: _themeProvider,
+        builder: (context, child) {
+          return ThemeProviderWidget(
+            themeProvider: _themeProvider,
+            child: MaterialApp(
+              title: 'VeteranApp',
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(
+                primarySwatch: Colors.blue,
+                brightness: Brightness.light,
+                primaryColor: Colors.blue,
+                scaffoldBackgroundColor: Colors.grey[50],
+                appBarTheme: const AppBarTheme(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                  elevation: 0,
                 ),
-              ),
-              useMaterial3: true,
-            ),
-            darkTheme: ThemeData(
-              brightness: Brightness.dark,
-              primaryColor: const Color(0xFF1DB954),
-              scaffoldBackgroundColor: Colors.black,
-              appBarTheme: const AppBarTheme(
-                backgroundColor: Color(0xFF121212),
-                foregroundColor: Colors.white,
-                elevation: 0,
-              ),
-              cardTheme: CardThemeData(
-                color: const Color(0xFF1E1E1E),
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+                cardTheme: CardThemeData(
+                  color: Colors.white,
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
+                useMaterial3: true,
               ),
-              useMaterial3: true,
+              darkTheme: ThemeData(
+                brightness: Brightness.dark,
+                primaryColor: const Color(0xFF1DB954),
+                scaffoldBackgroundColor: Colors.black,
+                appBarTheme: const AppBarTheme(
+                  backgroundColor: Color(0xFF121212),
+                  foregroundColor: Colors.white,
+                  elevation: 0,
+                ),
+                cardTheme: CardThemeData(
+                  color: const Color(0xFF1E1E1E),
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                useMaterial3: true,
+              ),
+              themeMode: _themeProvider.themeMode,
+              home: _isCheckingAuth
+                  ? const Scaffold(
+                      body: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    )
+                  : _isAuthenticated
+                      ? const HomeScreen()
+                      : const LoginScreen(),
             ),
-            themeMode: _themeProvider.themeMode,
-            home: _isCheckingAuth
-                ? const Scaffold(
-                    body: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  )
-                : _isAuthenticated
-                    ? const HomeScreen()
-                    : const LoginScreen(),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
