@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:provider/provider.dart';
 import 'package:veteranapp/screens/tab_screens/minutes_tab.dart';
 import 'package:veteranapp/models/meeting.dart';
+import 'package:veteranapp/models/user.dart';
+import 'package:veteranapp/models/organization.dart';
 import 'package:veteranapp/data/repositories/meetings_repository.dart';
+import 'package:veteranapp/providers/user_provider.dart';
 
 // Mock repository for testing
 class MockMeetingsRepository implements MeetingsRepository {
@@ -39,7 +43,7 @@ class MockMeetingsRepository implements MeetingsRepository {
   ];
 
   @override
-  Future<List<Meeting>> getMeetings() async {
+  Future<List<Meeting>> getMeetings({String? organizationId}) async {
     if (_shouldFail) {
       throw Exception('Failed to load meetings');
     }
@@ -49,7 +53,7 @@ class MockMeetingsRepository implements MeetingsRepository {
   }
 
   @override
-  Future<Meeting> getMeetingById(String id) async {
+  Future<Meeting> getMeetingById(String id, {String? organizationId}) async {
     if (_shouldFail) {
       throw Exception('Failed to load meeting');
     }
@@ -58,15 +62,45 @@ class MockMeetingsRepository implements MeetingsRepository {
   }
 }
 
+// Helper function to create a test UserProvider
+UserProvider createMockUserProvider() {
+  final organization = const Organization(
+    id: 'test-org-1',
+    name: 'Test Organization',
+    location: 'Test Location',
+  );
+  
+  final user = User(
+    id: 'test-user-1',
+    username: 'testuser',
+    email: 'test@example.com',
+    name: 'Test User',
+    organizations: [organization],
+    currentOrganizationId: organization.id,
+  );
+  
+  final userProvider = UserProvider();
+  userProvider.setUser(user);
+  return userProvider;
+}
+
+// Helper function to wrap a widget with necessary providers
+Widget wrapWithProviders(Widget child, {UserProvider? userProvider}) {
+  return ChangeNotifierProvider<UserProvider>.value(
+    value: userProvider ?? createMockUserProvider(),
+    child: MaterialApp(
+      home: child,
+    ),
+  );
+}
+
 void main() {
   group('MinutesTab Tests', () {
     testWidgets('MinutesTab displays loading indicator initially', (WidgetTester tester) async {
       final repository = MockMeetingsRepository();
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: MinutesTab(meetingsRepository: repository),
-        ),
+        wrapWithProviders(MinutesTab(meetingsRepository: repository)),
       );
 
       // Should show loading indicator initially
@@ -77,9 +111,7 @@ void main() {
       final repository = MockMeetingsRepository();
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: MinutesTab(meetingsRepository: repository),
-        ),
+        wrapWithProviders(MinutesTab(meetingsRepository: repository)),
       );
 
       // Wait for loading to complete
@@ -99,9 +131,7 @@ void main() {
       final repository = MockMeetingsRepository();
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: MinutesTab(meetingsRepository: repository),
-        ),
+        wrapWithProviders(MinutesTab(meetingsRepository: repository)),
       );
 
       await tester.pumpAndSettle();
@@ -115,9 +145,7 @@ void main() {
       final repository = MockMeetingsRepository(shouldFail: true);
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: MinutesTab(meetingsRepository: repository),
-        ),
+        wrapWithProviders(MinutesTab(meetingsRepository: repository)),
       );
 
       await tester.pumpAndSettle();
@@ -131,9 +159,7 @@ void main() {
       final repository = MockMeetingsRepository(shouldFail: true);
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: MinutesTab(meetingsRepository: repository),
-        ),
+        wrapWithProviders(MinutesTab(meetingsRepository: repository)),
       );
 
       await tester.pumpAndSettle();
@@ -153,9 +179,7 @@ void main() {
       final repository = MockMeetingsRepository(meetings: []);
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: MinutesTab(meetingsRepository: repository),
-        ),
+        wrapWithProviders(MinutesTab(meetingsRepository: repository)),
       );
 
       await tester.pumpAndSettle();
@@ -169,9 +193,7 @@ void main() {
       final repository = MockMeetingsRepository();
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: MinutesTab(meetingsRepository: repository),
-        ),
+        wrapWithProviders(MinutesTab(meetingsRepository: repository)),
       );
 
       await tester.pumpAndSettle();
@@ -188,9 +210,7 @@ void main() {
       final repository = MockMeetingsRepository();
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: MinutesTab(meetingsRepository: repository),
-        ),
+        wrapWithProviders(MinutesTab(meetingsRepository: repository)),
       );
 
       await tester.pumpAndSettle();
@@ -203,9 +223,7 @@ void main() {
       final repository = MockMeetingsRepository();
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: MinutesTab(meetingsRepository: repository),
-        ),
+        wrapWithProviders(MinutesTab(meetingsRepository: repository)),
       );
 
       await tester.pumpAndSettle();
@@ -248,9 +266,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: MinutesTab(meetingsRepository: repository),
-        ),
+        wrapWithProviders(MinutesTab(meetingsRepository: repository)),
       );
 
       await tester.pumpAndSettle();
@@ -298,9 +314,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: MinutesTab(meetingsRepository: repository),
-        ),
+        wrapWithProviders(MinutesTab(meetingsRepository: repository)),
       );
 
       await tester.pumpAndSettle();
@@ -356,9 +370,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: MinutesTab(meetingsRepository: repository),
-        ),
+        wrapWithProviders(MinutesTab(meetingsRepository: repository)),
       );
 
       await tester.pumpAndSettle();
