@@ -57,12 +57,12 @@ class _VeteranAppState extends State<VeteranApp> {
               title: 'VeteranApp',
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
-                primarySwatch: Colors.blue,
+                primarySwatch: Colors.deepPurple,
                 brightness: Brightness.light,
-                primaryColor: Colors.blue,
+                primaryColor: Colors.deepPurple,
                 scaffoldBackgroundColor: Colors.grey[50],
                 appBarTheme: const AppBarTheme(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: Colors.deepPurple,
                   foregroundColor: Colors.white,
                   elevation: 0,
                 ),
@@ -78,9 +78,9 @@ class _VeteranAppState extends State<VeteranApp> {
               darkTheme: ThemeData(
                 brightness: Brightness.dark,
                 primaryColor: const Color(0xFF1DB954),
-                scaffoldBackgroundColor: Colors.black,
+                scaffoldBackgroundColor: Color(0xFF11111B),
                 appBarTheme: const AppBarTheme(
-                  backgroundColor: Color(0xFF121212),
+                  backgroundColor: Color(0xFF11111B),
                   foregroundColor: Colors.white,
                   elevation: 0,
                 ),

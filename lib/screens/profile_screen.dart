@@ -29,12 +29,12 @@ class ProfileScreen extends StatelessWidget {
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(32.0),
-              color: Colors.blue.shade50,
+              color: Colors.deepPurple.shade50,
               child: Column(
                 children: [
                   CircleAvatar(
                     radius: 60,
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Colors.deepPurple,
                     child: const Text(
                       'JD',
                       style: TextStyle(
@@ -147,7 +147,7 @@ class ProfileScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Row(
           children: [
-            Icon(icon, size: 32, color: Colors.blue),
+            Icon(icon, size: 32, color: Colors.deepPurple),
             const SizedBox(width: 16),
             Expanded(
               child: Column(

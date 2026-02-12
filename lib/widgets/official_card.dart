@@ -64,7 +64,7 @@ class OfficialCard extends StatelessWidget {
           ),
         ),
         leading: CircleAvatar(
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.deepPurple,
           radius: avatarRadius,
           child: Text(
             official.name.isNotEmpty ? official.name[0] : '?',

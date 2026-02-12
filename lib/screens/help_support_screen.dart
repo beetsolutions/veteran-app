@@ -152,7 +152,7 @@ class HelpSupportScreen extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: ExpansionTile(
-        leading: const Icon(Icons.help_outline, color: Colors.blue),
+        leading: const Icon(Icons.help_outline, color: Colors.deepPurple),
         title: Text(
           question,
           style: const TextStyle(
@@ -188,8 +188,8 @@ class HelpSupportScreen extends StatelessWidget {
       elevation: 1,
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: Colors.blue.shade50,
-          child: Icon(icon, color: Colors.blue),
+          backgroundColor: Colors.deepPurple.shade50,
+          child: Icon(icon, color: Colors.deepPurple),
         ),
         title: Text(
           title,

@@ -24,7 +24,7 @@ Added a share button to each article in the Veterans Organization Constitution, 
     children: [
       Expanded(child: Text(title, ...)),
       IconButton(
-        icon: const Icon(Icons.share, color: Colors.blue),
+        icon: const Icon(Icons.share, color: Colors.deepPurple),
         tooltip: 'Share Article',
         onPressed: () {
           final String shareContent = '$title\n\n${sections.join('\n\n')}';

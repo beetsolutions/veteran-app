@@ -155,7 +155,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       elevation: 1,
       child: SwitchListTile(
-        secondary: Icon(icon, color: iconColor ?? Colors.blue),
+        secondary: Icon(icon, color: iconColor ?? Colors.deepPurple),
         title: Text(title),
         subtitle: Text(subtitle),
         value: value,
@@ -175,7 +175,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       elevation: 1,
       child: ListTile(
-        leading: Icon(icon, color: iconColor ?? Colors.blue),
+        leading: Icon(icon, color: iconColor ?? Colors.deepPurple),
         title: Text(title),
         subtitle: Text(subtitle),
         trailing: const Icon(Icons.chevron_right),

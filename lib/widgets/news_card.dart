@@ -73,14 +73,14 @@ class NewsCard extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: spacing, vertical: 4),
                     decoration: BoxDecoration(
-                      color: Colors.blue.shade100,
+                      color: Colors.deepPurple.shade100,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
                       newsItem.category,
                       style: TextStyle(
                         fontSize: categoryFontSize,
-                        color: Colors.blue.shade700,
+                        color: Colors.deepPurple.shade700,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

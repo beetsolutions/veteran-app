@@ -98,7 +98,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           const Icon(
             Icons.lock_reset,
             size: 80,
-            color: Colors.blue,
+            color: Colors.deepPurple,
           ),
           const SizedBox(height: 20),
           const Text(

@@ -119,12 +119,12 @@ Row(
         style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
-          color: Colors.blue,
+          color: Colors.deepPurple,
         ),
       ),
     ),
     IconButton(
-      icon: Icon(Icons.share, color: Colors.blue),
+      icon: Icon(Icons.share, color: Colors.deepPurple),
       tooltip: 'Share Article',
       onPressed: () => Share.share(...),
     ),

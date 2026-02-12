@@ -141,7 +141,7 @@ class _ConstitutionTabState extends State<ConstitutionTab> {
             const SizedBox(height: 24),
             Card(
               elevation: 2,
-              color: Colors.blue.shade50,
+              color: Colors.deepPurple.shade50,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -149,7 +149,7 @@ class _ConstitutionTabState extends State<ConstitutionTab> {
                   children: [
                     const Row(
                       children: [
-                        Icon(Icons.check_circle, color: Colors.blue),
+                        Icon(Icons.check_circle, color: Colors.deepPurple),
                         SizedBox(width: 16),
                         Expanded(
                           child: Text(
@@ -197,12 +197,12 @@ class _ConstitutionTabState extends State<ConstitutionTab> {
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.blue,
+                  color: Colors.deepPurple,
                 ),
               ),
             ),
             IconButton(
-              icon: const Icon(Icons.share, color: Colors.blue),
+              icon: const Icon(Icons.share, color: Colors.deepPurple),
               tooltip: 'Share Article',
               onPressed: () {
                 // Prepare share content

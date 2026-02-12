@@ -143,7 +143,7 @@ class MoreTab extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       elevation: 1,
       child: ListTile(
-        leading: Icon(icon, color: iconColor ?? Colors.blue),
+        leading: Icon(icon, color: iconColor ?? Colors.deepPurple),
         title: Text(title),
         trailing: const Icon(Icons.chevron_right),
         onTap: onTap,

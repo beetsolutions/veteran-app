@@ -99,7 +99,7 @@ class _SoccerStatisticsScreenState extends State<SoccerStatisticsScreen> {
                             const SizedBox(height: 12),
                             _buildInfoCard(
                               icon: Icons.calendar_today,
-                              iconColor: Colors.blue,
+                              iconColor: Colors.deepPurple,
                               title: 'Match Day',
                               value: _currentMatch!.matchDay,
                             ),
@@ -152,7 +152,7 @@ class _SoccerStatisticsScreenState extends State<SoccerStatisticsScreen> {
                                   padding: const EdgeInsets.only(bottom: 8.0),
                                   child: _buildStatCard(
                                     icon: Icons.person_add,
-                                    iconColor: Colors.blue,
+                                    iconColor: Colors.deepPurple,
                                     playerName: assist.playerName,
                                     minute: assist.minute,
                                     team: assist.team,
@@ -488,7 +488,7 @@ class _SoccerStatisticsScreenState extends State<SoccerStatisticsScreen> {
                     style: TextStyle(
                       fontSize: scoreFontSize,
                       fontWeight: FontWeight.bold,
-                      color: Colors.blue,
+                      color: Colors.deepPurple,
                     ),
                   ),
                 ],
@@ -519,7 +519,7 @@ class _SoccerStatisticsScreenState extends State<SoccerStatisticsScreen> {
                     style: TextStyle(
                       fontSize: scoreFontSize,
                       fontWeight: FontWeight.bold,
-                      color: Colors.blue,
+                      color: Colors.deepPurple,
                     ),
                   ),
                 ],

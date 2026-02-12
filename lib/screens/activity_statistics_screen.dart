@@ -57,7 +57,7 @@ class ActivityStatisticsScreen extends StatelessWidget {
                     title: 'Total Members',
                     value: '150',
                     icon: Icons.people,
-                    iconColor: Colors.blue,
+                    iconColor: Colors.deepPurple,
                   ),
                   StatCard(
                     title: 'Active Members',
@@ -96,7 +96,7 @@ class ActivityStatisticsScreen extends StatelessWidget {
                     title: 'Event Attendance',
                     value: '85%',
                     icon: Icons.check_circle,
-                    iconColor: Colors.blue,
+                    iconColor: Colors.deepPurple,
                   ),
                   StatCard(
                     title: 'Volunteer Hours',

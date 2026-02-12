@@ -143,7 +143,7 @@ class _SoccerMatchHistoryScreenState extends State<SoccerMatchHistoryScreen> {
                           style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
-                            color: Colors.blue,
+                            color: Colors.deepPurple,
                           ),
                         ),
                       ],
@@ -174,7 +174,7 @@ class _SoccerMatchHistoryScreenState extends State<SoccerMatchHistoryScreen> {
                           style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
-                            color: Colors.blue,
+                            color: Colors.deepPurple,
                           ),
                         ),
                       ],
@@ -241,7 +241,7 @@ class SoccerStatisticsDetailScreen extends StatelessWidget {
               const SizedBox(height: 12),
               _buildInfoCard(
                 icon: Icons.calendar_today,
-                iconColor: Colors.blue,
+                iconColor: Colors.deepPurple,
                 title: 'Match Day',
                 value: match.matchDay,
               ),
@@ -294,7 +294,7 @@ class SoccerStatisticsDetailScreen extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: _buildStatCard(
                       icon: Icons.person_add,
-                      iconColor: Colors.blue,
+                      iconColor: Colors.deepPurple,
                       playerName: assist.playerName,
                       minute: assist.minute,
                       team: assist.team,
@@ -416,7 +416,7 @@ class SoccerStatisticsDetailScreen extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
-                      color: Colors.blue,
+                      color: Colors.deepPurple,
                     ),
                   ),
                 ],
@@ -447,7 +447,7 @@ class SoccerStatisticsDetailScreen extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
-                      color: Colors.blue,
+                      color: Colors.deepPurple,
                     ),
                   ),
                 ],

@@ -165,7 +165,7 @@ class AboutScreen extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: Colors.blue, size: 24),
+          Icon(icon, color: Colors.deepPurple, size: 24),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -202,7 +202,7 @@ class AboutScreen extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
       child: ListTile(
-        leading: Icon(icon, color: Colors.blue),
+        leading: Icon(icon, color: Colors.deepPurple),
         title: Text(title),
         subtitle: Text(content),
       ),

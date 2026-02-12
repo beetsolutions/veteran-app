@@ -23,7 +23,7 @@ class NotificationsScreen extends StatelessWidget {
           _buildNotificationCard(
             context,
             icon: Icons.event,
-            iconColor: Colors.blue,
+            iconColor: Colors.deepPurple,
             title: 'Upcoming Event',
             description: 'Monthly meeting scheduled for this Friday at 6:00 PM',
             time: '2 hours ago',
@@ -91,7 +91,7 @@ class NotificationsScreen extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       elevation: isRead ? 1 : 2,
-      color: isRead ? null : Colors.blue.shade50,
+      color: isRead ? null : Colors.deepPurple.shade50,
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: iconColor.withOpacity(0.1),
@@ -125,7 +125,7 @@ class NotificationsScreen extends StatelessWidget {
                 width: 12,
                 height: 12,
                 decoration: const BoxDecoration(
-                  color: Colors.blue,
+                  color: Colors.deepPurple,
                   shape: BoxShape.circle,
                 ),
               ),

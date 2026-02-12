@@ -49,12 +49,12 @@ class MemberDetailScreen extends StatelessWidget {
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(32.0),
-              color: Colors.blue.shade50,
+              color: Colors.deepPurple.shade50,
               child: Column(
                 children: [
                   CircleAvatar(
                     radius: 60,
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Colors.deepPurple,
                     child: Text(
                       name.trim().isNotEmpty ? name.trim()[0].toUpperCase() : '?',
                       style: const TextStyle(
@@ -127,7 +127,7 @@ class MemberDetailScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Row(
           children: [
-            Icon(icon, size: 32, color: color ?? Colors.blue),
+            Icon(icon, size: 32, color: color ?? Colors.deepPurple),
             const SizedBox(width: 16),
             Expanded(
               child: Column(

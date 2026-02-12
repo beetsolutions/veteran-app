@@ -107,18 +107,18 @@ class _HomeTabState extends State<HomeTab> {
               return ListTile(
                 leading: Icon(
                   Icons.business,
-                  color: isCurrent ? Colors.blue : Colors.grey,
+                  color: isCurrent ? Colors.deepPurple : Colors.grey,
                 ),
                 title: Text(
                   org.name,
                   style: TextStyle(
                     fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
-                    color: isCurrent ? Colors.blue : null,
+                    color: isCurrent ? Colors.deepPurple : null,
                   ),
                 ),
                 subtitle: Text(org.location),
                 trailing: isCurrent
-                    ? const Icon(Icons.check_circle, color: Colors.blue)
+                    ? const Icon(Icons.check_circle, color: Colors.deepPurple)
                     : null,
                 onTap: isCurrent
                     ? null
@@ -263,7 +263,7 @@ class _HomeTabState extends State<HomeTab> {
                                 title: 'Total Members',
                                 value: '$_totalMembers',
                                 icon: Icons.people,
-                                iconColor: Colors.blue,
+                                iconColor: Colors.deepPurple,
                               ),
                             ),
                             SizedBox(width: ResponsiveUtils.getSpacing(context, mobile: 16.0, tablet: 20.0, desktop: 24.0)),
