@@ -52,9 +52,6 @@ class _MembersHostingScreenState extends State<MembersHostingScreen> {
       // Load current user ID
       final userId = await _authTokenStorage.getUserId();
       
-      final current = await _hostingRepository.getCurrentSchedule();
-      final next = await _hostingRepository.getNextSchedule();
-
       setState(() {
         _currentUserId = userId;
         _currentSchedule = current;
