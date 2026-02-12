@@ -42,7 +42,7 @@ class HostingApi {
       'isPaid': isPaid,
     });
 
-    if (data['success'] == true) {
+    if (data['success']) {
       return Member.fromJson(data['member'] as Map<String, dynamic>);
     } else {
       throw ApiException(

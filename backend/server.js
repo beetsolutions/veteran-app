@@ -598,10 +598,10 @@ app.get('/hosting/next', (req, res) => {
 app.post('/hosting/mark-payment', (req, res) => {
   const { memberId, scheduleId, isPaid } = req.body;
 
-  if (!memberId || !scheduleId || isPaid === undefined) {
+  if (!memberId || !scheduleId || typeof isPaid !== 'boolean') {
     return res.status(400).json({ 
       success: false,
-      message: 'memberId, scheduleId, and isPaid are required' 
+      message: 'memberId, scheduleId, and isPaid (boolean) are required' 
     });
   }
 

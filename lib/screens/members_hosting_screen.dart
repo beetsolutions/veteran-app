@@ -469,7 +469,7 @@ class _MembersHostingScreenState extends State<MembersHostingScreen> {
         ),
       ),
       title: Text(
-        member.name + (isCurrentUser ? ' (You)' : ''),
+        '${member.name}${isCurrentUser ? ' (You)' : ''}',
         style: TextStyle(
           fontWeight: isCurrentUser ? FontWeight.bold : FontWeight.normal,
         ),
