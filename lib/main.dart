@@ -4,6 +4,7 @@ import 'screens/login_screen.dart';
 import 'screens/home_screen.dart';
 import 'providers/theme_provider.dart';
 import 'providers/user_provider.dart';
+import 'providers/feature_flags_provider.dart';
 import 'data/services/auth_service.dart';
 
 void main() {
@@ -20,6 +21,7 @@ class VeteranApp extends StatefulWidget {
 class _VeteranAppState extends State<VeteranApp> {
   final ThemeProvider _themeProvider = ThemeProvider();
   final UserProvider _userProvider = UserProvider();
+  final FeatureFlagsProvider _featureFlagsProvider = FeatureFlagsProvider();
   final AuthService _authService = AuthService();
   bool _isCheckingAuth = true;
   bool _isAuthenticated = false;
@@ -44,6 +46,7 @@ class _VeteranAppState extends State<VeteranApp> {
       providers: [
         ChangeNotifierProvider.value(value: _themeProvider),
         ChangeNotifierProvider.value(value: _userProvider),
+        ChangeNotifierProvider.value(value: _featureFlagsProvider),
       ],
       child: AnimatedBuilder(
         animation: _themeProvider,

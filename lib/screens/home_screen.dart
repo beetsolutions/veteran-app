@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'tab_screens/home_tab.dart';
 import 'tab_screens/constitution_tab.dart';
 import 'tab_screens/members_tab.dart';
 import 'tab_screens/minutes_tab.dart';
 import 'tab_screens/more_tab.dart';
 import '../models/user.dart';
+import '../providers/feature_flags_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   final User? initialUser;
@@ -33,18 +35,68 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _tabs = [
-      HomeTab(currentUser: _currentUser, onUserUpdated: _updateUser),
-      const ConstitutionTab(),
-      const MembersTab(),
-      const MinutesTab(),
-      const MoreTab(),
-    ];
+    final featureFlags = context.watch<FeatureFlagsProvider>().featureFlags;
+
+    // Build tabs list based on feature flags
+    final List<Widget> tabs = [];
+    final List<BottomNavigationBarItem> navItems = [];
+
+    // Home tab (always visible)
+    tabs.add(HomeTab(currentUser: _currentUser, onUserUpdated: _updateUser));
+    navItems.add(const BottomNavigationBarItem(
+      icon: Icon(Icons.home),
+      label: 'Home',
+    ));
+
+    // Constitution tab (conditional)
+    if (featureFlags.showConstitutionTab) {
+      tabs.add(const ConstitutionTab());
+      navItems.add(const BottomNavigationBarItem(
+        icon: Icon(Icons.article),
+        label: 'Constitution',
+      ));
+    }
+
+    // Members tab (always visible)
+    tabs.add(const MembersTab());
+    navItems.add(const BottomNavigationBarItem(
+      icon: Icon(Icons.people),
+      label: 'Members',
+    ));
+
+    // Minutes tab (conditional)
+    if (featureFlags.showMinutesTab) {
+      tabs.add(const MinutesTab());
+      navItems.add(const BottomNavigationBarItem(
+        icon: Icon(Icons.event_note),
+        label: 'Minutes',
+      ));
+    }
+
+    // More tab (always visible)
+    tabs.add(const MoreTab());
+    navItems.add(const BottomNavigationBarItem(
+      icon: Icon(Icons.more_horiz),
+      label: 'More',
+    ));
+
+    // Ensure current index is within bounds and reset if needed
+    if (_currentIndex >= tabs.length) {
+      // Schedule the state update after the build completes
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {
+            _currentIndex = 0;
+          });
+        }
+      });
+    }
+    final safeIndex = _currentIndex < tabs.length ? _currentIndex : 0;
 
     return Scaffold(
-      body: _tabs[_currentIndex],
+      body: tabs[safeIndex],
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
+        currentIndex: safeIndex,
         onTap: (index) {
           setState(() {
             _currentIndex = index;
@@ -53,28 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.article),
-            label: 'Constitution',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: 'Members',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.event_note),
-            label: 'Minutes',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.more_horiz),
-            label: 'More',
-          ),
-        ],
+        items: navItems,
       ),
     );
   }
