@@ -30,13 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
       _currentUser = user;
     });
   }
-  final List<Widget> _tabs = [
-    const HomeTab(),
-    const ConstitutionTab(),
-    const MembersTab(),
-    const MinutesTab(),
-    const MoreTab(),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
       HomeTab(currentUser: _currentUser, onUserUpdated: _updateUser),
       const ConstitutionTab(),
       const MembersTab(),
+      const MinutesTab(),
       const MoreTab(),
     ];
 
