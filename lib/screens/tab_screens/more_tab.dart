@@ -15,7 +15,6 @@ class MoreTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authService = AuthService();
     return Scaffold(
       appBar: AppBar(
         title: const Text('More'),
@@ -126,7 +125,7 @@ class MoreTab extends StatelessWidget {
             title: 'Logout',
             iconColor: Colors.red,
             onTap: () {
-              _showLogoutDialog(context, authService);
+              _showLogoutDialog(context);
             },
           ),
         ],
@@ -152,7 +151,7 @@ class MoreTab extends StatelessWidget {
     );
   }
 
-  void _showLogoutDialog(BuildContext context, AuthService authService) {
+  void _showLogoutDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -168,6 +167,9 @@ class MoreTab extends StatelessWidget {
             ),
             TextButton(
               onPressed: () async {
+                // Create AuthService instance only when needed
+                final authService = AuthService();
+                
                 // Clear tokens
                 await authService.logout();
                 
