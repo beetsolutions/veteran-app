@@ -16,16 +16,15 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _authApi = AuthApi(ApiClient());
   bool _obscurePassword = true;
   bool _isLoading = false;
   VideoPlayerController? _videoController;
   bool _videoInitialized = false;
-  late AuthApi _authApi;
 
   @override
   void initState() {
     super.initState();
-    _authApi = AuthApi(ApiClient());
     _initializeVideo();
   }
 
@@ -90,11 +89,11 @@ class _LoginScreenState extends State<LoginScreen> {
           );
         }
       } catch (e) {
-        // Show generic error message
+        // Show generic error message to avoid exposing system details
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Login failed: ${e.toString()}'),
+            const SnackBar(
+              content: Text('An unexpected error occurred. Please try again.'),
               backgroundColor: Colors.red,
             ),
           );

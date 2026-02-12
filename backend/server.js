@@ -11,6 +11,8 @@ app.use(express.json());
 // Mock Data
 
 // Mock users for authentication
+// NOTE: In production, passwords should be hashed using bcrypt or similar.
+// These are plain text only for demo/testing purposes.
 const users = [
   { id: '1', username: 'admin', email: 'admin@veteranapp.com', password: 'admin123', name: 'Admin User' },
   { id: '2', username: 'johndoe', email: 'john.doe@example.com', password: 'password123', name: 'John Doe' },

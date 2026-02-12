@@ -12,15 +12,9 @@ class ForgotPasswordScreen extends StatefulWidget {
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
+  final _authApi = AuthApi(ApiClient());
   bool _isSubmitted = false;
   bool _isLoading = false;
-  late AuthApi _authApi;
-
-  @override
-  void initState() {
-    super.initState();
-    _authApi = AuthApi(ApiClient());
-  }
 
   @override
   void dispose() {
@@ -59,14 +53,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           );
         }
       } catch (e) {
-        // Show generic error message
+        // Show generic error message to avoid exposing system details
         if (mounted) {
           setState(() {
             _isLoading = false;
           });
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Failed to send reset email: ${e.toString()}'),
+            const SnackBar(
+              content: Text('An unexpected error occurred. Please try again.'),
               backgroundColor: Colors.red,
             ),
           );
