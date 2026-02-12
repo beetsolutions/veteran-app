@@ -183,5 +183,207 @@ void main() {
       // Should navigate to detail screen
       expect(find.text('Meeting Details'), findsOneWidget);
     });
+
+    testWidgets('MinutesTab displays sort button', (WidgetTester tester) async {
+      final repository = MockMeetingsRepository();
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: MinutesTab(meetingsRepository: repository),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Verify sort button is displayed
+      expect(find.byIcon(Icons.sort), findsOneWidget);
+    });
+
+    testWidgets('MinutesTab shows sort menu with three options', (WidgetTester tester) async {
+      final repository = MockMeetingsRepository();
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: MinutesTab(meetingsRepository: repository),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Tap the sort button
+      await tester.tap(find.byIcon(Icons.sort));
+      await tester.pumpAndSettle();
+
+      // Verify sort options are displayed
+      expect(find.text('Date: Newest First'), findsOneWidget);
+      expect(find.text('Date: Oldest First'), findsOneWidget);
+      expect(find.text('Attendance: Highest First'), findsOneWidget);
+    });
+
+    testWidgets('MinutesTab sorts by date descending (newest first) by default', (WidgetTester tester) async {
+      final repository = MockMeetingsRepository(
+        meetings: [
+          const Meeting(
+            id: '1',
+            title: 'Meeting A',
+            date: 'Jan 15, 2026',
+            venue: 'Venue A',
+            attendance: 30,
+          ),
+          const Meeting(
+            id: '2',
+            title: 'Meeting B',
+            date: 'Feb 1, 2026',
+            venue: 'Venue B',
+            attendance: 45,
+          ),
+          const Meeting(
+            id: '3',
+            title: 'Meeting C',
+            date: 'Jan 1, 2026',
+            venue: 'Venue C',
+            attendance: 20,
+          ),
+        ],
+      );
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: MinutesTab(meetingsRepository: repository),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Find all meeting cards
+      final meetingCards = find.byType(ListTile);
+      expect(meetingCards, findsNWidgets(3));
+
+      // Verify order: Feb 1 (newest), Jan 15, Jan 1 (oldest)
+      final titles = tester.widgetList<Text>(find.byType(Text))
+          .where((text) => text.data?.startsWith('Meeting') ?? false)
+          .map((text) => text.data)
+          .toList();
+      
+      expect(titles[0], 'Meeting B'); // Feb 1, 2026
+      expect(titles[1], 'Meeting A'); // Jan 15, 2026
+      expect(titles[2], 'Meeting C'); // Jan 1, 2026
+    });
+
+    testWidgets('MinutesTab sorts by date ascending (oldest first)', (WidgetTester tester) async {
+      final repository = MockMeetingsRepository(
+        meetings: [
+          const Meeting(
+            id: '1',
+            title: 'Meeting A',
+            date: 'Jan 15, 2026',
+            venue: 'Venue A',
+            attendance: 30,
+          ),
+          const Meeting(
+            id: '2',
+            title: 'Meeting B',
+            date: 'Feb 1, 2026',
+            venue: 'Venue B',
+            attendance: 45,
+          ),
+          const Meeting(
+            id: '3',
+            title: 'Meeting C',
+            date: 'Jan 1, 2026',
+            venue: 'Venue C',
+            attendance: 20,
+          ),
+        ],
+      );
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: MinutesTab(meetingsRepository: repository),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Tap the sort button
+      await tester.tap(find.byIcon(Icons.sort));
+      await tester.pumpAndSettle();
+
+      // Select "Date: Oldest First"
+      await tester.tap(find.text('Date: Oldest First'));
+      await tester.pumpAndSettle();
+
+      // Find all meeting cards
+      final meetingCards = find.byType(ListTile);
+      expect(meetingCards, findsNWidgets(3));
+
+      // Verify order: Jan 1 (oldest), Jan 15, Feb 1 (newest)
+      final titles = tester.widgetList<Text>(find.byType(Text))
+          .where((text) => text.data?.startsWith('Meeting') ?? false)
+          .map((text) => text.data)
+          .toList();
+      
+      expect(titles[0], 'Meeting C'); // Jan 1, 2026
+      expect(titles[1], 'Meeting A'); // Jan 15, 2026
+      expect(titles[2], 'Meeting B'); // Feb 1, 2026
+    });
+
+    testWidgets('MinutesTab sorts by attendance (highest first)', (WidgetTester tester) async {
+      final repository = MockMeetingsRepository(
+        meetings: [
+          const Meeting(
+            id: '1',
+            title: 'Meeting A',
+            date: 'Jan 15, 2026',
+            venue: 'Venue A',
+            attendance: 30,
+          ),
+          const Meeting(
+            id: '2',
+            title: 'Meeting B',
+            date: 'Feb 1, 2026',
+            venue: 'Venue B',
+            attendance: 45,
+          ),
+          const Meeting(
+            id: '3',
+            title: 'Meeting C',
+            date: 'Jan 1, 2026',
+            venue: 'Venue C',
+            attendance: 20,
+          ),
+        ],
+      );
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: MinutesTab(meetingsRepository: repository),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Tap the sort button
+      await tester.tap(find.byIcon(Icons.sort));
+      await tester.pumpAndSettle();
+
+      // Select "Attendance: Highest First"
+      await tester.tap(find.text('Attendance: Highest First'));
+      await tester.pumpAndSettle();
+
+      // Find all meeting cards
+      final meetingCards = find.byType(ListTile);
+      expect(meetingCards, findsNWidgets(3));
+
+      // Verify order: 45, 30, 20
+      final titles = tester.widgetList<Text>(find.byType(Text))
+          .where((text) => text.data?.startsWith('Meeting') ?? false)
+          .map((text) => text.data)
+          .toList();
+      
+      expect(titles[0], 'Meeting B'); // 45 attendance
+      expect(titles[1], 'Meeting A'); // 30 attendance
+      expect(titles[2], 'Meeting C'); // 20 attendance
+    });
   });
 }

@@ -4,6 +4,8 @@ import '../../widgets/meeting_card.dart';
 import '../details/meeting_detail_screen.dart';
 import '../../data/repositories/meetings_repository.dart';
 
+enum MeetingSortOrder { dateAscending, dateDescending, attendance }
+
 class MinutesTab extends StatefulWidget {
   final MeetingsRepository? meetingsRepository;
 
@@ -21,6 +23,7 @@ class _MinutesTabState extends State<MinutesTab> {
   List<Meeting> _meetings = [];
   bool _isLoading = true;
   String? _errorMessage;
+  MeetingSortOrder _sortOrder = MeetingSortOrder.dateDescending;
 
   @override
   void initState() {
@@ -50,12 +53,132 @@ class _MinutesTabState extends State<MinutesTab> {
     }
   }
 
+  List<Meeting> get _sortedMeetings {
+    final meetings = List<Meeting>.from(_meetings);
+    
+    meetings.sort((a, b) {
+      switch (_sortOrder) {
+        case MeetingSortOrder.dateAscending:
+          final dateA = a.parsedDate;
+          final dateB = b.parsedDate;
+          
+          // Handle null dates by placing them at the end
+          if (dateA == null && dateB == null) return 0;
+          if (dateA == null) return 1;
+          if (dateB == null) return -1;
+          
+          return dateA.compareTo(dateB);
+          
+        case MeetingSortOrder.dateDescending:
+          final dateA = a.parsedDate;
+          final dateB = b.parsedDate;
+          
+          // Handle null dates by placing them at the end
+          if (dateA == null && dateB == null) return 0;
+          if (dateA == null) return 1;
+          if (dateB == null) return -1;
+          
+          return dateB.compareTo(dateA);
+          
+        case MeetingSortOrder.attendance:
+          // Sort by attendance in descending order (highest first)
+          return b.attendance.compareTo(a.attendance);
+      }
+    });
+    
+    return meetings;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final sortedMeetings = _sortedMeetings;
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Minutes'),
         automaticallyImplyLeading: false,
+        actions: [
+          PopupMenuButton<MeetingSortOrder>(
+            icon: const Icon(Icons.sort),
+            tooltip: 'Sort meetings',
+            onSelected: (MeetingSortOrder order) {
+              setState(() {
+                _sortOrder = order;
+              });
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<MeetingSortOrder>>[
+              PopupMenuItem<MeetingSortOrder>(
+                value: MeetingSortOrder.dateDescending,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.arrow_downward,
+                      size: 20,
+                      color: _sortOrder == MeetingSortOrder.dateDescending 
+                          ? Theme.of(context).primaryColor 
+                          : null,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Date: Newest First',
+                      style: TextStyle(
+                        fontWeight: _sortOrder == MeetingSortOrder.dateDescending 
+                            ? FontWeight.bold 
+                            : FontWeight.normal,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              PopupMenuItem<MeetingSortOrder>(
+                value: MeetingSortOrder.dateAscending,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.arrow_upward,
+                      size: 20,
+                      color: _sortOrder == MeetingSortOrder.dateAscending 
+                          ? Theme.of(context).primaryColor 
+                          : null,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Date: Oldest First',
+                      style: TextStyle(
+                        fontWeight: _sortOrder == MeetingSortOrder.dateAscending 
+                            ? FontWeight.bold 
+                            : FontWeight.normal,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              PopupMenuItem<MeetingSortOrder>(
+                value: MeetingSortOrder.attendance,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.people,
+                      size: 20,
+                      color: _sortOrder == MeetingSortOrder.attendance 
+                          ? Theme.of(context).primaryColor 
+                          : null,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Attendance: Highest First',
+                      style: TextStyle(
+                        fontWeight: _sortOrder == MeetingSortOrder.attendance 
+                            ? FontWeight.bold 
+                            : FontWeight.normal,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -92,9 +215,9 @@ class _MinutesTabState extends State<MinutesTab> {
                     )
                   : ListView.builder(
                       padding: const EdgeInsets.only(top: 8, bottom: 16),
-                      itemCount: _meetings.length,
+                      itemCount: sortedMeetings.length,
                       itemBuilder: (context, index) {
-                        final meeting = _meetings[index];
+                        final meeting = sortedMeetings[index];
                         return MeetingCard(
                           meeting: meeting,
                           onTap: () {
