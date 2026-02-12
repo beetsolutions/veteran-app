@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../data/api/api_client.dart';
+import '../data/api/auth_api.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -11,6 +13,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   bool _isSubmitted = false;
+  bool _isLoading = false;
+  late AuthApi _authApi;
+
+  @override
+  void initState() {
+    super.initState();
+    _authApi = AuthApi(ApiClient());
+  }
 
   @override
   void dispose() {
@@ -18,12 +28,50 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     super.dispose();
   }
 
-  void _handleSubmit() {
+  void _handleSubmit() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
-        _isSubmitted = true;
+        _isLoading = true;
       });
-      // In a real app, you would send a password reset email here
+
+      try {
+        // Call the forgot password API
+        await _authApi.forgotPassword(_emailController.text.trim());
+
+        // Success - show success message
+        if (mounted) {
+          setState(() {
+            _isSubmitted = true;
+            _isLoading = false;
+          });
+        }
+      } on ApiException catch (e) {
+        // Show error message
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(e.message),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } catch (e) {
+        // Show generic error message
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to send reset email: ${e.toString()}'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
     }
   }
 
@@ -101,17 +149,25 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           
           // Submit Button
           ElevatedButton(
-            onPressed: _handleSubmit,
+            onPressed: _isLoading ? null : _handleSubmit,
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            child: const Text(
-              'Send Reset Link',
-              style: TextStyle(fontSize: 18),
-            ),
+            child: _isLoading
+                ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                    ),
+                  )
+                : const Text(
+                    'Send Reset Link',
+                    style: TextStyle(fontSize: 18),
+                  ),
           ),
         ],
       ),

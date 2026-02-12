@@ -9,6 +9,14 @@ app.use(cors());
 app.use(express.json());
 
 // Mock Data
+
+// Mock users for authentication
+const users = [
+  { id: '1', username: 'admin', email: 'admin@veteranapp.com', password: 'admin123', name: 'Admin User' },
+  { id: '2', username: 'johndoe', email: 'john.doe@example.com', password: 'password123', name: 'John Doe' },
+  { id: '3', username: 'janesmith', email: 'jane.smith@example.com', password: 'password123', name: 'Jane Smith' },
+];
+
 const officials = [
   { name: 'Etukeni Ndecha', role: 'President', service: 'Army', imageUrl: null },
   { name: 'Jane Smith', role: 'Vice President', service: 'Navy', imageUrl: null },
@@ -143,6 +151,82 @@ app.get('/', (req, res) => {
   });
 });
 
+// Authentication endpoints
+
+// User login
+app.post('/auth/login', (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ 
+      success: false,
+      message: 'Username and password are required' 
+    });
+  }
+
+  // Find user by username or email
+  const user = users.find(u => 
+    u.username === username || u.email === username
+  );
+
+  if (!user) {
+    return res.status(401).json({ 
+      success: false,
+      message: 'Invalid username or password' 
+    });
+  }
+
+  if (user.password !== password) {
+    return res.status(401).json({ 
+      success: false,
+      message: 'Invalid username or password' 
+    });
+  }
+
+  // Return user info (excluding password)
+  res.json({
+    success: true,
+    message: 'Login successful',
+    user: {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      name: user.name
+    }
+  });
+});
+
+// Forgot password
+app.post('/auth/forgot-password', (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ 
+      success: false,
+      message: 'Email is required' 
+    });
+  }
+
+  // Check if user exists with this email
+  const user = users.find(u => u.email === email);
+
+  if (!user) {
+    // For security reasons, we still return success even if user doesn't exist
+    // This prevents email enumeration attacks
+    return res.json({
+      success: true,
+      message: 'If an account exists with this email, a password reset link has been sent'
+    });
+  }
+
+  // In a real app, you would send an email here
+  // For now, we just return success
+  res.json({
+    success: true,
+    message: 'If an account exists with this email, a password reset link has been sent'
+  });
+});
+
 // Get all officials
 app.get('/officials', (req, res) => {
   res.json(officials);
@@ -198,15 +282,17 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Veteran App REST API server is running on port ${PORT}`);
   console.log(`\nAvailable endpoints:`);
-  console.log(`  GET  /                  - API info`);
-  console.log(`  GET  /officials         - Get all officials`);
-  console.log(`  GET  /news              - Get all news items`);
-  console.log(`  GET  /members           - Get all members`);
-  console.log(`  GET  /members/:id       - Get member by ID`);
-  console.log(`  GET  /soccer/current    - Get current soccer match`);
-  console.log(`  GET  /soccer/history    - Get soccer match history`);
-  console.log(`  GET  /hosting/current   - Get current hosting schedule`);
-  console.log(`  GET  /hosting/next      - Get next hosting schedule`);
+  console.log(`  GET  /                     - API info`);
+  console.log(`  POST /auth/login           - User login`);
+  console.log(`  POST /auth/forgot-password - Request password reset`);
+  console.log(`  GET  /officials            - Get all officials`);
+  console.log(`  GET  /news                 - Get all news items`);
+  console.log(`  GET  /members              - Get all members`);
+  console.log(`  GET  /members/:id          - Get member by ID`);
+  console.log(`  GET  /soccer/current       - Get current soccer match`);
+  console.log(`  GET  /soccer/history       - Get soccer match history`);
+  console.log(`  GET  /hosting/current      - Get current hosting schedule`);
+  console.log(`  GET  /hosting/next         - Get next hosting schedule`);
 });
 
 module.exports = app;
