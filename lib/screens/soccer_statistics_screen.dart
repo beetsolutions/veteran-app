@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/soccer_match.dart';
 import 'soccer_match_history_screen.dart';
 import '../data/repositories/soccer_repository.dart';
+import '../utils/responsive_utils.dart';
 
 class SoccerStatisticsScreen extends StatefulWidget {
   final SoccerRepository? soccerRepository;
@@ -87,7 +88,9 @@ class _SoccerStatisticsScreenState extends State<SoccerStatisticsScreen> {
                   ? const Center(child: Text('No match data available'))
                   : SingleChildScrollView(
                       child: Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: EdgeInsets.all(
+                          ResponsiveUtils.getPadding(context, mobile: 16.0, tablet: 24.0, desktop: 32.0)
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -195,10 +198,16 @@ class _SoccerStatisticsScreenState extends State<SoccerStatisticsScreen> {
   }
 
   Widget _buildSectionHeader(String title) {
+    final fontSize = ResponsiveUtils.getFontSize(
+      context,
+      mobile: 20.0,
+      tablet: 22.0,
+      desktop: 24.0,
+    );
     return Text(
       title,
-      style: const TextStyle(
-        fontSize: 20,
+      style: TextStyle(
+        fontSize: fontSize,
         fontWeight: FontWeight.bold,
       ),
     );
@@ -210,30 +219,61 @@ class _SoccerStatisticsScreenState extends State<SoccerStatisticsScreen> {
     required String title,
     required String value,
   }) {
+    final padding = ResponsiveUtils.getPadding(
+      context,
+      mobile: 16.0,
+      tablet: 20.0,
+      desktop: 24.0,
+    );
+    final iconSize = ResponsiveUtils.getIconSize(
+      context,
+      mobile: 32.0,
+      tablet: 36.0,
+      desktop: 40.0,
+    );
+    final spacing = ResponsiveUtils.getSpacing(
+      context,
+      mobile: 16.0,
+      tablet: 18.0,
+      desktop: 20.0,
+    );
+    final titleFontSize = ResponsiveUtils.getFontSize(
+      context,
+      mobile: 14.0,
+      tablet: 15.0,
+      desktop: 16.0,
+    );
+    final valueFontSize = ResponsiveUtils.getFontSize(
+      context,
+      mobile: 16.0,
+      tablet: 18.0,
+      desktop: 20.0,
+    );
+
     return Card(
       elevation: 2,
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(padding),
         child: Row(
           children: [
-            Icon(icon, color: iconColor, size: 32),
-            const SizedBox(width: 16),
+            Icon(icon, color: iconColor, size: iconSize),
+            SizedBox(width: spacing),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
-                      fontSize: 14,
+                    style: TextStyle(
+                      fontSize: titleFontSize,
                       color: Colors.grey,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     value,
-                    style: const TextStyle(
-                      fontSize: 16,
+                    style: TextStyle(
+                      fontSize: valueFontSize,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -253,30 +293,61 @@ class _SoccerStatisticsScreenState extends State<SoccerStatisticsScreen> {
     required String minute,
     required String team,
   }) {
+    final padding = ResponsiveUtils.getPadding(
+      context,
+      mobile: 16.0,
+      tablet: 20.0,
+      desktop: 24.0,
+    );
+    final iconSize = ResponsiveUtils.getIconSize(
+      context,
+      mobile: 32.0,
+      tablet: 36.0,
+      desktop: 40.0,
+    );
+    final spacing = ResponsiveUtils.getSpacing(
+      context,
+      mobile: 16.0,
+      tablet: 18.0,
+      desktop: 20.0,
+    );
+    final nameFontSize = ResponsiveUtils.getFontSize(
+      context,
+      mobile: 16.0,
+      tablet: 17.0,
+      desktop: 18.0,
+    );
+    final detailFontSize = ResponsiveUtils.getFontSize(
+      context,
+      mobile: 14.0,
+      tablet: 15.0,
+      desktop: 16.0,
+    );
+
     return Card(
       elevation: 2,
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(padding),
         child: Row(
           children: [
-            Icon(icon, color: iconColor, size: 32),
-            const SizedBox(width: 16),
+            Icon(icon, color: iconColor, size: iconSize),
+            SizedBox(width: spacing),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     playerName,
-                    style: const TextStyle(
-                      fontSize: 16,
+                    style: TextStyle(
+                      fontSize: nameFontSize,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     '$team • $minute',
-                    style: const TextStyle(
-                      fontSize: 14,
+                    style: TextStyle(
+                      fontSize: detailFontSize,
                       color: Colors.grey,
                     ),
                   ),
@@ -297,38 +368,69 @@ class _SoccerStatisticsScreenState extends State<SoccerStatisticsScreen> {
     required String team,
     required String reason,
   }) {
+    final padding = ResponsiveUtils.getPadding(
+      context,
+      mobile: 16.0,
+      tablet: 20.0,
+      desktop: 24.0,
+    );
+    final iconSize = ResponsiveUtils.getIconSize(
+      context,
+      mobile: 32.0,
+      tablet: 36.0,
+      desktop: 40.0,
+    );
+    final spacing = ResponsiveUtils.getSpacing(
+      context,
+      mobile: 16.0,
+      tablet: 18.0,
+      desktop: 20.0,
+    );
+    final nameFontSize = ResponsiveUtils.getFontSize(
+      context,
+      mobile: 16.0,
+      tablet: 17.0,
+      desktop: 18.0,
+    );
+    final detailFontSize = ResponsiveUtils.getFontSize(
+      context,
+      mobile: 14.0,
+      tablet: 15.0,
+      desktop: 16.0,
+    );
+
     return Card(
       elevation: 2,
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(padding),
         child: Row(
           children: [
-            Icon(icon, color: iconColor, size: 32),
-            const SizedBox(width: 16),
+            Icon(icon, color: iconColor, size: iconSize),
+            SizedBox(width: spacing),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     playerName,
-                    style: const TextStyle(
-                      fontSize: 16,
+                    style: TextStyle(
+                      fontSize: nameFontSize,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     '$team • $minute',
-                    style: const TextStyle(
-                      fontSize: 14,
+                    style: TextStyle(
+                      fontSize: detailFontSize,
                       color: Colors.grey,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     reason,
-                    style: const TextStyle(
-                      fontSize: 13,
+                    style: TextStyle(
+                      fontSize: detailFontSize - 1,
                       color: Colors.grey,
                       fontStyle: FontStyle.italic,
                     ),
@@ -343,10 +445,29 @@ class _SoccerStatisticsScreenState extends State<SoccerStatisticsScreen> {
   }
 
   Widget _buildScoreCard() {
+    final padding = ResponsiveUtils.getPadding(
+      context,
+      mobile: 16.0,
+      tablet: 20.0,
+      desktop: 24.0,
+    );
+    final teamFontSize = ResponsiveUtils.getFontSize(
+      context,
+      mobile: 18.0,
+      tablet: 20.0,
+      desktop: 22.0,
+    );
+    final scoreFontSize = ResponsiveUtils.getFontSize(
+      context,
+      mobile: 36.0,
+      tablet: 40.0,
+      desktop: 44.0,
+    );
+
     return Card(
       elevation: 2,
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(padding),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -355,8 +476,8 @@ class _SoccerStatisticsScreenState extends State<SoccerStatisticsScreen> {
                 children: [
                   Text(
                     _currentMatch!.homeTeam,
-                    style: const TextStyle(
-                      fontSize: 16,
+                    style: TextStyle(
+                      fontSize: teamFontSize,
                       fontWeight: FontWeight.w600,
                     ),
                     textAlign: TextAlign.center,
@@ -364,8 +485,8 @@ class _SoccerStatisticsScreenState extends State<SoccerStatisticsScreen> {
                   const SizedBox(height: 8),
                   Text(
                     '${_currentMatch!.homeScore}',
-                    style: const TextStyle(
-                      fontSize: 32,
+                    style: TextStyle(
+                      fontSize: scoreFontSize,
                       fontWeight: FontWeight.bold,
                       color: Colors.blue,
                     ),
@@ -373,10 +494,10 @@ class _SoccerStatisticsScreenState extends State<SoccerStatisticsScreen> {
                 ],
               ),
             ),
-            const Text(
+            Text(
               '-',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: teamFontSize + 6,
                 fontWeight: FontWeight.bold,
                 color: Colors.grey,
               ),
@@ -386,8 +507,8 @@ class _SoccerStatisticsScreenState extends State<SoccerStatisticsScreen> {
                 children: [
                   Text(
                     _currentMatch!.awayTeam,
-                    style: const TextStyle(
-                      fontSize: 16,
+                    style: TextStyle(
+                      fontSize: teamFontSize,
                       fontWeight: FontWeight.w600,
                     ),
                     textAlign: TextAlign.center,
@@ -395,8 +516,8 @@ class _SoccerStatisticsScreenState extends State<SoccerStatisticsScreen> {
                   const SizedBox(height: 8),
                   Text(
                     '${_currentMatch!.awayScore}',
-                    style: const TextStyle(
-                      fontSize: 32,
+                    style: TextStyle(
+                      fontSize: scoreFontSize,
                       fontWeight: FontWeight.bold,
                       color: Colors.blue,
                     ),
