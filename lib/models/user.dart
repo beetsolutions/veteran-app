@@ -54,6 +54,8 @@ class User {
   }
 
   /// Create a copy of this user with updated fields
+  /// Note: When updating currentOrganizationId, ensure it exists in the organizations list
+  /// to maintain data consistency. This method does not validate the organizationId.
   User copyWith({
     String? id,
     String? username,

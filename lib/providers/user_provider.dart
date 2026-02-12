@@ -43,7 +43,7 @@ class UserProvider extends ChangeNotifier {
     final organization = _currentUser!.organizations
         .firstWhere(
           (org) => org.id == organizationId,
-          orElse: () => throw Exception('Organization not found in user\'s organizations'),
+          orElse: () => throw Exception("Organization not found in user's organizations"),
         );
 
     // Call the API to switch organization
