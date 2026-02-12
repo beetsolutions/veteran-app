@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class AuthTokenStorage {
   static const String _accessTokenKey = 'access_token';
   static const String _refreshTokenKey = 'refresh_token';
+  static const String _currentOrganizationIdKey = 'current_organization_id';
   
   final FlutterSecureStorage _storage;
 
@@ -41,6 +42,16 @@ class AuthTokenStorage {
     return await _storage.read(key: _refreshTokenKey);
   }
 
+  /// Save current organization ID
+  Future<void> saveCurrentOrganizationId(String organizationId) async {
+    await _storage.write(key: _currentOrganizationIdKey, value: organizationId);
+  }
+
+  /// Get current organization ID
+  Future<String?> getCurrentOrganizationId() async {
+    return await _storage.read(key: _currentOrganizationIdKey);
+  }
+
   /// Delete access token
   Future<void> deleteAccessToken() async {
     await _storage.delete(key: _accessTokenKey);
@@ -51,11 +62,17 @@ class AuthTokenStorage {
     await _storage.delete(key: _refreshTokenKey);
   }
 
+  /// Delete current organization ID
+  Future<void> deleteCurrentOrganizationId() async {
+    await _storage.delete(key: _currentOrganizationIdKey);
+  }
+
   /// Delete all tokens (logout)
   Future<void> deleteAllTokens() async {
     await Future.wait([
       deleteAccessToken(),
       deleteRefreshToken(),
+      deleteCurrentOrganizationId(),
     ]);
   }
 

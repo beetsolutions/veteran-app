@@ -19,13 +19,41 @@ app.use(express.json());
 
 // Mock Data
 
+// Mock organizations
+const organizations = [
+  { id: 'org1', name: 'Veterans United', location: 'New York, NY' },
+  { id: 'org2', name: 'Heroes Association', location: 'Los Angeles, CA' },
+  { id: 'org3', name: 'Freedom Veterans', location: 'Chicago, IL' },
+];
+
 // Mock users for authentication
 // NOTE: In production, passwords should be hashed using bcrypt or similar.
 // These are plain text only for demo/testing purposes.
 const users = [
-  { id: '1', username: 'admin', email: 'admin@veteranapp.com', password: 'admin123', name: 'Admin User' },
-  { id: '2', username: 'johndoe', email: 'john.doe@example.com', password: 'password123', name: 'John Doe' },
-  { id: '3', username: 'janesmith', email: 'jane.smith@example.com', password: 'password123', name: 'Jane Smith' },
+  { 
+    id: '1', 
+    username: 'admin', 
+    email: 'admin@veteranapp.com', 
+    password: 'admin123', 
+    name: 'Admin User',
+    organizationIds: ['org1', 'org2', 'org3'] // User belongs to multiple organizations
+  },
+  { 
+    id: '2', 
+    username: 'johndoe', 
+    email: 'john.doe@example.com', 
+    password: 'password123', 
+    name: 'John Doe',
+    organizationIds: ['org1', 'org2'] // User belongs to two organizations
+  },
+  { 
+    id: '3', 
+    username: 'janesmith', 
+    email: 'jane.smith@example.com', 
+    password: 'password123', 
+    name: 'Jane Smith',
+    organizationIds: ['org1'] // User belongs to one organization
+  },
 ];
 
 // Store refresh tokens (In production, use a database)
@@ -305,6 +333,14 @@ app.post('/auth/login', (req, res) => {
   // Store refresh token
   refreshTokens.add(refreshToken);
 
+  // Get user's organizations
+  const userOrganizations = organizations.filter(org => 
+    user.organizationIds.includes(org.id)
+  );
+
+  // Set current organization to the first one by default
+  const currentOrganization = userOrganizations.length > 0 ? userOrganizations[0] : null;
+
   // Return user info with tokens (excluding password)
   res.json({
     success: true,
@@ -313,7 +349,9 @@ app.post('/auth/login', (req, res) => {
       id: user.id,
       username: user.username,
       email: user.email,
-      name: user.name
+      name: user.name,
+      organizations: userOrganizations,
+      currentOrganizationId: currentOrganization?.id || null
     },
     accessToken: accessToken,
     refreshToken: refreshToken
@@ -349,6 +387,117 @@ app.post('/auth/forgot-password', (req, res) => {
     success: true,
     message: 'If an account exists with this email, a password reset link has been sent'
   });
+});
+
+// Get user's organizations
+app.get('/auth/organizations', (req, res) => {
+  const authHeader = req.headers.authorization;
+  
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ 
+      success: false,
+      message: 'Authorization token required' 
+    });
+  }
+
+  const token = authHeader.substring(7);
+  
+  try {
+    // Verify access token
+    const decoded = jwt.verify(token, JWT_ACCESS_SECRET);
+    
+    // Find user
+    const user = users.find(u => u.id === decoded.id);
+    
+    if (!user) {
+      return res.status(401).json({ 
+        success: false,
+        message: 'User not found' 
+      });
+    }
+
+    // Get user's organizations
+    const userOrganizations = organizations.filter(org => 
+      user.organizationIds.includes(org.id)
+    );
+
+    res.json({
+      success: true,
+      organizations: userOrganizations
+    });
+  } catch (error) {
+    return res.status(401).json({ 
+      success: false,
+      message: 'Invalid or expired token' 
+    });
+  }
+});
+
+// Switch current organization
+app.post('/auth/switch-organization', (req, res) => {
+  const { organizationId } = req.body;
+  const authHeader = req.headers.authorization;
+  
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ 
+      success: false,
+      message: 'Authorization token required' 
+    });
+  }
+
+  if (!organizationId) {
+    return res.status(400).json({ 
+      success: false,
+      message: 'Organization ID is required' 
+    });
+  }
+
+  const token = authHeader.substring(7);
+  
+  try {
+    // Verify access token
+    const decoded = jwt.verify(token, JWT_ACCESS_SECRET);
+    
+    // Find user
+    const user = users.find(u => u.id === decoded.id);
+    
+    if (!user) {
+      return res.status(401).json({ 
+        success: false,
+        message: 'User not found' 
+      });
+    }
+
+    // Check if user belongs to this organization
+    if (!user.organizationIds.includes(organizationId)) {
+      return res.status(403).json({ 
+        success: false,
+        message: 'User does not belong to this organization' 
+      });
+    }
+
+    // Find the organization
+    const organization = organizations.find(org => org.id === organizationId);
+    
+    if (!organization) {
+      return res.status(404).json({ 
+        success: false,
+        message: 'Organization not found' 
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Organization switched successfully',
+      currentOrganizationId: organizationId,
+      organization: organization
+    });
+  } catch (error) {
+    return res.status(401).json({ 
+      success: false,
+      message: 'Invalid or expired token' 
+    });
+  }
 });
 
 // Refresh token
@@ -470,6 +619,20 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Veteran App REST API server is running on port ${PORT}`);
   console.log(`\nAvailable endpoints:`);
+  console.log(`  GET  /                           - API info`);
+  console.log(`  POST /auth/login                 - User login`);
+  console.log(`  POST /auth/refresh               - Refresh access token`);
+  console.log(`  POST /auth/forgot-password       - Request password reset`);
+  console.log(`  GET  /auth/organizations         - Get user's organizations`);
+  console.log(`  POST /auth/switch-organization   - Switch current organization`);
+  console.log(`  GET  /officials                  - Get all officials`);
+  console.log(`  GET  /news                       - Get all news items`);
+  console.log(`  GET  /members                    - Get all members`);
+  console.log(`  GET  /members/:id                - Get member by ID`);
+  console.log(`  GET  /soccer/current             - Get current soccer match`);
+  console.log(`  GET  /soccer/history             - Get soccer match history`);
+  console.log(`  GET  /hosting/current            - Get current hosting schedule`);
+  console.log(`  GET  /hosting/next               - Get next hosting schedule`);
   console.log(`  GET  /                     - API info`);
   console.log(`  POST /auth/login           - User login`);
   console.log(`  POST /auth/refresh         - Refresh access token`);

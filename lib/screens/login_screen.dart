@@ -71,11 +71,13 @@ class _LoginScreenState extends State<LoginScreen> {
           _passwordController.text,
         );
 
-        // Login successful, navigate to home screen
+        // Login successful, navigate to home screen with user data
         if (mounted) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
+            MaterialPageRoute(
+              builder: (context) => HomeScreen(initialUser: authResponse.user),
+            ),
           );
         }
       } on ApiException catch (e) {
