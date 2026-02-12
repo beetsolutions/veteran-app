@@ -7,8 +7,8 @@ import 'package:veteranapp/models/feature_flags.dart';
 
 void main() {
   // Helper to wrap widget with Provider
-  Widget wrapWithProvider(Widget child, FeatureFlags featureFlags) {
-    final featureFlagsProvider = FeatureFlagsProvider();
+  Widget wrapWithProvider(Widget child, FeatureFlags featureFlags, {FeatureFlagsProvider? provider}) {
+    final featureFlagsProvider = provider ?? FeatureFlagsProvider();
     featureFlagsProvider.updateFeatureFlags(featureFlags);
     return ChangeNotifierProvider<FeatureFlagsProvider>.value(
       value: featureFlagsProvider,
@@ -112,6 +112,33 @@ void main() {
 
       // Navigation should work without errors
       expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('Current index resets to 0 when active tab is hidden by feature flag change', (WidgetTester tester) async {
+      final provider = FeatureFlagsProvider();
+      
+      // Start with all tabs visible
+      await tester.pumpWidget(
+        wrapWithProvider(const HomeScreen(), const FeatureFlags(
+          showMinutesTab: true,
+          showConstitutionTab: true,
+        ), provider: provider),
+      );
+      await tester.pumpAndSettle();
+
+      // Navigate to Constitution tab (index 1)
+      await tester.tap(find.text('Constitution'));
+      await tester.pumpAndSettle();
+
+      // Hide Constitution tab
+      provider.setConstitutionTabVisible(false);
+      await tester.pumpAndSettle();
+
+      // Should reset to home tab and not throw any errors
+      expect(tester.takeException(), isNull);
+      
+      // Verify Constitution tab is no longer visible
+      expect(find.text('Constitution'), findsNothing);
     });
   });
 }

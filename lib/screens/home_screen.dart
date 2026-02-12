@@ -80,7 +80,17 @@ class _HomeScreenState extends State<HomeScreen> {
       label: 'More',
     ));
 
-    // Ensure current index is within bounds
+    // Ensure current index is within bounds and reset if needed
+    if (_currentIndex >= tabs.length) {
+      // Schedule the state update after the build completes
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {
+            _currentIndex = 0;
+          });
+        }
+      });
+    }
     final safeIndex = _currentIndex < tabs.length ? _currentIndex : 0;
 
     return Scaffold(
