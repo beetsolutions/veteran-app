@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'tab_screens/home_tab.dart';
 import 'tab_screens/constitution_tab.dart';
 import 'tab_screens/members_tab.dart';
+import 'tab_screens/minutes_tab.dart';
 import 'tab_screens/more_tab.dart';
 import '../models/user.dart';
 
@@ -29,6 +30,13 @@ class _HomeScreenState extends State<HomeScreen> {
       _currentUser = user;
     });
   }
+  final List<Widget> _tabs = [
+    const HomeTab(),
+    const ConstitutionTab(),
+    const MembersTab(),
+    const MinutesTab(),
+    const MoreTab(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +71,10 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.people),
             label: 'Members',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.event_note),
+            label: 'Minutes',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.more_horiz),
