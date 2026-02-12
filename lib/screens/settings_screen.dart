@@ -22,7 +22,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return AnimatedBuilder(
       animation: themeProvider ?? ThemeProvider(),
       builder: (context, child) {
-        final isDarkMode = themeProvider?.isDarkMode ?? true;
+        // Determine if dark mode is active based on theme mode and system brightness
+        bool isDarkMode;
+        if (themeProvider?.themeMode == ThemeMode.system) {
+          // When in system mode, check the actual system brightness
+          isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
+        } else {
+          // When explicitly set, use the provider's value
+          isDarkMode = themeProvider?.isDarkMode ?? true;
+        }
         
         return Scaffold(
           appBar: AppBar(

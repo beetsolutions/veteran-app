@@ -5,24 +5,23 @@ import 'package:veteranapp/providers/theme_provider.dart';
 
 void main() {
   group('ThemeProvider Tests', () {
-    test('ThemeProvider initial state is dark mode', () {
+    test('ThemeProvider initial state is system mode', () {
       final themeProvider = ThemeProvider();
-      expect(themeProvider.themeMode, ThemeMode.dark);
-      expect(themeProvider.isDarkMode, true);
+      expect(themeProvider.themeMode, ThemeMode.system);
     });
 
     test('ThemeProvider toggleTheme switches between light and dark', () {
       final themeProvider = ThemeProvider();
       
-      // Initially dark
-      expect(themeProvider.themeMode, ThemeMode.dark);
+      // Initially system mode
+      expect(themeProvider.themeMode, ThemeMode.system);
       
-      // Toggle to light
+      // Toggle to light (from system)
       themeProvider.toggleTheme();
       expect(themeProvider.themeMode, ThemeMode.light);
       expect(themeProvider.isDarkMode, false);
       
-      // Toggle back to dark
+      // Toggle to dark
       themeProvider.toggleTheme();
       expect(themeProvider.themeMode, ThemeMode.dark);
       expect(themeProvider.isDarkMode, true);
@@ -67,9 +66,9 @@ void main() {
     testWidgets('VeteranApp uses theme provider correctly', (WidgetTester tester) async {
       await tester.pumpWidget(const VeteranApp());
       
-      // Verify the app is initialized with dark theme
+      // Verify the app is initialized with system theme mode
       final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
-      expect(materialApp.themeMode, ThemeMode.dark);
+      expect(materialApp.themeMode, ThemeMode.system);
     });
 
     testWidgets('VeteranApp has both light and dark themes defined', (WidgetTester tester) async {
